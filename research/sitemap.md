@@ -1,0 +1,281 @@
+# UASHMC WEBSITE — RECOMMENDED SITEMAP
+**Organised around patient intent, not the org chart. Phase-tagged for a launch that does not wait on UASHMC finalising content.**
+
+---
+
+## 0. The three rules that generated this sitemap
+
+1. **Every page answers one patient question.** If a page exists to make the hospital look complete, it is not in Phase 1. The core homepage job — *"can this hospital handle what I need, and what do I do next?"* — is decomposed into seven priority actions, and every one of them is reachable in one tap from the header or the homepage hero.
+2. **Content is authored once and serves two consumers: the page and KRISS AI.** Structured, semantic-HTML pages with dated, owned fields are simultaneously the SEO corpus, the AI-answer corpus, and the KRISS AI grounding corpus. This is why the site is "KRISS AI-ready from Day One" as an *architecture* decision, not a bolt-on.
+3. **Publish thin and dated beats publish rich and late.** Every Phase 1 page has a defined minimum viable payload. Nothing in Phase 1 blocks on a photo shoot, a price committee, or a complete doctor roster.
+
+---
+
+## 1. TOP-LEVEL NAVIGATION
+
+### 1.1 Main nav — six items, exact labels, in order
+
+| # | Label | Why it earns a top-level slot |
+|---|---|---|
+| 1 | **Find a Doctor** | The single most-used entry point on every hospital site in the market, and the widest competitive gap in Antipolo — ADH has no doctor search at all. Uses the market's own words (`Our Doctors` / `Find a Doctor` appears on 8 of 11 PH sites examined). |
+| 2 | **Services & Specialties** | Answers "can you treat what I have?" — the other half of the core homepage job. Combines the two conventional labels (`Our Services`, `Centers and Departments`) so patients arriving with a referral *and* patients arriving with a worry both land correctly. |
+| 3 | **HMOs & PhilHealth** | **Promoted to top level, which no benchmark does.** In a price-sensitive Antipolo catchment, *"tinatanggap ba ang HMO ko?"* is the question that decides which hospital the patient drives to. Every competitor buries this under Billing, Partners, or a logo wall. |
+| 4 | **Patients & Visitors** | The mandatory PH convention slot (admission, rooms, billing, visiting hours, rights, records). Patients have a learned mental model here; matching it and executing better is the play. |
+| 5 | **About UASHMC** | For a hospital opened in 2025 with no site and 33 Instagram followers, "are you real and are you licensed?" is a genuine patient question, not corporate vanity. Carries the RA 10932 §3 licensing block. |
+| 6 | **Contact & Directions** | Two questions patients treat as one. Marcos Highway is navigated by landmark, not address — and the current NAP conflict (Waze "625 Marikina-Infanta Hwy" vs. official "#7 Marcos Highway") is actively costing walk-ins. |
+
+**Deliberately NOT in the main nav:** Careers, News, Packages, Health Library, International Patients, Medical Professionals, Our Network, Institutes, Donate. Careers and News go to the utility bar (they are real, but they are not why a patient came). Packages is a homepage tile and a child of Services. The rest is brochure sprawl.
+
+### 1.2 Persistent utility bar — above the main nav, every page
+
+`ER 24/7 · 02 8248 3460` (tel: link, visually distinct) · `Viber/SMS +63 947 875 4949` · `Book Appointment` (NowServing) · `News` · `Careers`
+
+The emergency element is a **number, not a page** — only Asian Hospital and Marikina Valley do this correctly in the entire sample. ER hotline in a persistent header is a zero-click, name-the-competitor differentiator, and it satisfies the KRISS AI escalation constraint by keeping a hard-coded human exit visible on every screen the bot appears on.
+
+### 1.3 Mobile sticky bottom bar — three actions, equal weight
+
+`Call` | `Book` | `Ask`
+
+One bar, nothing floating, `env(safe-area-inset-bottom)` respected, 56–64px tall. The call button can never be occluded, KRISS sits in the thumb zone as a *peer* of calling rather than an ad layered on top, and the location is consistent across pages (WCAG 2.2 consistent-help). Launcher **suppressed entirely** on `/emergency` and on any booking or enquiry form.
+
+### 1.4 Footer — four groups
+
+**Patients:** Find a Doctor · Services A to Z · HMOs & PhilHealth · Admission · Rooms · Billing · Medical Records · Senior & PWD Discounts
+**About:** About UASHMC · Licensing & Accreditation · Leadership · Facilities · News · Careers
+**Contact:** Trunkline · ER line · Viber/SMS · Email · Address + Waze + Google Maps · Department Directory · Feedback & Grievance
+**Legal:** Privacy Policy · Terms of Use · Accessibility Statement · About KRISS AI · Sitemap · *Data Protection Officer contact*
+
+---
+
+## 2. FULL PAGE INVENTORY
+
+Legend: **[KB]** = KRISS AI knowledge-base source (structured content that grounds the assistant) · **[BI]** = ship bilingual EN/Filipino in Phase 1
+
+### 2.0 Global / cross-cutting
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/` **Homepage** **[KB]** | **P1** | Answer "can UASHMC handle what I need, and what do I do next?" in one screen | Task row: Find a Doctor / Check my HMO / Emergency | Seven priority-action tiles · ER strip · four specialty tiles · New Service Spotlight (§4) · trust row (DOH level, PhilHealth, bed count, 24/7 ER) · exterior photo · NAP block |
+| `/emergency` **Emergency Information** **[KB] [BI]** | **P1** | Work for someone panicking in a car on Marcos Highway | Tap-to-call ER number (largest element on the site) | ER number huge + 911 · plain address, copyable · Waze **and** Google Maps deep links · landmark approach from both Marcos Highway directions · ER entrance vs. main entrance vs. drop-off · what to bring ("come now, bring documents later") · NHS-pattern care cards · **RA 10932 no-deposit explainer** · non-emergency alternatives with hours |
+| `/404` | **P1** | Never dead-end | Find a Doctor / Search / Call | Three exits + ER number |
+| `/sitemap` (HTML) + `sitemap.xml` | **P1** | Machine + human discoverability | — | Auto-generated |
+| **Site-wide search** | **P2** | — | — | Phase 1 relies on doctor-name autocomplete, the Services A to Z, and KRISS AI. A weak search box on a small corpus fails more often than it succeeds. |
+
+### 2.1 Find a Doctor
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/doctors` **Directory** **[KB]** | **P1** | Let a patient reach the right named doctor's clinic day without calling | *Book appointment* (NowServing deep link) | **Lands on a specialty tile grid, not a search box** (4–8 tiles, plain-language name + "3 doctors"). Facets: Specialty, HMO accepted, Clinic day + AM/PM, Doctor name (typo-tolerant autocomplete), Consultation type. Result counts shown on every facet option before it is applied — **zero-result filter combinations must be structurally impossible.** "As of [Month Year]" stamp. "Recently added specialists" strip. Whole roster shipped as static JSON, filtered client-side. |
+| `/doctors/[slug]` **Profiles** **[KB]** | **P1** | Convert "I've heard of this doctor" into a booking | *Book with Dr. X* (sticky on mobile) | Real headshot, consistent crop · name + suffixes · plain-language specialty with clinical term second · sub-specialty line · weekly clinic schedule · clinic floor/room · PRC licence + Philippine board fellowship spelled out · HMO accreditations · consultation type · NowServing booking link · `Physician` schema.org markup. **Completeness gate: no profile publishes without all of these.** |
+| `/doctors/a-to-z` | **P2** | — | — | Roster too small to warrant; autocomplete covers it. |
+| Ratings / reviews | **Never at v1** | — | — | An empty or 1-review rating widget is a net-negative trust signal for a 2025 hospital. Omit entirely. |
+
+**Do not publish a doctor count.** Copy is "Find the right specialist for you," never "Search our 42 doctors." Scale is not UASHMC's claim; completeness is.
+
+### 2.2 Services & Specialties
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/services` **Find a Service hub** **[KB]** | **P1** | Get a patient who doesn't know the specialty word to the right page | Concern tile → service page | **Primary door = by concern/body area** (Heart & circulation · Bones, joints & injuries · Children's health · Stomach & digestion · Check-ups & screening · Scans & tests · Surgery · Emergency), with secondary tabs "By Specialty" and "A to Z". One canonical service record set, three indexes over it. |
+| `/services/a-to-z` **[KB]** | **P1** | Complete-looking, SEO-strong, works for users unsure of spelling | Service link | Flat alphabetical list, works as a plain scroll (anchors non-load-bearing), unpopulated letters muted non-links. Written "A to Z" not "A-Z" (screen readers). Near-free once the catalogue exists. |
+| `/specialties/internal-medicine` **[KB]** | **P1** | Own the four real specialties with depth | *See our Internal Medicine doctors* | What the specialty covers in plain language · conditions handled · named doctors pulled live from the provider DB · clinic days · related services |
+| `/specialties/orthopedics` **[KB]** | **P1** | ” | ” | ” |
+| `/specialties/cardiology` **[KB]** | **P1** | ” | ” | ” |
+| `/specialties/pediatrics` **[KB]** | **P1** | ” | ” | ” |
+| `/services/emergency-room` **[KB]** | **P1** | Explain the ER as a *service* (the `/emergency` page is the crisis tool) | *ER info & directions* | Hours (24/7), what the ER handles, arrival process, RA 10932 no-deposit statement |
+| `/services/diagnostic-imaging` **[KB]** | **P1** | Answer "do you have X-ray / can I get a scan?" | *Enquire / Book* | Modalities actually installed · prep requirements · walk-in vs. referral · turnaround for results · indicative price or one-step quote route |
+| `/services/clinical-laboratory` **[KB]** | **P1** | ” | *Enquire / Book* | Panels offered · fasting instructions · hours · results turnaround |
+| `/services/outpatient-clinics` **[KB]** | **P1** | Explain how OPD actually works | *Find a Doctor* | Clinic hours by specialty · walk-in policy · what to bring · where to go on arrival |
+| `/services/laparoscopic-cholecystectomy` **[KB]** | **P1** | The flagship surgical proof point, already in their social content | *Enquire about this procedure* | Full 9-block template (§below) — this is the reference implementation |
+| `/services/general-surgery` **[KB]** | **P1** | Umbrella for surgical capability | *Find a surgeon* | Procedures performed (LTO-gated) · named surgeons |
+| `/services/telemedicine` **[KB]** | **P1** | Convert the "Doctor in the House" audience into bookings | *Book an online consult* | **Describes the service and how to book it only.** No clinical scope, prescription, or eligibility claims until the 2020 telemedicine circulars are verified and the Medical Director signs off. Honest phase boundary. |
+| `/services/packages` **Packages & Check-Ups** **[KB]** | **P1** | Match the PH "Packages" convention — and beat ADH by making prices *readable text* | *Enquire / Book package* | Package name · **price in HTML text, never in an image** · explicit what's-included / what's-**not**-included · "as of [date]" · one-step quote route where price can't publish |
+| `/services/new` **Services We're Adding** **[KB]** | **P1** | Handle expansion honestly instead of shipping empty "coming soon" pages | *Get notified / News* | Named services with target quarters. One page, dated. Replaces every temptation to publish a hollow specialty page. |
+| `/services/[remaining]` | **P2** | — | — | Rest of the catalogue, added on the same template as content arrives |
+| `/conditions/[slug]` **Concern pages** **[KB]** | **P2** | Mayo-pattern reverse index: plain-language condition page → "Who treats this at UASHMC" | *See doctors who treat this* | Editorial-heavy. Phase 1 uses the four specialty pages as the router instead. |
+
+**Service page template — nine blocks, in this order (order is the design):** 1 plain-language name (clinical name second) · 2 what this is (40–60 words, reading age ~11) · 3 who it's for / conditions addressed · 4 what to expect (before → arrival → during → after → recovery) · 5 how to prepare (concrete and numeric) · 6 duration & where, **including total time on site** · 7 requirements (referral, fasting, PhilHealth documents, **HMO LOA**) · 8 cost & coverage · 9 who does this at UASHMC + CTA.
+
+**CMS publish gate, required field on every service page: "Is this service on the DOH LTO? [Yes/No]."** No is unpublishable. This is a required field, not a policy memo — it satisfies AO 2012-0012 and RA 10932 §3, and it is what makes the "feature new services as we expand" requirement safe.
+
+### 2.3 HMOs & PhilHealth — the competitive wedge
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/hmo` **HMO Checker** **[KB] [BI]** | **P1** | Answer "is my HMO accepted?" in one field, which **no Philippine hospital currently does** | Type your HMO → result | **Type-ahead field over the full HMO list.** Full list also as plain searchable HTML text (never logos-only, never a PDF). Result shows: agreement exists yes/no · what to bring · where the LOA desk is · its hours (including "except holidays") · its direct number. **Framed as "HMOs we have accreditation agreements with," never "HMOs we accept."** Mandatory visible **"last updated [date]"** with a named internal owner. Four caveats on every answer: plan tier, your doctor, your specific procedure, LOA lead time. |
+| `/hmo/loa-guide` **How LOA/LOG Works** **[KB] [BI]** | **P1** | Remove the single highest-anxiety friction point in PH outpatient care | *Request an LOA* | Step-by-step, **bilingual EN/Filipino** (ADH's best idea, executed as a tool) · **split Outpatient / Inpatient / Emergency explicitly** — the mechanics genuinely differ · 1–5 business day lead-time warning · deposit linkage stated plainly · desk location, hours, direct line · cross-links to PhilHealth, Rooms, Admission |
+| `/hmo/[provider]` | **P2** | Per-HMO detail pages | — | MakatiMed-grade per-provider LOA channel detail, once the data exists |
+| `/philhealth` **[KB]** | **P1** | The Bulletin Board obligation, done properly | *What to bring* | **Which accreditations UASHMC holds, by benefit package** — not the floating phrase "PhilHealth-accredited" · document checklist by form code (CF1, CF2, Certificate of Contributions, Membership Registration Form) · link to philhealth.gov.ph for figures. **No hardcoded peso amounts** — case rates are mid-migration to DRG. Zero/No Balance Billing scope stated precisely per Billing's written position. |
+| `/philhealth/konsulta` | **P2** | Primary-care acquisition funnel | *Register with us* | Only if UASHMC is a Konsulta provider; copy must be precise that enrolment is exclusive to one provider |
+
+### 2.4 Patients & Visitors
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/patients` **Hub** | **P1** | Route to the eight canonical topics | Topic tiles | Eight linked cards, one line each |
+| `/patients/admission` **[KB] [BI]** | **P1** | "What do I bring and what happens?" | *Admission checklist (print/save)* | Document list (government ID, medications list, LOA/LOG, PhilHealth ID, **Senior Citizen / PWD ID**, prior results) · deposit policy and the LOA waiver · admitting order requirement · walk-in vs. ER routing · where to go |
+| `/patients/rooms-and-rates` **[KB]** | **P1** | The room-shopping decision | *Enquire about a room* | Room types in the local taxonomy (Ward · Semi-Private · Regular Private · Suite) · **watcher's bed noted** · what's included · time-of-admission charging convention if it applies. **Rates are a Bravo/Lozada decision (§7)** — publish types in Phase 1 regardless; add dated rates if they opt in. |
+| `/patients/billing-and-payment` **[KB]** | **P1** | Remove bill-shock anxiety | *Get a quote* | Payment methods · discharge process · how PhilHealth and HMO deductions apply · where to query a bill, with hours and a direct number |
+| `/patients/senior-and-pwd-discounts` **[KB] [BI]** | **P1** | Statutory entitlement with real peso value — **and neither ADH nor FUMC mentions it at all** | *What to bring* | RA 9994 and RA 10754: 20% + VAT exemption · **the correct computation order (strip 12% VAT first, then 20%)** · OSCA / PWD ID requirements · purchase-booklet no longer required (AO 2024-0017 / FDA Circular 2025-005) · where to present proof. Satisfies RA 10754 IRR Rule IV §6 disclosure. |
+| `/patients/visitor-guidelines` | **P1** | Visiting hours and rules | — | Hours, per-patient limits, ICU/pediatric exceptions, ID requirement |
+| `/patients/patient-rights` **[KB]** | **P1** | Near-mandatory, DOH-expected | *Give feedback* | Rights and responsibilities list · link to Feedback & Grievance · cross-link to `/emergency` for RA 10932 |
+| `/patients/medical-records` **[KB]** | **P1** | **No competitor in Antipolo has this page.** High-volume, 100% non-clinical, ideal KRISS intent | *Request a record* | Records release procedure · **medical certificates** for work/school · **medico-legal certificates** · form, requirements, fee, turnaround, window location, hours |
+| `/patients/accessibility-at-uashmc` **[KB]** | **P1** | Let the family bringing a wheelchair decide the trip is feasible | *Directions* | PWD parking location · ramp access · accessible restrooms · elevator · priority lanes · senior/PWD assistance desk. Costs nothing, converts, differentiates. |
+| `/patients/faq` **[KB]** | **P2** | — | — | Built from the KRISS AI unanswered-question log — a genuinely valuable, Harvey-ownable asset |
+
+### 2.5 About UASHMC
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/about` **[KB]** | **P1** | "Are you real?" | *Find a Doctor* | Who we are · **"Opened 2025" stated openly** and framed as new facility / new equipment / current standards / unhurried consultations · tagline "Excellence in Every Life We Touch" · mission/vision folded in, not a separate page · exterior photograph |
+| `/about/licensing-and-accreditation` **[KB]** | **P1** | Mirror the RA 10932 §3 entrance notice — **the law already tells us what the front door must say, and the homepage is the front door now** | *Verify with DOH* | Registered facility name as licensed · DOH classification level · **the authoritative list of DOH-authorized services** · PhilHealth accreditation status · outbound link to the DOH/HFSRB licensed-facility list · PHAPI membership if held. Licence *number* optional, not mandatory — do not tell the board otherwise. |
+| `/about/leadership` **[KB]** | **P1** | Accountable, findable humans | *Contact* | Named leadership with real photos and roles — Dr. Bravo, Dr. Pedraja, Ms. Barcelona, Dr. Directo. Easy content to gather while everyone is in the room. |
+| `/about/facilities` **[KB]** | **P1** | Decouple institutional capability from doctor headcount | *See our services* | **Text-first:** bed count, units, installed equipment, 24/7 ER, imaging, laboratory, OR. Photography enriches later. This page is how a small roster still reads as a capable institution. |
+| `/about/quality-and-patient-safety` | **P2** | — | — | Real content only; nothing performative |
+
+### 2.6 Contact & Directions
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/contact` **[KB]** | **P1** | Reach a human on the channel they actually use | *Call / Viber* | Trunkline **02 8248 3460** · ER line · **SMS/Viber +63 947 875 4949 as first-class furniture, not an afterthought** · email on the hospital domain · **stated response time per channel with hours** ("Viber, Mon–Sat 8AM–5PM, replies within X hours") · links to FB/IG. Email is the least-trusted channel in this market — do not lead with a form. |
+| `/directions` **[KB] [BI]** | **P1** | Get a driver to the right entrance | *Open in Waze / Google Maps* | Official address **#7 Marcos Highway, Brgy. Mambugan, Antipolo City, Rizal** · **both** Waze and Google Maps deep links · landmark-based approach from both highway directions · jeepney / UV Express landmarks · nearest LRT-2 Antipolo station relationship · parking · ER vs. main entrance. **Also the fix-list owner for the NAP conflict across Waze, NowServing, healthspace.ph, GBP, FB and IG.** |
+| `/contact/departments` **Department Directory** **[KB]** | **P1** | Operational specificity as a trust proxy | *Call the department* | Direct number and hours per department, as HTML text. **Not a PDF** — MVMC's directory is a download, and that is the mistake. |
+| `/contact/feedback` **Feedback & Grievance** | **P1** | Required grievance mechanism under NPC Advisory 2024-04, and a real quality loop | *Submit feedback* | Minimal form (data-minimised — no symptoms, no diagnoses), named owner, response-time commitment, escalation route, NPC complaint route |
+
+### 2.7 News & Announcements
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/news` **[KB]** | **P1** | The engine for "featuring new services as the hospital expands" | Read post | Reverse-chronological list. Three posts is enough to launch; a two-post blog from six months ago is worse than none, so the cadence commitment matters more than the count. |
+| `/news/[slug]` **[KB]** | **P1** | One announcement | Related service page | Headline, date, body, **required link to a published service or doctor page** where relevant |
+| Categories: *New Service · Advisory · Health Tip* | **P2** | — | — | Category `New Service` is what feeds the homepage Spotlight (§4) |
+
+### 2.8 Careers
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/careers` **[KB]** | **P1** | They are actively hiring, and a strong Careers presence signals growth and stability **to patients**, not just applicants | *Apply* | Current openings **as HTML text**, not images. Application route and contact. Links to — does not duplicate — `facebook.com/uashmc.hr`. Every PH hospital site with a site has Careers in primary nav; ours earns it in the utility bar. |
+| `/careers/[job]` | **P2** | — | — | Individual job pages once the volume justifies them |
+
+### 2.9 Legal, trust, and the unglamorous set
+
+| Page | Phase | Job | Primary CTA | Minimum to publish |
+|---|---|---|---|---|
+| `/privacy-policy` **[KB]** | **P1** | DPA compliance **and** a credibility asset | *Contact our DPO* | Full DPA §16 / IRR §34 content set: PIC identity and contact · categories of personal and **sensitive personal** data · purposes · methods · recipients and any cross-border transfer · retention periods · **existence of automated processing and profiling** · full list of data subject rights and how to exercise them · **DPO name and contact** · NPC complaint route · cookie section with anchor. |
+| `/terms-of-use` | **P1** | Scope of site use, no medical-advice disclaimer, third-party links (NowServing) | — | Standard set, plus explicit "this website does not provide medical advice" |
+| `/accessibility-statement` | **P1** | Positioning statement, honestly framed | *Report a barrier* | **WCAG 2.1 AA adopted voluntarily.** Say the government holds itself to WCAG 2.0 (NCDA MC 2017-004) and UASHMC chooses to meet a higher bar. **Do not claim it is legally required for private entities** — it isn't, as far as can be established. Include a barrier-reporting channel. |
+| `/ask-uashmc` **About KRISS AI** **[KB]** | **P1** | The NPC Advisory 2024-04 transparency artifact — and a differentiator on its own | *Ask a question* | It is an AI system · **what it can do: hospital information, navigation, HMO/PhilHealth process, hours, directions, prices** · **what it cannot do: diagnose, give clinical advice, triage, assess symptoms** · what is logged and for how long · how to reach a human · how to object, rectify, or request erasure · emergency instruction. This page *is* the guardrail spec made public, and it is what turns "an AI on our website" into "an AI that can only repeat what we approved." |
+| Cookie banner + layered/just-in-time notices | **P1** | NPC Circular 2023-04 makes layered and just-in-time notices the **default** format, not one buried policy link | — | Granular, withdrawable, unbundled consent at every collection point. No pre-ticked boxes. |
+
+### 2.10 KRISS AI — global component
+
+| Component | Phase | Notes |
+|---|---|---|
+| Widget (desktop bottom-right; mobile = the `Ask` slot in the sticky bar) | **P1** | **Collapsed by default. No auto-open, ever.** Quiet static label "Ask UASHMC" — no mascot, no sound, no pulsing, no fake unread badge. Standing disclaimer persistent in the frame. "Talk to a person" always one tap away. Suppressed on `/emergency` and all forms. Expanded state full-screen on mobile. Every answer carries a link to the approved source page. |
+| Footer + header text entry points | **P1** | The footer is where users expect to find help; two quiet entry points beat one loud one, and it survives ad-blocking. |
+| Symptom→specialty routing table | **P1** | A finite, version-controlled, **Medical-Director-signed** spreadsheet of 100–200 rows mapping plain-language concern → 1–3 candidate specialties → service pages → red-flag flag. Not a model. Red-flag screening runs **first** and **replaces** any routing answer with the emergency care card. KRISS never asks a clinical question. |
+| Unanswered-query log | **P1** | The editorial backlog for Phase 2 content, and a direct readout of what the catchment is actually worried about. |
+
+---
+
+## 3. KRISS AI KNOWLEDGE-BASE MAP — the architectural argument
+
+**Every page marked [KB] above is authored once and consumed three times: by the patient, by Google and AI answer engines, and by KRISS AI.**
+
+This is the whole reason the site must be semantic HTML, server-rendered, and schema.org-marked-up (`MedicalOrganization`, `Physician`, `MedicalProcedure`) rather than prices-in-images and directories-that-render-client-side. Every Antipolo competitor has locked its most valuable content — prices, doctor lists, packages — inside images, PDFs, SharePoint files, and client-side JavaScript. That content is invisible to Google, invisible to ChatGPT and Claude, unreadable by screen readers, and **un-answerable by any chatbot, including theirs.**
+
+**The KB tiers, in order of value to KRISS AI:**
+
+| Tier | Pages | Why it's the highest-value grounding data |
+|---|---|---|
+| **1 — Logistics & money (lead the demo here)** | `/hmo`, `/hmo/loa-guide`, `/philhealth`, `/patients/admission`, `/patients/billing-and-payment`, `/patients/senior-and-pwd-discounts`, `/patients/rooms-and-rates`, `/services/packages`, `/patients/medical-records`, `/directions`, `/contact/departments` | High-volume, entirely non-clinical, fully hospital-approvable. *"Do you accept Maxicare?" · "How much is an X-ray?" · "How do I get a medical certificate?"* Immediate call-centre load reduction with **zero clinical risk.** Demo these, not symptoms. |
+| **2 — Structured entity data** | `/doctors` JSON, `/doctors/[slug]`, `/specialties/*`, `/services/*` | One centralised provider and service database, many views. The directory, the specialty pages, the homepage tiles, and KRISS AI all read the **same record.** Fix it once, it's fixed everywhere. |
+| **3 — Safety & governance** | `/emergency`, `/ask-uashmc`, `/privacy-policy`, the routing table | The red-flag interrupt, the AI disclosure, the retention policy, the escalation path. These are pages *and* they are the compliance artifacts. |
+
+**Grounding rule:** KRISS AI answers **only** from [KB] pages, and every answer links its source page. Unmatched input returns "I'm not sure which service fits that — here are our specialties, or talk to our team," and is logged. It must never fall through to an LLM's general medical knowledge.
+
+**Accountability note for the board:** under NPC Advisory 2024-04, accountability sits with **UASHMC as Personal Information Controller** — not with Iozera, not with the technology. Volunteering that unprompted is the credibility move, and it reframes the KRISS conversation from "cool chatbot" to "governed system with named owners."
+
+---
+
+## 4. FEATURING NEW / PRIORITY SERVICES ON THE HOMEPAGE
+
+A CMS-managed **New Service Spotlight** component — 1–3 cards, directly beneath the priority-action row.
+
+**Fields (all required):**
+
+| Field | Purpose |
+|---|---|
+| Headline (plain language) | What the patient gets |
+| One-line description (≤120 chars) | Why they'd care |
+| **Linked service page** (must be Published) | **No orphan cards.** A Spotlight card cannot exist without a real page behind it. |
+| **On DOH LTO? [Yes/No]** | Publish gate. `No` = unpublishable. AO 2012-0012 + RA 10932 §3. |
+| Start date / **auto-expire date** | Prevents the "state-of-the-art new wing, 2025" card still sitting there in 2027 |
+| Optional linked news post | Auto-syndicates to `/news` under category `New Service` |
+| Owner + last-reviewed date | Every page and card on this site has a named owner and a review date |
+
+**Why a component and not a hand-built hero:** UASHMC will add services faster than they will commission website work. Marketing must be able to launch a new service on the homepage **without a developer**, and the LTO field is what makes that safe. Harvey owns the copy and the slot; the publish gate owns the risk.
+
+Adjacent, deliberately separate: `/services/new` ("Services We're Adding") is the honest holding pen for services that exist as plans, not licences. It replaces every temptation to publish a hollow "Coming Soon — Oncology" page, which is a credibility leak.
+
+---
+
+## 5. INTEGRATE, DO NOT DUPLICATE
+
+### NowServing.ph — the booking layer, already paid for
+- **Every** doctor profile and specialty page carries a `Book appointment` button that **deep-links to that doctor's NowServing profile.** Do not rebuild booking in Phase 1.
+- The utility-bar `Book Appointment` and the mobile `Book` button both resolve to NowServing.
+- **KRISS AI does not book.** It informs and hands off — which is exactly what the product actually does, and it makes UASHMC's existing NowServing investment look deliberate rather than redundant. This is the strongest single line available in the room: *KRISS answers, NowServing books, and you already own the booking half.*
+- **Canonical data lives on uashmc's site, not on NowServing.** The site is the source of truth for schedules, credentials and HMO lists; NowServing is the transaction endpoint. Where they conflict today (specialties listed there but not here), reconcile in Phase 1 as a content-gathering task.
+- **Phase 2:** evaluate embedding NowServing inline rather than linking out. Every hand-off to another hostname is a trust drop — MakatiMed spans four hostnames plus a Zoho form — but a link that works beats an embed that waits.
+
+### Facebook & Instagram — the content pipeline, not a content silo
+- **"Doctor in the House" is the highest-leverage asset UASHMC already owns:** produced, doctor-fronted, hospital-approved video — the most expensive kind of E-E-A-T content, already paid for. **Embed episodes on the matching doctor profile and service page.** This makes a small roster look substantially deeper on day one, and it turns Harvey's existing content calendar into the website's content pipeline. That is a far better conversation than "we need content from you."
+- `/news` and `/telemedicine` embed or reference the social posts; they do not re-key them.
+- `/contact` links to FB and IG. `/careers` links to `facebook.com/uashmc.hr` rather than duplicating the job posts.
+- **No Messenger-only contact affordance.** TMC, FUMC and Asian Hospital all push patients off their own website into Facebook and hope someone replies; that is the exact gap KRISS AI closes. Social links go in the footer and on `/contact` — never as the primary help mechanism.
+- **NAP consistency is a Phase 1 task with a named owner:** name, address, and phone identical across the site, FB, IG, Google Business Profile, NowServing, healthspace.ph, findhealthclinics.org and Waze. Waze currently says "625 Marikina-Infanta Hwy" against the official "#7 Marcos Highway, Mambugan." That inconsistency is costing walk-ins right now and is fixable in week one.
+
+---
+
+## 6. HARDEST CONTENT TO PRODUCE — AND THE PUBLISH-THIN FALLBACK FOR EACH
+
+| # | Content | Why it's hard | Publish-thin fallback (Phase 1) | Enrich later |
+|---|---|---|---|---|
+| 1 | **Doctor clinic schedules + per-doctor HMO accreditation** | No existing owner; changes weekly; HMOs maintain their own doctor lists | Publish **typical clinic days** with the visible line *"Schedules may change — please confirm when booking."* Honest and stable beats precise and stale. HMO list at **hospital level** with the four caveats until per-doctor mapping exists. | Per-doctor HMO mapping; live schedule feed |
+| 2 | **Photography — building, ER entrance, reception, rooms, OR, imaging, real staff** | Needs a scheduled shoot; **stock photos of people are net-negative** for a hospital a patient cannot yet verify exists | **Minimum viable shoot: 5 photos** — building from the street (so drivers recognise it), ER entrance, reception, one patient room, one clinical area. Everything else uses typography, icons and colour blocks. **Zero stock images of people, ever.** | Full facility set, per-room-type photos, staff portraits |
+| 3 | **Doctor headshots** | Requires scheduling ~25 people | **Completeness gate: no headshot, no published profile.** A silhouette placeholder kills the card and reads as a stub. Launch with the doctors who are shot; add the rest as a dated "Recently added" strip — which reads as momentum, not as omission. | Full roster |
+| 4 | **Prices — room rates, OPD, packages** | A genuine commercial decision for Dr. Bravo and Harvey, with a real maintenance cost | Publish **indicative ranges** for the safe, shoppable items only (X-ray, ultrasound, lab panels, check-up packages) with an **"as of [date]"** stamp and explicit what's-included/what's-**not**. Everywhere else: **"Get an exact quote in one step"** — named channel, named response time. A real quote in 4 hours beats a fake precise number. | Full itemised list, mirroring AO 2021-0008's own discipline: itemised, dated, named owner, annual review |
+| 5 | **DOH LTO details — registered name, level, authorized services** | Requires the physical document, and the "Medical Center" designation must be checked against licensed functional capacity | Publish **"Licensed by the Department of Health"** + classification level + a link to the DOH/HFSRB licensed-facility list. Hold the authorized-services list until the LTO copy is in hand. | Full authorized-service list mirroring the entrance notice |
+| 6 | **PhilHealth accreditation by benefit package** | Accreditation is per-package, not binary; Billing must confirm | Publish accreditation status + document checklist by form code + link to philhealth.gov.ph. **No peso amounts.** | Per-package list; Konsulta page if applicable |
+| 7 | **Doctor bios (100–150 words, first-person)** | 25 people each need to write something | Publish **credentials-only** profiles — training, board fellowship, sub-specialty, schedule. Credentials are the substance; prose is the polish. Where a "Doctor in the House" episode exists, **embed it in place of the bio.** | Written bios, per doctor |
+| 8 | **Full 9-block service pages** | Blocks 4–7 (what to expect, how to prepare, duration, requirements) need clinical sign-off | Publish blocks **1, 2, 3, 8, 9** (name, what it is, who it's for, cost/coverage route, who does it). Add 4–7 per service as Dr. Pedraja signs off. `/services/laparoscopic-cholecystectomy` ships **complete** as the reference implementation everything else is measured against. | Full template across the catalogue |
+| 9 | **The HMO list itself, with an owner** | Currently exists as institutional knowledge, not a document | Publish whatever list Billing can confirm today, dated, with the owner's name. A short dated list is credible; a long undated one is a liability. | Per-provider pages with LOA channels |
+| 10 | **DPO name + NPCRS registration status** | May not be designated yet | Publish the Privacy Policy in full with a **role-based DPO contact on the hospital domain** (`dpo@…`). A role address is defensible; an absent DPO contact is not. | Named DPO, registration reference |
+| 11 | **Condition / concern editorial pages** | Highest editorial cost on the whole site | **Phase 2 in full.** Phase 1 routes through the four specialty pages and the signed routing table. No thin condition pages. | Mayo-pattern condition library, fed by the KRISS unanswered log |
+| 12 | **Telemedicine clinical scope** | The 2020 DOH telemedicine circulars are COVID-response instruments of uncertain current force | Describe the **service and how to book it.** Publish **no** eligibility, prescription, or coverage claims. Say so honestly at the onsite — it is a decision for Dr. Pedraja, not for us to pre-empt. | Full scope once counsel/DOH confirms |
+
+---
+
+## 7. PHASE 1 AT A GLANCE
+
+**~46 pages, of which ~28 are [KB] sources.** Nothing in Phase 1 blocks on a complete doctor roster, a full price list, a photo shoot, or a condition library.
+
+**Deliberately excluded from Phase 1, and say so out loud:** site-wide search · doctor A-to-Z · per-HMO pages · condition/concern library · patient portal · online payments · online lab results · Konsulta page · health library/blog at volume · individual job pages · ratings and reviews · testimonial wall · star ratings · award badges · "coming soon" service pages · ER wait times *(a stale wait time is a specific broken promise at the worst possible moment — strictly worse than publishing nothing)*.
+
+**Two Phase-1 items that are not pages but belong in scope, because they undercut everything else if left undone:**
+- **Hospital-domain email live before launch.** `uashmc.customerrelations@gmail.com` on a hospital's contact page is both a credibility leak and — more usefully for the budget conversation — a **data-security remediation item under NPC Circular 2023-06**, since patient inquiries containing health information land in a consumer mailbox outside any evidenceable access-control regime. Cheapest large credibility win available, and Tere Barcelona can act on it immediately.
+- **NAP correction across all third-party listings.** Defined, ownable, week-one.
+
+**And one commitment worth making publicly:** static-first, CDN-served, uptime-monitored. The nearest same-corridor competitor — Metro Antipolo, backed by the country's largest hospital group, on the same Marcos Highway — returns 503 on every path. Uptime is not a nice-to-have here; it is a differentiator you can name in the room.
+
+---
+
+## 8. THE FOUR SITEMAP DECISIONS THAT BELONG TO HARVEY
+
+Handing these over as genuinely open — the brief requires him to shape the site, not approve it:
+
+1. **The primary door on `/services`** — concern-first (recommended) or specialty-first? It visibly changes the homepage and it is legitimately contested.
+2. **What earns the three slots in the mobile sticky bar** — Call, Book, Ask is the recommendation; Directions is the credible fourth contender.
+3. **The KRISS AI opening prompt set** — he knows what people actually ask on Messenger today. That is primary research nobody else in the room has, and it is the fastest quality win available.
+4. **Price-transparency posture** — room rates and OPD prices, yes or no, with the maintenance commitment attached. A real commercial decision, correctly his and Dr. Bravo's. Worth noting that Chong Hua and Capitol already publish rates, ADH put pricing in its nav, and `clinicfinderph.com` is already ranking for other hospitals' fees. Someone else will publish these numbers, with worse accuracy and no accountability.

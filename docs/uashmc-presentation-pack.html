@@ -1,0 +1,1455 @@
+<meta charset="utf-8">
+<title>UASHMC Digital Front Door Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+
+<style>
+/* ─────────── tokens: light ─────────── */
+:root{
+  --paper:#FBFAF8;
+  --surface:#FFFFFF;
+  --surface-2:#F3F6F7;
+  --ink:#08262F;
+  --text:#1E3B47;
+  --muted:#5B7683;
+  --faint:#8CA2AC;
+  --line:#DBE3E7;
+  --line-soft:#E9EFF1;
+
+  --brand:#0F5C7A;
+  --brand-deep:#0A3C52;
+  --brand-bright:#1B87AD;
+  --brand-tint:#E7F2F7;
+
+  --care:#167355;
+  --care-tint:#E4F2EB;
+  --warn:#B45309;
+  --warn-tint:#FBF0DF;
+  --urgent:#C0271A;
+  --urgent-tint:#FCEDEB;
+  --violet:#5F4BA0;
+  --violet-tint:#EFEBF9;
+
+  --shadow:0 1px 2px rgba(8,38,47,.05), 0 2px 8px rgba(8,38,47,.05);
+  --shadow-lg:0 12px 36px rgba(8,38,47,.12);
+
+  --ui:"Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0B1418;
+    --surface:#111E24;
+    --surface-2:#16262D;
+    --ink:#E9F1F4;
+    --text:#C3D4DB;
+    --muted:#8FA7B1;
+    --faint:#6B838E;
+    --line:#25383F;
+    --line-soft:#1C2E35;
+
+    --brand:#5FB6D4;
+    --brand-deep:#8FD0E6;
+    --brand-bright:#7BC7E0;
+    --brand-tint:#12303C;
+
+    --care:#5BC79A;
+    --care-tint:#123028;
+    --warn:#E0A34A;
+    --warn-tint:#2E2314;
+    --urgent:#F08A7C;
+    --urgent-tint:#2E1714;
+    --violet:#A796E0;
+    --violet-tint:#1E1A33;
+
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 2px 8px rgba(0,0,0,.25);
+    --shadow-lg:0 12px 36px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0B1418; --surface:#111E24; --surface-2:#16262D;
+  --ink:#E9F1F4; --text:#C3D4DB; --muted:#8FA7B1; --faint:#6B838E;
+  --line:#25383F; --line-soft:#1C2E35;
+  --brand:#5FB6D4; --brand-deep:#8FD0E6; --brand-bright:#7BC7E0; --brand-tint:#12303C;
+  --care:#5BC79A; --care-tint:#123028; --warn:#E0A34A; --warn-tint:#2E2314;
+  --urgent:#F08A7C; --urgent-tint:#2E1714; --violet:#A796E0; --violet-tint:#1E1A33;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 2px 8px rgba(0,0,0,.25);
+  --shadow-lg:0 12px 36px rgba(0,0,0,.45);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--text);
+  font-family:var(--ui); font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--serif); color:var(--ink); margin:0; line-height:1.2; text-wrap:balance; font-weight:600}
+p{margin:0}
+a{color:var(--brand); text-decoration-thickness:1px; text-underline-offset:2px}
+:focus-visible{outline:2.5px solid var(--brand-bright); outline-offset:3px; border-radius:3px}
+strong{color:var(--ink); font-weight:600}
+code{font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.88em; background:var(--surface-2); padding:2px 6px; border-radius:4px; color:var(--ink)}
+
+/* ─────────── shell ─────────── */
+.shell{max-width:1300px; margin:0 auto; padding:0 28px; display:grid; grid-template-columns:238px minmax(0,1fr); gap:52px; align-items:start}
+@media (max-width:1040px){ .shell{grid-template-columns:1fr; gap:0; padding:0 20px} }
+
+/* masthead */
+.mast{grid-column:1/-1; padding:52px 0 34px; border-bottom:1px solid var(--line)}
+.kicker{font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--brand); margin-bottom:14px}
+.mast h1{font-size:clamp(30px,4.4vw,48px); letter-spacing:-.022em; margin-bottom:16px; max-width:24ch}
+.mast .sub{font-size:18px; color:var(--muted); max-width:62ch}
+.mast-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:24px}
+.pill{
+  font-size:12px; font-weight:500; padding:6px 13px; border-radius:20px;
+  background:var(--surface); border:1px solid var(--line); color:var(--muted);
+}
+.pill b{color:var(--ink); font-weight:600}
+
+/* toc */
+.toc{position:sticky; top:24px; padding:30px 0; font-size:13.5px}
+@media (max-width:1040px){ .toc{position:static; padding:22px 0; border-bottom:1px solid var(--line)} }
+.toc h4{font-family:var(--ui); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); margin-bottom:14px; font-weight:600}
+.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; counter-reset:t}
+.toc a{
+  display:flex; gap:10px; text-decoration:none; color:var(--muted); padding:6px 9px;
+  border-radius:6px; border-left:2px solid transparent; line-height:1.35;
+}
+.toc a::before{counter-increment:t; content:counter(t); color:var(--faint); font-variant-numeric:tabular-nums; font-size:11.5px; padding-top:2px; flex:none; width:14px}
+.toc a:hover{background:var(--surface-2); color:var(--ink)}
+.toc a.on{color:var(--brand); background:var(--brand-tint); border-left-color:var(--brand); font-weight:600}
+.toc a.on::before{color:var(--brand)}
+@media (max-width:1040px){ .toc ol{flex-direction:row; flex-wrap:wrap; gap:6px} .toc a{border:1px solid var(--line); border-left-width:1px} }
+
+/* main */
+main{padding:20px 0 100px; min-width:0}
+section{padding:46px 0; border-bottom:1px solid var(--line-soft); scroll-margin-top:20px}
+section:last-of-type{border-bottom:0}
+.snum{
+  display:inline-flex; align-items:center; gap:9px; font-family:var(--ui); font-size:11px;
+  font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--brand); margin-bottom:13px;
+}
+.snum i{width:22px; height:1px; background:var(--brand); display:block}
+section>h2{font-size:clamp(24px,3vw,33px); letter-spacing:-.018em; margin-bottom:14px}
+.lede{font-size:17.5px; color:var(--muted); max-width:66ch; margin-bottom:8px}
+h3{font-size:20px; margin:36px 0 12px; letter-spacing:-.01em}
+h4{font-family:var(--ui); font-size:14.5px; font-weight:600; margin:24px 0 9px; color:var(--ink)}
+p+p{margin-top:13px}
+section p, section li{max-width:74ch}
+
+ul,ol{margin:13px 0; padding-left:22px; display:flex; flex-direction:column; gap:8px}
+li::marker{color:var(--brand)}
+
+/* callouts */
+.note{
+  border:1px solid var(--line); border-left:3px solid var(--brand); border-radius:8px;
+  background:var(--surface); padding:18px 20px; margin:22px 0; font-size:15px;
+}
+.note.care{border-left-color:var(--care)}
+.note.warn{border-left-color:var(--warn)}
+.note.urgent{border-left-color:var(--urgent)}
+.note.violet{border-left-color:var(--violet)}
+.note-h{font-family:var(--ui); font-weight:600; color:var(--ink); font-size:14.5px; margin-bottom:7px; display:flex; align-items:center; gap:8px}
+.note ul{margin:9px 0 0}
+
+/* tables */
+.tw{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+table{width:100%; border-collapse:collapse; font-size:14px; min-width:520px}
+th,td{padding:12px 15px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{background:var(--surface-2); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{font-variant-numeric:tabular-nums; white-space:nowrap}
+td strong{color:var(--ink)}
+.win{color:var(--care); font-weight:600}
+.lose{color:var(--urgent); font-weight:600}
+.mid{color:var(--warn); font-weight:600}
+
+/* cards */
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:22px 0}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:22px 0}
+@media (max-width:860px){ .grid2,.grid3{grid-template-columns:1fr} }
+.card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:19px; box-shadow:var(--shadow)}
+.card h4{margin:0 0 8px}
+.card p{font-size:14px; color:var(--muted)}
+.tagline{
+  display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:3px 9px; border-radius:5px; margin-bottom:10px;
+}
+.t-p0{background:var(--urgent-tint); color:var(--urgent)}
+.t-p1{background:var(--warn-tint); color:var(--warn)}
+.t-p2{background:var(--surface-2); color:var(--muted)}
+.t-ok{background:var(--care-tint); color:var(--care)}
+.t-new{background:var(--brand-tint); color:var(--brand)}
+
+/* sitemap tree */
+.tree{margin:22px 0; font-size:14.5px}
+.tree ul{list-style:none; margin:0; padding-left:22px; border-left:1px solid var(--line); gap:0}
+.tree>ul{padding-left:0; border-left:0}
+.tree li{padding:0; margin:0; display:block; max-width:none}
+.tnode{display:flex; align-items:baseline; gap:9px; padding:7px 0; flex-wrap:wrap}
+.tnode>b{font-family:var(--ui); font-weight:600; color:var(--ink); font-size:14.5px}
+.tnode>span{color:var(--muted); font-size:13px}
+.tree>ul>li>.tnode>b{font-size:16px; font-family:var(--serif); font-weight:700}
+.ph{font-size:10px; font-weight:700; letter-spacing:.07em; padding:2px 7px; border-radius:4px; white-space:nowrap}
+.ph1{background:var(--care-tint); color:var(--care)}
+.ph2{background:var(--surface-2); color:var(--muted)}
+.kb{background:var(--brand-tint); color:var(--brand)}
+
+/* journey ladder */
+.ladder{display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin:22px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface)}
+@media (max-width:860px){ .ladder{grid-template-columns:1fr} }
+.rung{padding:20px; border-right:1px solid var(--line-soft)}
+.rung:last-child{border-right:0}
+@media (max-width:860px){ .rung{border-right:0; border-bottom:1px solid var(--line-soft)} }
+.rung-h{font-family:var(--ui); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px}
+.rung.a .rung-h{color:var(--urgent)}
+.rung.b .rung-h{color:var(--warn)}
+.rung.c .rung-h{color:var(--care)}
+.rung .stat{font-family:var(--serif); font-size:26px; color:var(--ink); font-weight:700; letter-spacing:-.02em; line-height:1.1; margin-bottom:4px}
+.rung .stat small{font-family:var(--ui); font-size:12px; font-weight:500; color:var(--muted); letter-spacing:0}
+.rung p{font-size:13.5px; color:var(--muted); margin-top:10px}
+
+/* chat transcript */
+.chat{margin:22px 0; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface-2)}
+.chat-h{padding:11px 16px; background:var(--brand-deep); color:#fff; font-size:12.5px; display:flex; align-items:center; gap:9px}
+:root[data-theme="dark"] .chat-h, :root:not([data-theme="light"]) .chat-h{color:#0B1418}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .chat-h{color:#fff} }
+.chat-b{padding:16px; display:flex; flex-direction:column; gap:13px}
+.turn{max-width:86%; font-size:14px; line-height:1.6; padding:12px 15px; border-radius:13px}
+.turn.p{background:var(--brand); color:var(--paper); align-self:flex-end; border-bottom-right-radius:4px}
+.turn.k{background:var(--surface); border:1px solid var(--line); align-self:flex-start; border-bottom-left-radius:4px}
+.turn.k strong{color:var(--ink)}
+.turn ul{margin:9px 0; gap:6px}
+.turn .cite{margin-top:11px; padding-top:9px; border-top:1px solid var(--line-soft); font-size:11.5px; color:var(--muted)}
+.turn .supply{background:var(--violet-tint); color:var(--violet); font-size:11.5px; padding:2px 7px; border-radius:4px; font-weight:600}
+.turn.k.refuse{border-color:var(--care); border-left-width:3px}
+
+/* timeline bars */
+.gantt{margin:22px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface)}
+.grow{display:grid; grid-template-columns:150px minmax(0,1fr); gap:0; border-bottom:1px solid var(--line-soft); align-items:center}
+.grow:last-child{border-bottom:0}
+.glabel{padding:9px 14px; font-size:13px; color:var(--ink); font-weight:500; border-right:1px solid var(--line-soft)}
+.gtrack{position:relative; height:38px; background:repeating-linear-gradient(90deg, transparent 0, transparent calc(100%/18 - 1px), var(--line-soft) calc(100%/18 - 1px), var(--line-soft) calc(100%/18))}
+.gbar{position:absolute; top:9px; height:20px; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:11px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden}
+:root[data-theme="dark"] .gbar, :root:not([data-theme="light"]) .gbar{color:#0B1418}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .gbar{color:#fff} }
+.gbar.brand{background:var(--brand)}
+.gbar.care{background:var(--care)}
+.gbar.warn{background:var(--warn)}
+.gbar.deep{background:var(--brand-deep)}
+.gscale{display:grid; grid-template-columns:150px minmax(0,1fr); border-top:1px solid var(--line)}
+.gscale-l{padding:7px 14px; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--faint); border-right:1px solid var(--line-soft); font-weight:600}
+.gscale-t{display:grid; grid-template-columns:repeat(18,1fr); font-size:10px; color:var(--faint); font-variant-numeric:tabular-nums}
+.gscale-t span{padding:7px 0; text-align:center; border-left:1px solid var(--line-soft)}
+
+/* diagram */
+.diagram{margin:26px 0; padding:26px; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow-x:auto}
+.diagram svg{display:block; margin:0 auto; max-width:100%; height:auto}
+
+/* question blocks */
+.q{border:1px solid var(--line); border-radius:10px; background:var(--surface); padding:19px; margin:14px 0; box-shadow:var(--shadow)}
+.q-top{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap; margin-bottom:11px}
+.q-n{font-family:var(--serif); font-size:15px; font-weight:700; color:var(--brand); font-variant-numeric:tabular-nums}
+.q-who{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--care); background:var(--care-tint); padding:3px 9px; border-radius:5px}
+.q-t{font-family:var(--ui); font-weight:600; color:var(--ink); font-size:15px}
+blockquote{
+  margin:0 0 11px; padding:12px 16px; background:var(--surface-2); border-radius:8px;
+  font-family:var(--serif); font-size:15.5px; font-style:italic; color:var(--ink); border-left:3px solid var(--brand-bright);
+}
+.q .why{font-size:13.5px; color:var(--muted)}
+
+/* asks */
+.ask{display:flex; gap:14px; padding:15px 0; border-bottom:1px solid var(--line-soft); align-items:flex-start}
+.ask:last-child{border-bottom:0}
+.ask-n{
+  flex:none; width:28px; height:28px; border-radius:50%; background:var(--brand); color:var(--paper);
+  display:grid; place-items:center; font-size:13px; font-weight:700; font-variant-numeric:tabular-nums;
+}
+.ask.soft .ask-n{background:var(--surface-2); color:var(--brand); border:1px solid var(--line)}
+.ask b{font-family:var(--ui); font-size:15px; color:var(--ink); display:block; margin-bottom:4px}
+.ask p{font-size:13.5px; color:var(--muted)}
+
+/* agenda */
+.agenda{margin:22px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface)}
+.arow{display:grid; grid-template-columns:92px minmax(0,1fr); border-bottom:1px solid var(--line-soft)}
+.arow:last-child{border-bottom:0}
+.atime{padding:14px; font-size:12.5px; font-weight:600; color:var(--brand); font-variant-numeric:tabular-nums; border-right:1px solid var(--line-soft); background:var(--surface-2)}
+.abody{padding:14px}
+.abody b{font-family:var(--ui); font-size:15px; color:var(--ink); display:block; margin-bottom:3px}
+.abody p{font-size:13.5px; color:var(--muted)}
+
+/* cta */
+.cta{
+  margin:26px 0; padding:24px; border-radius:12px; background:var(--brand-tint);
+  border:1px solid var(--brand); display:flex; gap:20px; align-items:center; flex-wrap:wrap;
+}
+.cta h4{font-family:var(--serif); font-size:20px; margin:0 0 6px}
+.cta p{font-size:14px; color:var(--muted); max-width:52ch}
+.btn{
+  display:inline-flex; align-items:center; gap:8px; font-size:14.5px; font-weight:600;
+  padding:12px 20px; border-radius:9px; background:var(--brand); color:var(--paper);
+  text-decoration:none; margin-left:auto; white-space:nowrap;
+}
+.btn:hover{background:var(--brand-deep)}
+@media (max-width:700px){ .btn{margin-left:0} }
+
+footer{border-top:1px solid var(--line); padding:28px 0 60px; font-size:13px; color:var(--faint); grid-column:1/-1}
+</style>
+
+<div class="shell">
+
+  <header class="mast">
+    <p class="kicker">Iozera · Website workstream · Prepared for the UASHMC onsite</p>
+    <h1>UASHMC's digital front door, and how KRISS AI lives inside it</h1>
+    <p class="sub">
+      A concept, a sitemap, three patient journeys, an integration plan and an eight-week build —
+      assembled so the onsite can move UASHMC from interest to a signed start date.
+    </p>
+    <div class="mast-meta">
+      <span class="pill">For <b>Dr. Bravo · Dr. Pedraja · Tere Barcelona · Dr. Directo · Harvey Lozada</b></span>
+      <span class="pill">Homepage concept: <b>a starting point, not a finished design</b></span>
+      <span class="pill">Status: <b>draft for internal review</b></span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#s1">The case in one page</a></li>
+      <li><a href="#s2">Where UASHMC stands today</a></li>
+      <li><a href="#s3">The homepage concept</a></li>
+      <li><a href="#s4">Recommended sitemap</a></li>
+      <li><a href="#s5">Three patient journeys</a></li>
+      <li><a href="#s6">How KRISS AI fits</a></li>
+      <li><a href="#s7">Content we need from you</a></li>
+      <li><a href="#s8">Build plan &amp; timeline</a></li>
+      <li><a href="#s9">What could delay it</a></li>
+      <li><a href="#s10">Discovery questions</a></li>
+      <li><a href="#s11">What to secure in the room</a></li>
+      <li><a href="#s12">Suggested agenda</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <!-- ═══════════════════ 1 ═══════════════════ -->
+  <section id="s1">
+    <p class="snum"><i></i>Section 1</p>
+    <h2>The case in one page</h2>
+    <p class="lede">
+      UASHMC opened in 2025 and is still building awareness, credibility and census. It has no website.
+      Everything a prospective patient can currently find is either on Facebook or on somebody else's listing.
+    </p>
+
+    <div class="note">
+      <p class="note-h">The story, in five lines</p>
+      <ul>
+        <li>UASHMC needs visibility and patient census.</li>
+        <li>Patients need a credible destination they can reach at 10pm on a phone.</li>
+        <li>The website becomes UASHMC's digital front door — structured, owned, machine-readable.</li>
+        <li>KRISS AI makes that front door answer questions 24/7, in the patient's own words.</li>
+        <li>The same content serves the page, Google, and the assistant. One content effort, three payoffs.</li>
+      </ul>
+    </div>
+
+    <h3>Three verified facts worth saying out loud</h3>
+    <div class="grid3">
+      <div class="card">
+        <span class="tagline t-new">Competitive</span>
+        <h4>We found no Philippine hospital with a real assistant on its own site</h4>
+        <p>In a sample of eleven Philippine hospital websites checked in August 2026, none had on-site
+        chat. St. Luke's, Makati Med, The Medical City and Asian Hospital all push patients into
+        Facebook Messenger instead — Asian Hospital's named "AI assistant" is a Messenger link.
+        Say it as a dated sample, never as an absolute: one counter-example undoes an absolute.</p>
+      </div>
+      <div class="card">
+        <span class="tagline t-p0">Urgency</span>
+        <h4>Six of ten Antipolo private hospitals have no website at all</h4>
+        <p>And one of the four that does was returning server errors on every path when we checked.
+        <em>Handle that last point carefully in the room</em> — it is a Metro Pacific property, and they
+        are a potential partner as easily as a rival. The argument is that the bar is low, not that a
+        named competitor is failing.</p>
+      </div>
+      <div class="card">
+        <span class="tagline t-ok">Opportunity</span>
+        <h4>The bar in Antipolo is on the floor</h4>
+        <p>Antipolo Doctors Hospital is the one to beat, and it has <em>no doctor search at all</em>.
+        Prices live in images and a SharePoint spreadsheet. Eight weeks of focused work wins the catchment.</p>
+      </div>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">What we are asking for on the day</p>
+      <p>Not approval of a design. Agreement on direction, a named project owner, a photo shoot date,
+      a domain decision, and permission to start content gathering. The nine specific asks are in
+      <a href="#s11">Section 11</a>.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 2 ═══════════════════ -->
+  <section id="s2">
+    <p class="snum"><i></i>Section 2</p>
+    <h2>Where UASHMC stands today</h2>
+    <p class="lede">
+      A patient searching "cardiologist Antipolo" cannot currently find UASHMC through any channel
+      the hospital controls.
+    </p>
+
+    <div class="tw">
+      <table>
+        <caption class="sr-only">UASHMC current digital footprint</caption>
+        <thead><tr><th>Channel</th><th>State today</th><th>Consequence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Official website</strong></td><td class="lose">Does not exist</td><td>Nothing to rank, nothing to cite, nothing to build an assistant on</td></tr>
+          <tr><td><strong>Facebook</strong></td><td class="mid">Active, primary channel</td><td>Works, but answers only during office hours and nothing is findable later</td></tr>
+          <tr><td><strong>Instagram</strong></td><td class="lose">~33 followers</td><td>No reach; the tagline lives here and almost nobody sees it</td></tr>
+          <tr><td><strong>NowServing.ph</strong></td><td class="win">Doctor listing live</td><td>An asset already paid for — the website should deep-link into it, not replace it</td></tr>
+          <tr><td><strong>Third-party listings</strong></td><td class="lose">Fragmented, partly wrong</td><td>Waze shows a different street address than the official one</td></tr>
+          <tr><td><strong>Public email</strong></td><td class="lose">A Gmail address</td><td>Patient health information flowing into a consumer mailbox — a security item, not a branding one</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The Antipolo &amp; Rizal field, ranked as it stands</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="num">#</th><th>Hospital</th><th>Site</th><th>State</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td><strong>Antipolo Doctors Hospital</strong></td><td><code>adh.com.ph</code></td><td>The one to beat. Good bilingual HMO explainer. But <span class="lose">no doctor search</span>, prices in images and SharePoint, placeholder images in production, emergency info buried.</td></tr>
+          <tr><td class="num">2</td><td>Marikina Valley Medical Center</td><td><code>marikinavalley.net</code></td><td>Best emergency-number treatment in the corridor. HMOs unnamed, directory as a PDF, doctor finder too slow to load.</td></tr>
+          <tr><td class="num">3</td><td>Fatima University Medical Center</td><td><code>fumc.com.ph</code></td><td>HMOs as logos only, no admission info, no doctor search, Messenger-only contact.</td></tr>
+          <tr><td class="num">4</td><td>Metro Antipolo Hospital</td><td><code>metroantipolo.com</code></td><td class="lose">Not responding when checked (Aug 2026) — server errors on every path.</td></tr>
+          <tr><td class="num">5–10</td><td>Assumption Specialty · Unciano · Clinica Antipolo · Antipolo City Medical · Dionisio M. Cornel · Blessed Trinity</td><td>—</td><td>No website. Facebook and directory listings only. <strong>UASHMC currently sits in this tier.</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The five things that win the catchment outright</h3>
+    <p>Each is a genuine choice with marketing consequences — which is exactly why they belong in a
+    conversation with Harvey, not in a design we hand over finished.</p>
+    <ol>
+      <li>A <strong>real filterable Find a Doctor</strong> with photos, schedules, HMO accreditation and live booking through NowServing. <em>ADH has no search at all — the widest gap and the easiest win.</em></li>
+      <li><strong>Prices and packages as HTML text</strong>, not images or spreadsheets.</li>
+      <li>A <strong>searchable HMO checker</strong> with bilingual LOA steps. Nobody in the Philippines has this.</li>
+      <li>An <strong>emergency block in the persistent header</strong> — ER line, Viber, Waze and Google Maps.</li>
+      <li><strong>KRISS AI on the site itself</strong> — which none of the eleven sites we checked had.</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════ 3 ═══════════════════ -->
+  <section id="s3">
+    <p class="snum"><i></i>Section 3</p>
+    <h2>The homepage concept</h2>
+    <p class="lede">
+      A clickable prototype, not a picture of one. Desktop and mobile, six pages, a working HMO checker,
+      and a live KRISS AI demo you can type into during the meeting.
+    </p>
+
+    <div class="cta">
+      <div>
+        <h4>Open the prototype</h4>
+        <p>Runs offline from a laptop. Switch between desktop and mobile in the top bar, and toggle
+        <strong>Show content sources</strong> to see exactly which facts came from UASHMC and which are ours.</p>
+      </div>
+      <a class="btn" href="https://claude.ai/code/artifact/82fd0edc-3a3b-4b47-969f-bddc124c1e85" target="_blank" rel="noopener">Open concept →</a>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">Two directions, not one — pick with us</p>
+      <p>
+        The prototype ships <strong>two homepage directions</strong>, switchable in the top bar. Both
+        keep UASHMC's tagline. The difference is structural — what the hospital leads with:
+      </p>
+      <ul>
+        <li><strong>A · Task-first.</strong> The wayfinding board is the hero. No photography above the
+        fold. Leads with utility: <em>tell us what you need and we'll get you there.</em></li>
+        <li><strong>B · Story-first.</strong> A full-bleed photograph of the hospital with the tagline
+        over it, two calls to action, and the six tasks as a compact strip immediately below. Leads with
+        presence: <em>this is a real place, and here is what it feels like.</em></li>
+      </ul>
+      <p>
+        This is a genuine marketing decision with real consequences, and it is Harvey's to make. Showing
+        one finished design invites critique; showing two invites a choice.
+      </p>
+    </div>
+
+    <h3>The one idea the homepage is built on</h3>
+    <p>
+      A hospital homepage is usually a brochure: a photo of the building, a mission statement, and a
+      news feed. That answers a question nobody asked. The question a prospective patient actually
+      arrives with is <strong>"can this hospital handle what I need, and what do I do next?"</strong>
+    </p>
+    <p>
+      So the hero is not a photo. It is a <strong>wayfinding board</strong> — the hospital's lobby
+      directory, made digital. Six real patient intents, above the fold, one tap each:
+      <em>Go to the ER now · Find a doctor · Check my HMO · Services &amp; tests · Admission requirements ·
+      How to get here.</em> Everything else on the page supports those six.
+    </p>
+
+    <div class="note violet">
+      <p class="note-h">The honest-placeholder layer — a feature, not an apology</p>
+      <p>
+        The prototype has a toggle that highlights every fact on the page by where it came from:
+        <strong>green</strong> for things we took from UASHMC's own public channels,
+        <strong>amber</strong> for plausible things you need to confirm, and
+        <strong>violet</strong> for Iozera placeholders that need your content.
+      </p>
+      <p>
+        Two reasons this matters. It means we never accidentally imply we invented hospital facts.
+        And when you flip it on in the meeting, the highlighted items <em>are</em> the content
+        checklist — the conversation produces the to-do list by itself.
+      </p>
+    </div>
+
+    <h3>Design decisions worth defending, with the evidence</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>The assistant does not auto-open</h4>
+        <p>Baymard's usability testing found all three common live-chat implementations actively
+        disruptive, and sticky chat especially damaging on mobile where it hides controls with no way
+        to move it. For a hospital, quiet is a trust signal. The metric to optimise is resolution rate
+        among people who opened it — never open rate.</p>
+      </div>
+      <div class="card">
+        <h4>On mobile it is a peer of calling, not a bubble over it</h4>
+        <p>A sticky bottom bar with <code>Call · Book · Ask</code> as equals. Nothing floats over
+        content, the call button can never be occluded, and the assistant sits in the thumb zone where
+        primary actions belong — so it gets <em>more</em> prominence than a floating bubble, with less friction.</p>
+      </div>
+      <div class="card">
+        <h4>No stock photography of people</h4>
+        <p>For a hospital whose existence a patient cannot yet confirm from reputation, stock imagery
+        is net negative — it reads as a hospital that won't show itself. Every photo slot in the
+        prototype is a labelled placeholder and a line item in the shot list.</p>
+      </div>
+      <div class="card">
+        <h4>We don't publish the doctor count</h4>
+        <p>Mount Elizabeth says "more than 850 doctors" because scale is their claim. UASHMC's claim is
+        different. A complete 20-doctor directory with photos, schedules and HMO tags reads far better
+        than a 40-doctor list where half are stubs. Completeness reads as competence; headcount doesn't.</p>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <p class="note-h">Four decisions we deliberately left open for Harvey</p>
+      <ol>
+        <li><strong>How much price to publish</strong> — indicative room rates and package ranges, or process only? Real commercial call with a real maintenance cost.</li>
+        <li><strong>The opening prompt set</strong> — we proposed four. Harvey knows what people actually ask on Messenger today. That is primary research we don't have.</li>
+        <li><strong>The service catalogue's front door</strong> — specialty-first, or concern-first ("Heart &amp; circulation")?</li>
+        <li><strong>The three mobile bar slots</strong> — <code>Call · Book · Ask · Directions</code>: which three earn a patient's thumb?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 4 ═══════════════════ -->
+  <section id="s4">
+    <p class="snum"><i></i>Section 4</p>
+    <h2>Recommended sitemap</h2>
+    <p class="lede">
+      Organised around patient intent, not the org chart. Every page is tagged for launch or
+      post-launch, so nothing in Phase 1 waits on a photo shoot or a price committee.
+    </p>
+
+    <p>Six top-level items, using the market's own vocabulary, plus a persistent
+    <strong>Emergency 24/7</strong> element in the header that is a phone number rather than a page.</p>
+
+    <div class="note">
+      <p class="note-h">Legend</p>
+      <p><span class="ph ph1">PHASE 1</span> ships at launch &nbsp;·&nbsp;
+      <span class="ph ph2">PHASE 2</span> post-launch enrichment &nbsp;·&nbsp;
+      <span class="ph kb">KB</span> doubles as KRISS AI knowledge-base source</p>
+    </div>
+
+    <div class="tree">
+      <ul>
+        <li>
+          <div class="tnode"><b>Find a Doctor</b><span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Browse-first specialty tiles; search is secondary</span></div>
+          <ul>
+            <li><div class="tnode"><b>Doctor profile</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Photo · credentials · sub-specialty · clinic days · room · HMOs · NowServing link</span></div></li>
+            <li><div class="tnode"><b>Specialty pages ×4</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Cardiology · Internal Medicine · Orthopedics · Pediatrics</span></div></li>
+            <li><div class="tnode"><b>Concern-based routing</b> <span class="ph ph2">PHASE 2</span><span>Medical Director's signed concern→specialty table</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>Services &amp; Specialties</b><span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>One record set, three indexes over it</span></div>
+          <ul>
+            <li><div class="tnode"><b>Service page template</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>What it is · prep · duration · what to bring · who treats it</span></div></li>
+            <li><div class="tnode"><b>Diagnostics &amp; imaging</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span></div></li>
+            <li><div class="tnode"><b>Surgery</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Including laparoscopic cholecystectomy</span></div></li>
+            <li><div class="tnode"><b>Emergency Room</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Includes the no-deposit explainer</span></div></li>
+            <li><div class="tnode"><b>Telemedicine</b> <span class="ph ph1">PHASE 1</span><span>Service and how to book only — no clinical scope claims at v1</span></div></li>
+            <li><div class="tnode"><b>Packages &amp; A-to-Z catalogue</b> <span class="ph ph2">PHASE 2</span><span class="ph kb">KB</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>HMOs &amp; PhilHealth</b><span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Promoted to top level — no benchmark does this, and it is arguably the #1 question here</span></div>
+          <ul>
+            <li><div class="tnode"><b>Accredited HMO list</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Plain text, dated, named owner</span></div></li>
+            <li><div class="tnode"><b>LOA process, bilingual</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Seven steps, English and Filipino</span></div></li>
+            <li><div class="tnode"><b>PhilHealth</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Separate page — a hard convention in this market</span></div></li>
+            <li><div class="tnode"><b>Senior citizen &amp; PWD benefits</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Statutory 20% + VAT exemption. No Antipolo competitor mentions it.</span></div></li>
+            <li><div class="tnode"><b>Type-ahead HMO checker</b> <span class="ph ph2">PHASE 2</span><span>Small build, outsized value</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>Patients &amp; Visitors</b><span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span></div>
+          <ul>
+            <li><div class="tnode"><b>Admission requirements</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Separate lists for scheduled, ER and outpatient</span></div></li>
+            <li><div class="tnode"><b>Emergency information</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Care cards + the RA 10932 no-deposit explainer</span></div></li>
+            <li><div class="tnode"><b>Visiting hours &amp; companions</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span></div></li>
+            <li><div class="tnode"><b>Billing &amp; payment</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span></div></li>
+            <li><div class="tnode"><b>Patient rights &amp; responsibilities</b> <span class="ph ph1">PHASE 1</span><span>DOH-expected</span></div></li>
+            <li><div class="tnode"><b>Rooms &amp; rates</b> <span class="ph ph2">PHASE 2</span><span>Gated on the transparency decision</span></div></li>
+            <li><div class="tnode"><b>Records &amp; certificates</b> <span class="ph ph2">PHASE 2</span><span class="ph kb">KB</span><span>Medical, medico-legal. No Antipolo competitor has this.</span></div></li>
+            <li><div class="tnode"><b>Accessibility at UASHMC</b> <span class="ph ph2">PHASE 2</span><span class="ph kb">KB</span><span>PWD parking, ramps, priority lanes</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>About UASHMC</b><span class="ph ph1">PHASE 1</span></div>
+          <ul>
+            <li><div class="tnode"><b>Licensing block</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>DOH LTO no. · service capability level · authorised services · PhilHealth accreditation</span></div></li>
+            <li><div class="tnode"><b>Leadership</b> <span class="ph ph2">PHASE 2</span><span>Named, photographed, accountable humans</span></div></li>
+            <li><div class="tnode"><b>News &amp; new services</b> <span class="ph ph1">PHASE 1</span><span>Feeds the homepage "New at UASHMC" rail</span></div></li>
+            <li><div class="tnode"><b>Careers</b> <span class="ph ph1">PHASE 1</span><span>Patient-facing in this market, not an HR afterthought</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>Contact &amp; Directions</b><span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span></div>
+          <ul>
+            <li><div class="tnode"><b>Department directory</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Direct local + real hours per department</span></div></li>
+            <li><div class="tnode"><b>Getting here</b> <span class="ph ph1">PHASE 1</span><span class="ph kb">KB</span><span>Waze <em>and</em> Google Maps · landmarks · jeepney/UV routes</span></div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="tnode"><b>Privacy Notice · DPO contact · Terms · Accessibility statement</b><span class="ph ph1">PHASE 1</span><span>Required, not optional</span></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">The architectural argument — why "KRISS AI-ready from Day One" is real</p>
+      <p>
+        Every page marked <span class="ph kb">KB</span> is written as structured, dated, semantic content
+        with a named owner. That single body of content is simultaneously the web page, the SEO corpus,
+        the corpus that ChatGPT and Google's AI answers can retrieve, and the grounding data KRISS AI
+        answers from.
+      </p>
+      <p>
+        <strong>There is never a separate chatbot content project.</strong> That is what makes this an
+        architecture decision rather than a bolt-on — and it is why the assistant can be trusted:
+        it can only say what the hospital has already approved and published.
+      </p>
+    </div>
+
+    <h3>Integrate, don't duplicate</h3>
+    <ul>
+      <li><strong>NowServing.ph</strong> — keep it as the booking engine. Every doctor profile deep-links to that doctor's NowServing page. We do not rebuild booking.</li>
+      <li><strong>Facebook &amp; Instagram</strong> — remain the top-of-funnel. The site is where those posts land.</li>
+      <li><strong>"Doctor in the House"</strong> — already-produced, doctor-fronted, hospital-approved video. Embed episodes on the matching doctor and service pages. It makes a small roster look substantially deeper on day one.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ 5 ═══════════════════ -->
+  <section id="s5">
+    <p class="snum"><i></i>Section 5</p>
+    <h2>Three patient journeys</h2>
+    <p class="lede">
+      The point is simple. <strong>The website makes the information exist. KRISS AI makes it reachable
+      by someone using their own words, at the hour they are actually awake.</strong>
+    </p>
+
+    <div class="note warn">
+      <p class="note-h">Read these as constructed scenarios, not as incident reports</p>
+      <p>
+        The personas, step counts and elapsed times below are <strong>illustrative</strong> — written by
+        us to show the shape of each journey. They are not observations of UASHMC, and nothing here
+        alleges that any staff member did anything wrong. Where today's path fails, it fails
+        <em>structurally</em>: there is no published answer, so the reply depends on who is online.
+        Say this out loud before you present them. Tere's team will be in the room.
+      </p>
+    </div>
+
+    <h3>Journey A — "I need a cardiologist"</h3>
+    <p>Maricel, 34, in Mambugan. Her father is short of breath and his blood pressure is high.
+    It is 9:52pm and she is on a phone.</p>
+    <div class="ladder">
+      <div class="rung a">
+        <p class="rung-h">Today — no website</p>
+        <p class="stat">11 steps<br><small>~14 hours to an answer</small></p>
+        <p>Messages Facebook at 9:52pm. No reply until morning. Asks in a barangay group. Books at ADH on Saturday. <strong>Lost.</strong></p>
+      </div>
+      <div class="rung b">
+        <p class="rung-h">Website only</p>
+        <p class="stat">6 taps<br><small>~4 minutes</small></p>
+        <p>Finds the cardiology page and a schedule. But she doesn't know the word "cardiologist", and three follow-up questions go unanswered. <strong>Stalled, unbooked.</strong></p>
+      </div>
+      <div class="rung c">
+        <p class="rung-h">Website + KRISS AI</p>
+        <p class="stat">9 turns<br><small>~7 minutes</small></p>
+        <p>Types what she actually sees. Gets routed to the right clinic, all three follow-ups answered, and emergency guidance she never asked for. <strong>Booked for Saturday.</strong></p>
+      </div>
+    </div>
+    <p class="why" style="font-size:14px;color:var(--muted)">
+      <strong>The clinical point for Dr. Pedraja:</strong> the only reason the chest-pain disclosure ever
+      surfaced is that there was somewhere to type it. A website cannot receive that sentence. And when
+      it received it, the system did not attempt to be a doctor.
+    </p>
+
+    <h3>Journey B — "May Maxicare ba kayo?"</h3>
+    <p>Jomar, 41, needs gallbladder surgery. He is reading on his phone at 1:22am.
+    This is the highest-frequency real inquiry, and the one where a plausible wrong answer causes
+    direct financial harm.</p>
+    <div class="ladder">
+      <div class="rung a">
+        <p class="rung-h">Today — no website</p>
+        <p class="stat">9 steps<br><small>~31 hours</small></p>
+        <p>No published answer exists, so the reply depends on who is online and when. A friendly but
+        incomplete "yes, accredited po" is the natural thing to say — and the four caveats that protect
+        the patient never get said.</p>
+      </div>
+      <div class="rung b">
+        <p class="rung-h">Website only</p>
+        <p class="stat">5 taps<br><small>~7 minutes</small></p>
+        <p>Correct and complete. But it is 1am, and he still has a question the page can't answer.</p>
+      </div>
+      <div class="rung c">
+        <p class="rung-h">Website + KRISS AI</p>
+        <p class="stat">8 turns<br><small>~16 minutes</small></p>
+        <p>Correct, complete, and turned into two phone scripts he can actually use. <strong>Captured and retained.</strong></p>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="chat-h">Ask UASHMC · 1:22 AM · the moment that matters</div>
+      <div class="chat-b">
+        <div class="turn p">may maxicare ba kayo? need ko kasi opera sa gallstone</div>
+        <div class="turn k">
+          <p><strong>Yes — UASHMC has an accreditation agreement with Maxicare.</strong> <em>(HMO list as of 12 Aug 2026.)</em></p>
+          <p>That's the hospital-level answer, and it's the easy part. I want to be straight with you about the rest, because this is where bills go wrong.</p>
+          <p><strong>Four things still decide whether your specific surgery is covered, and I can't confirm any of them:</strong></p>
+          <ul>
+            <li><strong>Your plan.</strong> Coverage for a planned surgery is set by <em>your</em> plan, not by the hospital.</li>
+            <li><strong>Your doctor.</strong> Maxicare keeps its own accredited-doctor list. Practising here doesn't put a doctor on it.</li>
+            <li><strong>The procedure.</strong> A planned surgery normally needs an approved LOA before admission.</li>
+            <li><strong>Outpatient vs inpatient vs emergency.</strong> These work differently.</li>
+          </ul>
+          <p><strong>The one thing I'd flag now:</strong> request the LOA as soon as your doctor recommends the procedure. It typically takes 1–5 business days, and this is the single most common reason admissions get postponed.</p>
+          <p class="cite">From: HMOs &amp; PhilHealth · list updated 12 Aug 2026 · owner: HMO &amp; Billing Section</p>
+        </div>
+        <div class="turn p">tanong lang, kung ma-deny ng maxicare, pwede ba installment sa balance?</div>
+        <div class="turn k refuse">
+          <p><strong>I don't know, and I'm not going to invent an answer to that.</strong></p>
+          <p>UASHMC hasn't given me approved information about payment arrangements. That's a Billing Section decision and it needs a person.</p>
+          <p>Trunkline 02 8248 3460 · <span class="supply">TO SUPPLY: Billing hours</span></p>
+          <p>I've logged your question so the team knows it's being asked.</p>
+        </div>
+      </div>
+    </div>
+    <p class="why" style="font-size:14px;color:var(--muted)">
+      <strong>This refusal is the most important moment in the whole demo</strong> — not the smart answers.
+      Every unanswered question is logged, and that log becomes a monthly report Harvey owns: a direct
+      readout of what Antipolo is actually worried about.
+    </p>
+
+    <h3>Journey C — "What do I need for admission?"</h3>
+    <p>A family preparing for a scheduled admission, 14 hours out, on a Sunday afternoon.</p>
+    <div class="ladder">
+      <div class="rung a">
+        <p class="rung-h">Today — no website</p>
+        <p class="stat">8 steps<br><small>~17 hours</small></p>
+        <p>Nobody to ask on a Sunday, and no published checklist. A family that never saw the list arrives
+        without the OSCA ID and a PhilHealth form — and the admission waits while someone fetches them.</p>
+      </div>
+      <div class="rung b">
+        <p class="rung-h">Website only</p>
+        <p class="stat">4 taps<br><small>~5 minutes</small></p>
+        <p>Correct list, available Sunday. But "CF1" is named, not explained — and a retired member doesn't know what it means for them.</p>
+      </div>
+      <div class="rung c">
+        <p class="rung-h">Website + KRISS AI</p>
+        <p class="stat">10 turns<br><small>~28 minutes</small></p>
+        <p>CF1 explained for a retired member. OSCA ID flagged as the money item. Room availability correctly refused and routed. <strong>Arrives complete and expected.</strong></p>
+      </div>
+    </div>
+    <p class="why" style="font-size:14px;color:var(--muted)">
+      <strong>The operational point for Tere:</strong> every incomplete arrival consumes an Admitting
+      staffer, a Billing staffer, a lobby wheelchair and an OR slot's punctuality. The fix is not more
+      staff. It is publishing what the staff already know.
+    </p>
+
+    <h3>Bonus — Journey D: the family member who actually pays</h3>
+    <p>
+      An OFW in another timezone, researching a hospital for a parent at midnight her time. She will
+      never call a trunkline during Philippine office hours, and she is often the decision-maker and
+      the payer. Today she eliminates UASHMC without ever making contact — <em>"wala silang website, Kuya."</em>
+      With the site and the assistant, she is won at midnight, from another country, in four turns.
+    </p>
+
+    <h3>Cross-journey summary</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Journey</th><th>Today</th><th>Website only</th><th>Website + KRISS AI</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong> — Find a cardiologist</td><td class="num">11 steps · ~14 hrs · <span class="lose">lost to ADH</span></td><td class="num">6 taps · ~4 min · stalled</td><td class="num">9 turns · ~7 min · <span class="win">booked</span></td></tr>
+          <tr><td><strong>B</strong> — "May Maxicare ba kayo?"</td><td class="num">9 steps · ~31 hrs · <span class="lose">answer depends who replies</span></td><td class="num">5 taps · ~7 min · unresolvable at 1am</td><td class="num">8 turns · ~16 min · <span class="win">retained</span></td></tr>
+          <tr><td><strong>C</strong> — Admission requirements</td><td class="num">8 steps · ~17 hrs · <span class="lose">arrives incomplete</span></td><td class="num">4 taps · ~5 min · not understood</td><td class="num">10 turns · ~28 min · <span class="win">arrives complete</span></td></tr>
+          <tr><td><strong>D</strong> — The OFW who pays</td><td class="num">7 steps · <span class="lose">eliminated, no contact</span></td><td class="num">~90 sec · likely won</td><td class="num">4 turns · <span class="win">won at midnight</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">Safety, demonstrated rather than asserted</p>
+      <p>If anyone pushes on clinical risk, these are the moments in the transcripts to point at:</p>
+      <ul>
+        <li><strong>Never diagnoses.</strong> No symptom question is ever asked, in any journey.</li>
+        <li><strong>Red flags interrupt, they don't converse.</strong> Chest pain <em>replaces</em> the answer with an emergency card. No "are you sure?", no severity question, no offer to book.</li>
+        <li><strong>Doesn't re-assess when the patient de-escalates.</strong> KRISS never concludes it is safe.</li>
+        <li><strong>HMO answered accurately, not naively.</strong> Agreement at hospital level, then four caveats and a terminal instruction to verify with both the HMO and the hospital desk.</li>
+        <li><strong>No personal financial estimates.</strong> Package ranges with exclusions and a date — then an explicit refusal to compute what <em>this</em> patient pays.</li>
+        <li><strong>Refuses live operational data.</strong> Room availability: <em>"if I gave you a number it could be wrong by tomorrow morning."</em></li>
+        <li><strong>Honest "I don't know" with a real handoff.</strong> Every unknown is logged.</li>
+        <li><strong>Every answer traceable</strong> to an approved page and its update date. Wrong answers become fixable content, not mysterious model behaviour.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 6 ═══════════════════ -->
+  <section id="s6">
+    <p class="snum"><i></i>Section 6</p>
+    <h2>How KRISS AI fits</h2>
+    <p class="lede">
+      Not two products bolted together. The website is what makes the assistant trustworthy;
+      the assistant is what makes the website work at 11pm.
+    </p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 760 400" role="img" aria-labelledby="dgt dgd">
+        <title id="dgt">How KRISS AI sits on top of the UASHMC website</title>
+        <desc id="dgd">Hospital-approved content feeds the website, which grounds KRISS AI, which serves patients 24/7 and returns an insight loop to the hospital.</desc>
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 10 5 0 10z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g fill="none" stroke="currentColor" color="var(--faint)" stroke-width="1.6" marker-end="url(#ar)">
+          <path d="M380 74v34"/><path d="M380 176v34"/><path d="M380 278v30"/>
+        </g>
+
+        <!-- layer 1 -->
+        <g>
+          <rect x="120" y="18" width="520" height="56" rx="9" fill="var(--care-tint)" stroke="var(--care)" stroke-width="1.4"/>
+          <text x="380" y="40" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">Hospital-approved content</text>
+          <text x="380" y="60" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="11.5" fill="var(--muted)">Doctors · services · HMO list · admission · departments — each dated, each with a named owner</text>
+        </g>
+        <!-- layer 2 -->
+        <g>
+          <rect x="120" y="110" width="520" height="64" rx="9" fill="var(--brand-tint)" stroke="var(--brand)" stroke-width="1.4"/>
+          <text x="380" y="134" text-anchor="middle" font-family="Source Serif 4, serif" font-size="17" font-weight="700" fill="var(--ink)">The UASHMC website</text>
+          <text x="380" y="154" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="11.5" fill="var(--muted)">Structured, semantic, machine-readable pages — the single source of truth</text>
+          <text x="380" y="168" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="10.5" fill="var(--brand)">Also: the SEO corpus, and what AI search engines can retrieve</text>
+        </g>
+        <!-- layer 3 -->
+        <g>
+          <rect x="120" y="212" width="520" height="64" rx="9" fill="var(--violet-tint)" stroke="var(--violet)" stroke-width="1.4"/>
+          <text x="380" y="236" text-anchor="middle" font-family="Source Serif 4, serif" font-size="17" font-weight="700" fill="var(--ink)">KRISS AI — patient engagement layer</text>
+          <text x="380" y="256" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="11.5" fill="var(--muted)">Answers only from the content above · cites the page and its date</text>
+          <text x="380" y="270" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="10.5" fill="var(--violet)">Guardrails: no diagnosis · no clinical advice · no triage · emergency interrupt</text>
+        </g>
+        <!-- layer 4 -->
+        <g>
+          <rect x="60" y="312" width="640" height="60" rx="9" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/>
+          <text x="380" y="336" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="14" font-weight="600" fill="var(--ink)">24/7 patient information &amp; navigation</text>
+          <text x="380" y="356" text-anchor="middle" font-family="Be Vietnam Pro, sans-serif" font-size="11.5" fill="var(--muted)">English · Filipino · Taglish — in the patient's own words, at the hour they are awake</text>
+        </g>
+
+        <!-- insight loop -->
+        <g fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)" color="var(--warn)">
+          <path d="M120 244 H70 Q52 244 52 226 V64 Q52 46 70 46 H118"/>
+        </g>
+        <text x="30" y="150" font-family="Be Vietnam Pro, sans-serif" font-size="10.5" font-weight="600" fill="var(--warn)" transform="rotate(-90 30 150)" text-anchor="middle">insight loop — unanswered questions become content</text>
+      </svg>
+    </div>
+
+    <h3>Where it appears</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>Desktop</h4>
+        <p>Bottom-right, 24px inset. A quiet 56–64px launcher labelled <strong>"Ask UASHMC"</strong> —
+        labelled for its job, not its technology. Collapsed by default, never auto-opening. Expanded it
+        is ~400px wide and does not modal-block the page. A second entry point sits in the footer,
+        where people expect to find help.</p>
+      </div>
+      <div class="card">
+        <h4>Mobile</h4>
+        <p>Folded into a sticky bottom bar as one of three peers: <code>Call · Book · Ask</code>.
+        Full-screen when open. Suppressed entirely on the emergency page and on any form. The call
+        button can never be occluded — that is a hard rule, not a preference.</p>
+      </div>
+    </div>
+
+    <h3>The safety model, as rules an engineer can implement</h3>
+    <ol>
+      <li><strong>Identifies itself as an AI system</strong> in the widget, before first input.</li>
+      <li><strong>Answers only from hospital-approved content.</strong> No generative clinical inference.</li>
+      <li><strong>No diagnosis, no clinical advice, no triage, no symptom assessment.</strong> This is a
+      regulatory boundary, not only a policy: under FDA AO 2018-0002, software classification turns on
+      intended use. The guardrail keeps the system outside the medical-device perimeter and protects
+      the hospital's licence exposure.</li>
+      <li><strong>Emergency intent triggers an unconditional interrupt</strong> to 911, the trunkline and
+      the ER. No conversation, no severity assessment, no confirmation gate. Bias toward over-escalation.</li>
+      <li><strong>HMO and PhilHealth:</strong> may state whether an agreement exists and what to bring.
+      May never state that a service will be covered, quote an amount, or confirm a specific doctor is
+      accredited under a specific plan.</li>
+      <li><strong>Physician information:</strong> credentials only, never comparative or superiority claims.</li>
+      <li><strong>A named human escalation path</strong> and a grievance mechanism, always one tap away.</li>
+      <li><strong>Chat logs are sensitive personal information</strong> — declared retention, access
+      controls, a deletion route, and honouring objection and erasure requests.</li>
+      <li><strong>A privacy impact assessment before launch</strong>, and a standing disclaimer that is
+      never dismissed after first read.</li>
+    </ol>
+
+    <div class="note">
+      <p class="note-h">The liability point to volunteer before anyone asks</p>
+      <p>
+        Under NPC Advisory 2024-04, accountability for an AI system sits with <strong>UASHMC as
+        Personal Information Controller</strong>. It cannot be delegated to Iozera or to the technology.
+        Saying that first is the credibility move — it converts the conversation from "a chatbot" into
+        "a governed system with named owners", which is the register Dr. Pedraja and Dr. Directo will
+        respond to.
+      </p>
+    </div>
+
+    <h3>What the hospital gets back — the insight loop</h3>
+    <p>
+      Every unanswered question is logged. That log is a monthly report: the top inquiries, the questions
+      with no approved answer, and demand signals for services UASHMC doesn't offer yet. It is
+      continuous market research on the Antipolo catchment, and it is naturally Harvey's asset.
+    </p>
+
+    <div class="note care">
+      <p class="note-h">Three limitations in the room. The rest in the pack.</p>
+      <p>
+        Twelve caveats delivered to a board <em>before</em> they have agreed in principle turns diligence
+        into doubt. Say exactly these three out loud, and leave the rest in writing:
+      </p>
+      <ol>
+        <li><strong>It only knows what you publish.</strong> That is the design, and it is why the
+        content work matters more than the technology.</li>
+        <li><strong>It does not diagnose. Ever. By design</strong> — not by good behaviour.</li>
+        <li><strong>You would be the first hospital deployment anywhere.</strong> Say it before they find
+        it; volunteered it is diligence, discovered it is a problem.</li>
+      </ol>
+      <p style="margin-top:11px">
+        <strong>The rule that governs the whole meeting:</strong> any weakness you volunteer is
+        diligence. Any weakness they discover is a lie.
+      </p>
+    </div>
+
+    <div class="note warn">
+      <p class="note-h">The full limitations list — for the leave-behind, not the room</p>
+      <ul>
+        <li><strong>Website widget only at v1.</strong> Not Messenger, not Viber, not SMS, not voice.
+        UASHMC's patients live on Facebook and Viber, so expect this question — and answer it as
+        <em>scope</em>, not capability.</li>
+        <li><strong>Filipino and Taglish must be tested, not assumed.</strong></li>
+        <li><strong>It does not book appointments.</strong> It deep-links into NowServing, which UASHMC
+        already runs. This is the honest framing and it makes the existing investment look deliberate.</li>
+        <li><strong>No EMR, HIS or HMO system integration.</strong> Not in scope at v1.</li>
+        <li><strong>Pilot on three journeys first</strong> — HMO, hours and directions, service
+        information — and expand on evidence rather than ambition.</li>
+      </ul>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">The flagship framing</p>
+      <p>
+        No hospital anywhere has publicly deployed KRISS AI. Rather than borrow a logo, offer Dr. Bravo
+        something better: <strong>UASHMC as the flagship hospital deployment.</strong> It is true, it is
+        more compelling than a reference he can't verify, and it is something a president building a new
+        institution's reputation may actively want.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 7 ═══════════════════ -->
+  <section id="s7">
+    <p class="snum"><i></i>Section 7</p>
+    <h2>Content we need from you</h2>
+    <p class="lede">
+      Organised by who holds it, because the fastest way to stall this project is to send one list to
+      five people. <strong>P0</strong> blocks the launch. <strong>P1</strong> blocks only its own module.
+      <strong>P2</strong> is post-launch enrichment.
+    </p>
+
+    <div class="note">
+      <p class="note-h">The publish gate that governs everything</p>
+      <p>No service, capability or claim goes on the site unless it appears on UASHMC's DOH License to
+      Operate. That is a required field in the content system, not a policy memo.</p>
+    </div>
+
+    <h3>Dr. Bravo — authority, corporate, licensing</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>What we need</th><th class="num">Priority</th><th>If you don't have it</th></tr></thead>
+        <tbody>
+          <tr><td>DOH License to Operate — registered name, classification level, authorised services, validity</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Publish the licensing block without the level; add on receipt</td></tr>
+          <tr><td>PhilHealth accreditation by benefit package, incl. Konsulta status</td><td class="num"><span class="tagline t-p0">P0</span></td><td>State "PhilHealth accredited" only; detail later</td></tr>
+          <tr><td>Decision: fast path or full scope</td><td class="num"><span class="tagline t-p0">P0</span></td><td>We default to fast path</td></tr>
+          <tr><td>Decision: price transparency posture</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Rooms and packages ship in Phase 2</td></tr>
+          <tr><td>Bed capacity, PHAPI membership, society affiliations</td><td class="num"><span class="tagline t-p2">P2</span></td><td>Omit rather than approximate</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Harvey Lozada — brand, photography, voice</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>What we need</th><th class="num">Priority</th><th>If you don't have it</th></tr></thead>
+        <tbody>
+          <tr><td>Logo in vector form, exact colour values, brand fonts</td><td class="num"><span class="tagline t-p0">P0</span></td><td>We rebuild from the highest-resolution asset available and you approve it</td></tr>
+          <tr><td><strong>Photography</strong> — façade from both directions on Marcos Highway, ER entrance separately from the main entrance, lobby, rooms by type, imaging suite, OR, real staff</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Launch facilities-only and phase the rest. <strong>No stock photos of people, ever.</strong></td></tr>
+          <tr><td>Headshot of every published doctor + signed release</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Profile doesn't publish. Completeness gate is deliberate.</td></tr>
+          <tr><td>The top 20 questions patients actually ask, in the words they use, including Taglish</td><td class="num"><span class="tagline t-p1">P1</span></td><td>We infer from listings — much worse. This is primary research only you have.</td></tr>
+          <tr><td>Priority services to grow · new services launching · target patient segments</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Homepage rail order is our best guess</td></tr>
+          <tr><td>"Doctor in the House" back catalogue + publishing rights</td><td class="num"><span class="tagline t-p2">P2</span></td><td>Link out to social instead of embedding</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Dr. Pedraja — clinical content and approval</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>What we need</th><th class="num">Priority</th><th>If you don't have it</th></tr></thead>
+        <tbody>
+          <tr><td>Doctor roster — name, PRC licence, board fellowship spelled out, sub-specialty, clinic days and hours, room, languages, 100+ word bio</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Publish only complete profiles. 20 complete beats 40 thin.</td></tr>
+          <tr><td>Approval of the <strong>physician profile template</strong> and the <strong>service page template</strong> — once</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Nothing clinical can publish. This single approval is worth 2–3 weeks.</td></tr>
+          <tr><td>Service and diagnostic list, verified against the LTO</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Publish only what the LTO confirms</td></tr>
+          <tr><td>Countersigned <strong>KRISS AI guardrail spec</strong> + red-flag vocabulary list</td><td class="num"><span class="tagline t-p0">P0</span></td><td>KRISS does not go live</td></tr>
+          <tr><td>Concern→specialty routing table (~100–200 rows), signed and dated</td><td class="num"><span class="tagline t-p2">P2</span></td><td>Specialty-first navigation only at v1</td></tr>
+          <tr><td>Telemedicine clinical scope decision</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Describe the service and how to book it; make no scope claims</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Tere Barcelona — operations and the money pages</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>What we need</th><th class="num">Priority</th><th>If you don't have it</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Accredited HMO list as plain text</strong>, correctly spelled, with a named owner and update cadence</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Cannot publish the module — this is the #1 patient question</td></tr>
+          <tr><td>HMO desk facts — floor, room, direct local, hours incl. Saturday and the "except holidays" note</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Point at the trunkline only</td></tr>
+          <tr><td>Admission requirements, itemised — separate lists for scheduled, ER and outpatient</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Publish generic; correct on review</td></tr>
+          <tr><td>Department directory — direct local and real hours per department</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Trunkline only. Cheapest content on the site; highest KRISS value.</td></tr>
+          <tr><td>Deposit policy, LOA-waives-deposit rule, Zero Balance Billing as it actually applies</td><td class="num"><span class="tagline t-p1">P1</span></td><td>State the statutory position only</td></tr>
+          <tr><td>ER hours, ER direct line, ambulance availability, ER vs main entrance</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Trunkline as the ER number</td></tr>
+          <tr><td>Visiting hours, companion policy, room types + watcher's-bed provision</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Ships in Phase 2</td></tr>
+          <tr><td>DPO name and contact · NPC registration status · retention period for chat logs</td><td class="num"><span class="tagline t-p0">P0</span></td><td>Privacy Notice cannot publish. Escalate if no DPO is designated.</td></tr>
+          <tr><td>NowServing admin access, and each doctor's profile URL</td><td class="num"><span class="tagline t-p1">P1</span></td><td>Book buttons point at the trunkline</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The domain and email situation — raise this first, not last</h3>
+    <div class="note urgent">
+      <p>
+        UASHMC's published contact address is a <strong>Gmail account</strong>. Patient inquiries
+        containing health information are flowing into a consumer mailbox that sits outside any
+        access-control regime the hospital could evidence under the NPC's security circular.
+      </p>
+      <p>
+        That reframes the migration to <code>@uashmc.com.ph</code> mailboxes from a branding preference
+        into a <strong>data-security remediation item</strong> — a much easier budget conversation, and
+        something Tere can action this week. It also forces the domain decision early, which the
+        website needs anyway. Cheapest large credibility win on the whole project.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 8 ═══════════════════ -->
+  <section id="s8">
+    <p class="snum"><i></i>Section 8</p>
+    <h2>Build plan &amp; timeline</h2>
+    <p class="lede">
+      The critical path is <strong>content approval, not development</strong>. Design and build are five
+      weeks of known work. Everything else is how quickly decisions get made.
+    </p>
+
+    <h3>Two paths</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th></th><th>Fast path <span class="tagline t-ok" style="margin:0">Recommended</span></th><th>Full scope</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Site live</strong></td><td class="num"><strong>Week 8</strong></td><td class="num">Week 17</td></tr>
+          <tr><td><strong>KRISS AI live</strong></td><td class="num"><strong>Week 12</strong></td><td class="num">Week 21</td></tr>
+          <tr><td><strong>What ships</strong></td><td>Homepage with the task row and emergency block · Find a Doctor (complete profiles only) · 4 specialty pages · 8–10 service pages · HMO + LOA steps · PhilHealth · Admission · Emergency · Contact &amp; Directions · About with licensing block · Careers · Privacy Notice</td><td>Everything in the fast path, plus the full A-to-Z catalogue, type-ahead HMO checker, room rates and photos, packages, medical records and certificates, accessibility page, concern-based routing, bilingual money pages, and the full "Doctor in the House" library</td></tr>
+          <tr><td><strong>Beats in Antipolo</strong></td><td class="win">Every hospital in the catchment, including ADH</td><td class="win">Same, plus depth</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="gantt">
+      <div class="grow"><div class="glabel">Kickoff</div><div class="gtrack"><div class="gbar deep" style="left:0%;width:5.5%">0</div></div></div>
+      <div class="grow"><div class="glabel">Content gathering</div><div class="gtrack"><div class="gbar warn" style="left:5.5%;width:16.7%">Weeks 1–3</div></div></div>
+      <div class="grow"><div class="glabel">Structure &amp; IA</div><div class="gtrack"><div class="gbar brand" style="left:5.5%;width:13.9%">1–2.5</div></div></div>
+      <div class="grow"><div class="glabel">Design</div><div class="gtrack"><div class="gbar brand" style="left:13.9%;width:11.1%">2.5–4.5</div></div></div>
+      <div class="grow"><div class="glabel">UASHMC approval</div><div class="gtrack"><div class="gbar warn" style="left:25%;width:5.5%">4.5–5.5</div></div></div>
+      <div class="grow"><div class="glabel">Development</div><div class="gtrack"><div class="gbar brand" style="left:25%;width:16.7%">4.5–7.5</div></div></div>
+      <div class="grow"><div class="glabel">Testing &amp; UAT</div><div class="gtrack"><div class="gbar brand" style="left:41.7%;width:5.5%">7.5–8.5</div></div></div>
+      <div class="grow"><div class="glabel"><strong>Site launch</strong></div><div class="gtrack"><div class="gbar care" style="left:44.4%;width:5.5%">Week 8</div></div></div>
+      <div class="grow"><div class="glabel">KRISS AI integration</div><div class="gtrack"><div class="gbar" style="left:33.3%;width:33.3%;background:var(--violet)">Weeks 6–12</div></div></div>
+      <div class="grow"><div class="glabel"><strong>KRISS AI live</strong></div><div class="gtrack"><div class="gbar care" style="left:66.7%;width:5.5%">Week 12</div></div></div>
+      <div class="gscale">
+        <div class="gscale-l">Week</div>
+        <div class="gscale-t">
+          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span>
+          <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <p class="note-h">Calendar honesty</p>
+      <p>Add two weeks of buffer if the schedule crosses Holy Week, Christmas and New Year, or the
+      Antipolo fiesta calendar. Philippine approval cycles stop dead in those windows, and pretending
+      otherwise is how a plan loses credibility in week nine.</p>
+    </div>
+
+    <h3>Why we recommend the fast path</h3>
+    <ol>
+      <li><strong>It beats every hospital website in Antipolo in eight weeks.</strong> Six of ten have no
+      site, and the nearest same-corridor competitor is currently offline.</li>
+      <li><strong>It turns the content problem from a blocker into a rhythm.</strong> Enriching a live
+      site is a monthly habit. Finishing all content before launch is a cliff.</li>
+      <li><strong>The "first Philippine hospital with a real on-site assistant" claim has a shelf life.</strong>
+      Twelve weeks protects it. Twenty-one risks it.</li>
+    </ol>
+
+    <div class="note">
+      <p class="note-h">The governing principle</p>
+      <p><strong>Publish thin, enrich in public.</strong> A page is either complete and live, or absent —
+      never live and half-empty. That single rule removes the most common reason a launch slips.</p>
+    </div>
+
+    <h3>Who does what</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>Iozera</h4>
+        <p>Information architecture · design · build · hosting and CDN · accessibility · SEO and
+        schema markup · KRISS AI configuration and guardrail authoring · corpus preparation · content
+        drafting from your source material · CMS training · the privacy impact assessment · analytics.
+        <strong>We draft everything; you edit rather than author.</strong></p>
+      </div>
+      <div class="card">
+        <h4>UASHMC</h4>
+        <p>A named project owner with decision authority · clinical approval (template-level, then by
+        exception) · the source facts and documents · photography access and releases · the price
+        transparency decision · counsel review · post-launch content stewardship, with a named person
+        for the HMO list and clinic schedules.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 9 ═══════════════════ -->
+  <section id="s9">
+    <p class="snum"><i></i>Section 9</p>
+    <h2>What could delay it</h2>
+    <p class="lede">Ranked, each with the mitigation we propose adopting on the day.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th class="num">Rank</th><th>Risk</th><th>Mitigation to agree in the room</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="num"><strong>1</strong></td>
+            <td><strong>Content approval latency with no single owner.</strong> This is the risk that turns an 8-week project into a 6-month one. It presents as "we're just waiting on a few things" for three months.</td>
+            <td>A named owner with authority · a weekly 30-minute standing call (thirty, not sixty — short enough that it never gets cancelled) · publish thin then enrich · template-level clinical approval with review by exception · a shared decision log with a 5-working-day default approval for staging</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>2</strong></td>
+            <td><strong>Clinical sign-off bottleneck.</strong> Dr. Pedraja is a practising clinician, and is simultaneously the most engaged stakeholder and the most likely bottleneck.</td>
+            <td>We draft, she edits · approve two templates once, then review by exception · two pre-booked 90-minute review blocks rather than an open email thread · a named clinical deputy for routine profiles · hand her the guardrail spec as a finished artifact to countersign</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>3</strong></td>
+            <td><strong>Photography: no assets, no date, no releases.</strong> The longest physical lead time, and the one most often assumed away. Without headshots, Find a Doctor cannot launch — and that is the module that beats ADH.</td>
+            <td>Book the shoot date in the room, today · we send the shot list, headshot spec and release form within two working days · run a half-day headshot station across two or three days to catch clinic schedules</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>4</strong></td>
+            <td><strong>Doctor roster data quality and schedule volatility.</strong> Wrong schedules generate complaints; absent schedules generate phone calls.</td>
+            <td>A written completeness gate · a named schedule owner with a monthly cadence · publish typical clinic days labelled "confirm when booking" rather than false precision · one canonical provider record that the site and KRISS both read</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>5</strong></td>
+            <td><strong>Domain and DNS not owned, or credentials unobtainable.</strong> The quietest schedule-killer — a launch-ready site sitting on staging because nobody can find who registered the domain.</td>
+            <td>Resolve on day one · if unowned, we register on UASHMC's behalf with a signed transfer letter under a UASHMC-owned mailbox · verify DNS access in week 2, not launch week</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>6</strong></td>
+            <td><strong>HMO, PhilHealth and price content — the highest-harm content on the site.</strong> A confident wrong answer here produces a family with an unexpected bill.</td>
+            <td>Publish as "HMOs we have accreditation agreements with", never "HMOs we accept" · a visible last-updated date with a named owner · the four caveats on every answer · split outpatient / inpatient / emergency · Billing signs off every money page in writing</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>7</strong></td>
+            <td><strong>Scope creep into patient portal, native booking, EMR integration.</strong> "While we're at it, can it also show lab results?"</td>
+            <td>A written Phase 1 boundary with a Phase 2 candidate list, so nothing is refused — only sequenced · deep-link to NowServing rather than rebuilding booking</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>8</strong></td>
+            <td><strong>Too many reviewers, conflicting feedback.</strong> Marketing wants concern-first navigation; Medical wants departments. Both are legitimate.</td>
+            <td>One consolidated feedback channel through the named owner · two review rounds included, the third is a change order · resolve department-vs-concern structurally: one record set, three indexes over it, so both get their door</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>9</strong></td>
+            <td><strong>Board or governance review cycle.</strong> If the board must ratify scope and meets monthly, an unaligned cycle adds 3–4 weeks with no work being done.</td>
+            <td>Ask directly on the day whether Dr. Bravo can approve Phase 1 without ratification. If not, get the board date and ask Dr. Directo what the board will want to see, so we prepare it rather than discover it.</td>
+          </tr>
+          <tr>
+            <td class="num"><strong>10</strong></td>
+            <td><strong>Front-desk readiness at launch.</strong> The site goes live and nobody answering the phone knows what it says.</td>
+            <td>A 45-minute staff briefing in launch week for front desk, admitting, HMO/billing and the ER station, plus a one-page "report a correction" route</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 10 ═══════════════════ -->
+  <section id="s10">
+    <p class="snum"><i></i>Section 10</p>
+    <h2>Discovery questions</h2>
+    <p class="lede">
+      Designed to surface <strong>decisions, not opinions</strong>. Authority and ownership first,
+      because everything downstream depends on them. We are not arriving assuming we know what
+      UASHMC wants.
+    </p>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">01</span><span class="q-who">Dr. Bravo</span><span class="q-t">Decision authority and budget</span></div>
+      <blockquote>"Walk us through how a decision like this actually gets made at UASHMC. Can you approve the Phase 1 scope and spend today, or does it need board ratification — and if so, when does the board next sit? And is there a date driving this: an anniversary, an accreditation milestone, a census target?"</blockquote>
+      <p class="why">Determines whether we're planning an 8-week project or a 12-week one with a governance gate in the middle. The launch-date question is the one agencies forget to ask and then discover in week six.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">02</span><span class="q-who">Dr. Bravo + Harvey</span><span class="q-t">What success looks like</span></div>
+      <blockquote>"Twelve months after this site is live, what has changed that makes you say it was worth it? Census, HMO patient mix, inbound calls that arrive already informed, doctor recruitment — or something else? And what's the six-month version?"</blockquote>
+      <p class="why">Census, referral diversification, HMO share and physician recruitment produce <em>materially different homepages</em>. Nobody has told us which. Asking makes the project accountable rather than decorative — and it becomes the measurement plan.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">03</span><span class="q-who">Dr. Bravo + Tere</span><span class="q-t">Domain and email ownership</span></div>
+      <blockquote>"Does UASHMC own a domain today, and who holds the registrar login? And separately — your published contact address is a Gmail account. Patient inquiries with health information are flowing into a consumer mailbox. Can we agree today to stand up hospital-domain mailboxes, and who can make that happen?"</blockquote>
+      <p class="why">The quietest schedule-killer and simultaneously the cheapest large credibility win. Framing it as security remediation rather than branding makes it an action item this week.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">04</span><span class="q-who">Tere Barcelona</span><span class="q-t">The named owner and operating rhythm</span></div>
+      <blockquote>"We need one person who owns this from your side — who can consolidate feedback, chase content, and say yes. Who is that, and can we put a standing 30-minute call in the calendar right now? And who will be the day-to-day content steward once the site is live — the person who updates the HMO list and the clinic schedules?"</blockquote>
+      <p class="why">The mitigation for the #1 risk, and it must be settled in the room. A project with five stakeholders and no owner does not slip — it stalls. If no name emerges, that is the most important finding of the day.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">05</span><span class="q-who">Dr. Pedraja</span><span class="q-t">The clinical approval mechanism</span></div>
+      <blockquote>"Everything clinical needs your signature. Rather than sending you a hundred approvals, we'd like to approve the physician profile template and the service page template <em>once</em>, then handle individual pages by exception. Does that work, and what review turnaround can you realistically commit to? Would two booked 90-minute sessions be easier than an email thread?"</blockquote>
+      <p class="why">Turns the bottleneck into a schedule, and respects that she is a practising clinician — which she will notice. <strong>Bring the draft template with you.</strong> Worth noting to her: the PRC/PMA Code of Ethics expressly permits websites to publish credentials, post-graduate training and former hospital connections, on the reasoning that a patient has the right to know their doctor's qualifications. A substantive doctor directory is the <em>more</em> ethical choice for a website, not the riskier one.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">06</span><span class="q-who">Dr. Pedraja, with Dr. Bravo</span><span class="q-t">The guardrails and who owns the review loop</span></div>
+      <blockquote>"We've written the guardrail spec for KRISS AI before you asked for it: hospital-approved information only, no diagnosis, no clinical advice, no triage, no symptom questions, and an unconditional interrupt to 911 and your ER on any red-flag term. Here it is. What would you add or remove — and will you own the monthly review of the red-flag trigger log?"</blockquote>
+      <p class="why">Decides whether KRISS AI is a governance conversation or a novelty conversation. Volunteering the constraint — and the liability — is the credibility move with two clinicians and a board member in the room.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">07</span><span class="q-who">Harvey Lozada</span><span class="q-t">What patients actually ask</span></div>
+      <blockquote>"You see the real questions every day on Messenger, Viber and Instagram. What are the top twenty, in the words people actually use — including the Taglish? And which ones do you find yourself answering over and over?"</blockquote>
+      <p class="why">Primary research we cannot get anywhere else, and the fastest quality win available. It writes the homepage task row, the search synonyms, the navigation labels and the assistant's opening prompts. It also positions Harvey as a source of expertise rather than an approver of our work.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">08</span><span class="q-who">Harvey Lozada</span><span class="q-t">Brand, photography and the shoot date</span></div>
+      <blockquote>"What brand assets exist in editable form — vector logo, exact colour values, fonts? And here's our shot list. For a hospital nobody has heard of yet, stock photos of people actively hurt us — they read as a hospital that won't show itself. So we need real photography: the façade from both directions so drivers recognise you, the ER entrance separately, rooms by type, the imaging suite, real staff, and a headshot of every published doctor. <strong>When can we shoot?</strong>"</blockquote>
+      <p class="why">The longest physical lead time on the project. A date in the calendar is worth more than any other single commitment of the day.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">09</span><span class="q-who">Harvey + Dr. Bravo</span><span class="q-t">The transparency posture</span></div>
+      <blockquote>"How much do you want to publish — room rates, package prices, indicative ranges, or process only? Here's the market reality: Chong Hua publishes fifteen room rates with photos. In Antipolo, ADH put 'Our Packages' first in its navigation. And third-party aggregators are already publishing hospital rates with worse accuracy and zero accountability. The question isn't whether your prices get published. It's whether you own the answer."</blockquote>
+      <p class="why">A genuine business decision, correctly theirs. Note honestly that the DOH price-transparency rule speaks to physical conspicuous areas; whether it reaches websites is unsettled. So online transparency is a differentiator, not an obligation — and a stale price list is worse than none.</p>
+    </div>
+
+    <div class="q">
+      <div class="q-top"><span class="q-n">10</span><span class="q-who">Tere, with Dr. Bravo</span><span class="q-t">Records, licences and the operational truth</span></div>
+      <blockquote>"We need five documents and five facts. The DOH License to Operate — registered name, classification level, authorised services, validity. Your PhilHealth accreditations by benefit package, including Konsulta. Your Zero Balance Billing policy as it actually applies, in writing from Billing. Your DPO's name and whether your data processing systems are registered with the NPC. And your NowServing admin access. Who holds each, and when can we have them?"</blockquote>
+      <p class="why">Every one is a launch blocker or a compliance exposure, and each has a different holder inside the hospital. Asking as one bundled list produces one owner and one date rather than five chases over six weeks.</p>
+    </div>
+
+    <h4>Reserve questions, if the room allows</h4>
+    <ul>
+      <li><strong>Dr. Bravo:</strong> "Where are you losing patients today, and why — ADH, Marikina Valley, or straight past Antipolo into Manila?"</li>
+      <li><strong>Dr. Directo:</strong> "When this reaches the board, what will they want to see?"</li>
+      <li><strong>Tere:</strong> "Is there an HIS, EMR or lab system in place, and any appetite to connect them later? We're not scoping it — we just want to know what we're building next to."</li>
+      <li><strong>Anyone:</strong> "Do you have a direct ER line separate from the trunkline? If not, can we get one provisioned?" — a one-day operational change with outsized effect, and only two hospitals in the entire competitive sample get this right.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ 11 ═══════════════════ -->
+  <section id="s11">
+    <p class="snum"><i></i>Section 11</p>
+    <h2>What to secure in the room</h2>
+    <p class="lede">
+      Nine asks. Each small, specific, and answerable on the day. Get these and the project starts Monday.
+    </p>
+
+    <h4>The five that must not be left unresolved</h4>
+    <div class="card" style="padding:8px 19px">
+      <div class="ask"><span class="ask-n">1</span><div><b>Name the project owner</b><p>"Who is our one person at UASHMC — the one who consolidates feedback and can say yes? Can we write the name down now?"</p></div></div>
+      <div class="ask"><span class="ask-n">2</span><div><b>Put the standing call in the calendar, in the room</b><p>"Thirty minutes, same day and time every week, starting next week. Can we send the invite before we leave?"</p></div></div>
+      <div class="ask"><span class="ask-n">3</span><div><b>Book the photo shoot date</b><p>"We'll send the shot list and headshot spec within two days. What date works for the facility shoot, and can we run a two- or three-day headshot station to catch clinic schedules?"</p></div></div>
+      <div class="ask"><span class="ask-n">4</span><div><b>Settle the domain and the email migration</b><p>"Which domain, who holds the registrar account, and do we have approval to stand up @uashmc mailboxes and retire the Gmail address from the public contact page — with 90 days of forwarding so nothing is lost?"</p></div></div>
+      <div class="ask"><span class="ask-n">5</span><div><b>Commit to Content Pack #1 in ten working days</b><p>"We'll send five pre-formatted spreadsheets in two days — doctors, services, HMOs, departments, rooms — with example rows filled in. Can we agree a ten-working-day return?"</p></div></div>
+    </div>
+
+    <h4>The four that make the next stage frictionless</h4>
+    <div class="card" style="padding:8px 19px">
+      <div class="ask soft"><span class="ask-n">6</span><div><b>Approve the physician profile template in principle, today</b><p>"Dr. Pedraja — here's the draft. If you can mark it up today, every subsequent profile is an exception review rather than a fresh approval. That single decision is worth two to three weeks."</p></div></div>
+      <div class="ask soft"><span class="ask-n">7</span><div><b>Get the License to Operate, or a written commitment with a date</b><p>"We can't publish a licensing block or a service list without it — and it's the strongest single credibility asset you have."</p></div></div>
+      <div class="ask soft"><span class="ask-n">8</span><div><b>Agree the path: fast or full</b><p>"Eight weeks to a site that beats every hospital in Antipolo, or seventeen to the full catalogue. We recommend launching the eight-week version and funding the enrichment at launch. Which do you want?"</p></div></div>
+      <div class="ask soft"><span class="ask-n">9</span><div><b>Agree the working rules, in writing</b><p>"One consolidated feedback channel. Two design review rounds included, a third is a change order. A five-working-day default approval for staging. And a shared decision log neither side relitigates."</p></div></div>
+    </div>
+
+    <div class="note care">
+      <p class="note-h">Leave behind, in writing, on the day</p>
+      <ul>
+        <li>The five content-request spreadsheets, pre-formatted with example rows</li>
+        <li>The physician media release form, including the KRISS AI data-use clause</li>
+        <li>The photography shot list and headshot spec</li>
+        <li>The draft physician profile template</li>
+        <li>The <strong>KRISS AI guardrail spec</strong> — unprompted, before anyone asks for it</li>
+        <li>The live decision log, with the day's decisions already entered</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p class="note-h">The line to close on</p>
+      <p style="font-family:var(--serif); font-size:17px; font-style:italic; color:var(--ink)">
+        "Nothing on this list is a design decision. Every one is a commitment about who does what, by
+        when. Give us those nine and you have the best hospital website in Rizal in eight weeks — and
+        the first real patient assistant on any Philippine hospital site in twelve."
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ 12 ═══════════════════ -->
+  <section id="s12">
+    <p class="snum"><i></i>Section 12</p>
+    <h2>Suggested agenda</h2>
+    <p class="lede">
+      Ninety minutes. The prototype does most of the talking, and one full block belongs to Harvey
+      rather than to us.
+    </p>
+
+    <div class="note">
+      <p class="note-h">The strongest opening move — do not lead with our research</p>
+      <p style="font-family:var(--serif); font-size:17px; font-style:italic; color:var(--ink); margin-bottom:11px">
+        "Doc, may I borrow your phone for one minute? I'd like you to try to find out — using only what
+        exists online today — whether UASHMC has a cardiologist, and whether you take Maxicare."
+      </p>
+      <p>
+        Let him fail, in front of his own executive team, in ninety seconds. Then take the phone back and
+        do it in four taps on the prototype. That turns every claim in this pack into felt experience
+        before you have said one word about yourselves.
+      </p>
+      <p><strong>Have a 60-second screen recording as backup</strong> in case the wifi is dead or he
+      would rather not play along. Opening with the competitor audit instead is the vendor talking about
+      his homework — a fine second move, a weak first one.</p>
+    </div>
+
+    <div class="agenda">
+      <div class="arow"><div class="atime">0:00–0:03</div><div class="abody"><b>The failure demo</b><p>Phone in hand. No slides.</p></div></div>
+      <div class="arow"><div class="atime">0:03–0:06</div><div class="abody"><b>Ask Harvey question 7 — now, before showing anything</b><p>"What are the top questions people actually ask you on Messenger?" Write them on a whiteboard. <strong>This single reordering is the whole Harvey fix</strong> — when the task grid appears later and four of his answers are on it, he has co-written it and will defend it to his own colleagues.</p></div></div>
+      <div class="arow"><div class="atime">0:06–0:11</div><div class="abody"><b>Where UASHMC stands</b><p>Three facts only. Then: "You can have the best hospital website in Rizal in eight weeks, and the first real patient assistant in the country in twelve." Hand over the audit — do not read it.</p></div></div>
+      <div class="arow"><div class="atime">0:11–0:23</div><div class="abody"><b>Prototype, desktop</b><p>Homepage → the content-sources reveal → Find a Doctor → the HMO checker. Point at the whiteboard when the task grid appears. <strong>Guard this at 12 minutes.</strong></p></div></div>
+      <div class="arow"><div class="atime">0:23–0:29</div><div class="abody"><b>Mobile, on a real phone, passed around</b><p>The sticky <code>Call · Book · Ask</code> bar and the emergency care cards. This is the beat that lands with the clinicians.</p></div></div>
+      <div class="arow"><div class="atime">0:29–0:39</div><div class="abody"><b>KRISS AI</b><p>Quiet launcher → the standing disclaimer → "do you accept Maxicare" → then type <em>my father has chest pain</em> and let the red card land. Then ask it something it cannot answer and let the room watch it refuse. <strong>Put the printed guardrail spec on the table in front of Dr. Pedraja at that moment.</strong></p></div></div>
+      <div class="arow"><div class="atime">0:39–0:46</div><div class="abody"><b>One journey aloud — B, the 1 AM Maxicare question</b><p>Plus sixty seconds on Journey D, the overseas family member who actually pays. Leave all four printed.</p></div></div>
+      <div class="arow"><div class="atime">0:46–0:58</div><div class="abody"><b>Hand over to Harvey</b><p>Not "any questions" — a working segment. Two homepage directions, his four open decisions, whiteboard. <strong>Close your laptop lid.</strong> This block must not be compressed; if the demo overruns, cut the demo.</p></div></div>
+      <div class="arow"><div class="atime">0:58–1:08</div><div class="abody"><b>How it gets built, and what it costs</b><p>One slide: recommended path, price, payment schedule, retainer, KRISS commercial model. Then the three limitations — not twelve.</p></div></div>
+      <div class="arow"><div class="atime">1:08–1:18</div><div class="abody"><b>The content list</b><p>Printed, five blockers on top, owner column blank. <strong>Assign owners with a pen, at the table.</strong> That is how you get content-gathering permission — by doing it, not asking for it.</p></div></div>
+      <div class="arow"><div class="atime">1:18–1:28</div><div class="abody"><b>The close</b><p>One-page decisions sheet. Name the owner. Send the standing-call invite from the room. Book the shoot date.</p></div></div>
+      <div class="arow"><div class="atime">1:28–1:30</div><div class="abody"><b>Buffer</b><p>Never present to the last minute.</p></div></div>
+    </div>
+
+    <h3>Cut from the room entirely</h3>
+    <p>Not deleted — printed. In a boardroom, engineering detail signals that you don't know what
+    matters to whom.</p>
+    <ul>
+      <li>The full sitemap page inventory — show the one-page visual tree instead.</li>
+      <li>Journeys A, C and D in full text. Print them.</li>
+      <li>All widget engineering detail — placement specs, z-index, keyboard handling.</li>
+      <li>The twelve-item limitations table. Three in the room.</li>
+      <li>Colour tokens, type scale, spacing scale. If Harvey wants them, that is his artifact to keep.</li>
+      <li>All competitor detail beyond the three headline facts.</li>
+      <li>The RACI matrices.</li>
+    </ul>
+
+    <h3>Five leave-behinds, stapled, in a folder with UASHMC's name on it</h3>
+    <ol>
+      <li>The one-page visual sitemap, Phase 1 highlighted.</li>
+      <li>The content list — five blockers on top, owner column blank.</li>
+      <li><strong>The KRISS AI guardrail spec, with a signature block for Dr. Pedraja.</strong></li>
+      <li>The four patient journeys.</li>
+      <li>A one-page commercial summary and the signable decisions sheet.</li>
+    </ol>
+
+    <div class="cta">
+      <div>
+        <h4>The close to actually use</h4>
+        <p>
+          Don't finish on the timeline. Finish on the thing Dr. Bravo can be first at — and put a date
+          and a price under it. He is running a hospital nobody has heard of yet; being verifiably first
+          in the country at something is the reason he signs.
+        </p>
+      </div>
+    </div>
+
+    <div class="note violet">
+      <p class="note-h">The one thing to keep saying</p>
+      <p>
+        This mock-up is a <strong>starting concept for discussion</strong>. Every screen has decisions
+        still open, two homepage directions are live choices, and four decisions are explicitly Harvey's.
+        The meeting succeeds if UASHMC leaves owning the direction — not if they approve ours.
+      </p>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>
+    Prepared by Iozera for the UASHMC onsite · Concept and planning document, draft for internal review.
+    Public-source research was used for concept development only; all facts require UASHMC confirmation
+    before publication or use in the KRISS AI knowledge base.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  var secs  = links.map(function(a){ return document.querySelector(a.getAttribute('href')) }).filter(Boolean);
+  if(!('IntersectionObserver' in window) || !secs.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      links.forEach(function(a){
+        a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id);
+      });
+    });
+  }, {rootMargin:'-15% 0px -75% 0px', threshold:0});
+  secs.forEach(function(s){ io.observe(s) });
+})();
+</script>
