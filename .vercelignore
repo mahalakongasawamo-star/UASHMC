@@ -1,0 +1,22 @@
+# Vercel publishes every file in this repo as a public static asset at its own
+# URL, regardless of whether the GitHub repo itself is private. This list keeps
+# the live domain limited to what's actually meant to be shown to the client.
+# See README.md's "Show the client?" column and CLAUDE.md's Layout table for
+# which files these are. GitHub still has everything — this only affects what
+# is web-reachable on the deployed domain.
+
+# Iozera-only. Never client-facing. See docs/INTERNAL-before-the-onsite.md.
+docs/INTERNAL-before-the-onsite.md
+
+# Strategy source material — not for the client, and critique-1/critique-2
+# are candid about our own weaknesses.
+research/
+
+# Internal working docs, not part of the site.
+CLAUDE.md
+PRODUCT.md
+README.md
+
+# Not referenced by the deployed prototype (its images are embedded as base64
+# data URIs) — UASHMC's own collateral, no reason to expose it at a public URL.
+images/
