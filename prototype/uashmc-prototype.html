@@ -652,7 +652,9 @@ table.t td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
   transition:box-shadow .16s, border-color .16s;
 }
 .klaunch:hover{box-shadow:var(--sh-3); border-color:var(--brand-500)}
-.klaunch .kav{width:26px;height:26px;flex:none}
+/* real UASHMC mark, not a drawn glyph — the launcher sits on a light
+   surface so the mark shows directly, same treatment as the header brand. */
+.klaunch .kav{width:26px;height:26px;flex:none; background:var(--ua-mark) center/contain no-repeat}
 @container vp (max-width:900px){ .klaunch{display:none} }
 
 .kpanel{
@@ -665,7 +667,10 @@ table.t td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
   .kpanel{right:0; bottom:0; left:0; top:0; width:auto; max-height:none; border-radius:0; border:0}
 }
 .khead{display:flex; align-items:center; gap:11px; padding:14px 16px; background:var(--brand-900); color:#fff; flex:none}
+/* the panel header is dark navy, so the mark needs the same white chip
+   treatment as the footer lockup (.ftr .fmark) or it disappears into the ground */
 .khead .kav{width:30px;height:30px;flex:none}
+.khead .kav.kav-chip{background:#fff var(--ua-mark) center/22px auto no-repeat; border-radius:8px}
 .khead b{font-size:14.5px; display:block; line-height:1.2}
 .khead span{font-size:11px; color:#A9CBD9}
 .kclose{margin-left:auto; background:rgba(255,255,255,.12); border:0; border-radius:7px; width:30px; height:30px; display:grid; place-items:center; cursor:pointer; color:#fff}
@@ -1830,19 +1835,13 @@ body.pv-on .site .pvblock{position:relative; outline:2px dashed var(--pv-sample)
         <!-- ══════════════ KRISS AI ══════════════ -->
         <div class="kriss-layer">
           <button class="klaunch" id="klaunch" aria-expanded="false" aria-controls="kpanel">
-            <svg class="kav" viewBox="0 0 32 32" aria-hidden="true">
-              <rect width="32" height="32" rx="9" fill="#01487C"/>
-              <path d="M13.6 9.5h4.8v3.9H22v4.8h-3.6v3.9h-4.8v-3.9H10v-4.8h3.6z" fill="#fff"/>
-            </svg>
+            <span class="kav" aria-hidden="true"></span>
             Ask UASHMC
           </button>
 
           <div class="kpanel" id="kpanel" role="dialog" aria-label="Ask UASHMC" aria-modal="false">
             <div class="khead">
-              <svg class="kav" viewBox="0 0 32 32" aria-hidden="true">
-                <rect width="32" height="32" rx="9" fill="#fff" opacity=".16"/>
-                <path d="M13.6 9.5h4.8v3.9H22v4.8h-3.6v3.9h-4.8v-3.9H10v-4.8h3.6z" fill="#fff"/>
-              </svg>
+              <span class="kav kav-chip" aria-hidden="true"></span>
               <span><b>Ask UASHMC</b><span>Powered by KRISS AI</span></span>
               <button class="kclose" id="kclose" aria-label="Close">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M18 6 6 18M6 6l12 12"/></svg>
