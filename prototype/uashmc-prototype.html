@@ -267,6 +267,8 @@ body.pv-on .pvbar{display:flex}
 .btn-urgent:hover{background:var(--urgent-ink)}
 .btn-care{background:var(--care-700); color:#fff}
 .btn-care:hover{background:#0F5A42}
+.btn-kriss{background:var(--brand-50); color:var(--brand-700); border-color:var(--brand-300)}
+.btn-kriss:hover{background:var(--brand-100); border-color:var(--brand-500); color:var(--brand-900)}
 .btn-sm{font-size:13px; padding:9px 14px; min-height:38px}
 
 /* ---- top utility strip: emergency is a number, not a page ---- */
@@ -1879,6 +1881,10 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                       <div class="hmo-search">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
                         <input id="hq" type="search" placeholder="Type your HMO — e.g. MediCard" aria-label="Search HMO">
+                        <button class="btn btn-kriss btn-sm" type="button" data-kriss-open>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
+                          Ask KRISS
+                        </button>
                       </div>
                     </div>
                     <div class="hmo-res" id="hres" tabindex="0" role="region" aria-label="HMO search results"></div>
