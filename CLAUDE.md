@@ -109,6 +109,25 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   [research/verified-facts.md](research/verified-facts.md#photography-we-actually-have). Use them
   through `.shot`, `.hero-shot`, `.feature-shot` and `.landmark`. Anything else photographic is
   a placeholder, and placeholders are drawn, not photographed — see `.figure`.
+- **The doctor directory mixes real and sample, and each card marks its own gaps.** The first four
+  entries in `DOCS` are real people from UASHMC's own posters. `real:1` marks a published doctor
+  (drives the "Sample profile" chip and the tally); `v:{}` lists which fields that poster actually
+  states. The renderer's `f()` helper has **three** states, and the third is the point:
+
+  | condition | render |
+  |---|---|
+  | field is in `v` | `data-src="verified"` — green |
+  | not in `v` but a value exists | `data-src="sample"` — a template sample's placeholder value |
+  | not in `v` and no value | `.tosupply` "to confirm" chip |
+
+  So a **real** profile can be visibly half-empty, which is the truth: only Dr. Gulliab's poster
+  gives a schedule, and none of them give HMO coverage. Do not fill those in. A real name over an
+  invented clinic day is worse than a real name over a visible blank — and Dr. Yalung's card
+  deliberately carries a real face over a blank specialty, because his award post never states one.
+  The samples keep `v:{s:1}`: their specialties are real, from NowServing.
+- **These are identifiable people and consent is not established.** The portraits come from posts
+  celebrating staff, not from a published roster. Fine in a pitch; not fine on a live site without
+  each person's sign-off. `research/verified-facts.md` carries this as an open item — keep it there.
 - **Placeholders are illustrations on purpose.** `.figure` renders an abstract head-and-shoulders
   SVG on one of four warm grounds (`.t0`–`.t3`), cycled by index across the roster. It replaced a
   grey diagonal hatch that read as a broken image; nine of them down `/doctors` was the single

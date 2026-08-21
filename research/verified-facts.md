@@ -68,6 +68,32 @@ prototype that quotes one carries a visible "as published August 2026, please co
 ⚠️ **OB-Gyn is a fifth specialty** beyond the four on NowServing. The real specialty list is
 still a content-gathering item.
 
+## Named staff, from their own posts
+
+Transcribed from the staff posters in [`images/`](../images/). Only what the post
+actually states is recorded; the blanks are blanks.
+
+| Person | Role / specialty | Schedule | Source |
+|---|---|---|---|
+| **Dr. Elnah A. Gulliab** | Internal Medicine · Acupuncturist | Mon / Wed / Fri, 11:00 AM – 2:00 PM, Room 507, 5th Floor | `doctors7.jpg` (a *Doctor in the House* card) |
+| **Dr. Joseph Justin H. Regalado** | Internal Medicine – Adult Cardiology; Cardiovascular MR specialist, EACVI-certified | — | `doctors2.jpg` |
+| **Dr. Jerome O. Laceda** | Internal Medicine – Cardiology | — | `doctors3.jpg` |
+| **Dr. Alvin L. Yalung** | **Specialty not stated.** Recipient of the "Tayo Na: Ang Natatanging Lingkod Bayan" Outstanding Employee award, City Government of Antipolo | — | `doctors1.jpg` |
+| Frances Villena | HR Associate (passed the Psychometricians licensure exam). **Not a clinician** — deliberately not in the directory. | — | `doctors4.jpg` |
+
+⚠️ **ENT – Head and Neck Surgery is a real department**, and a sixth specialty beyond the five
+previously known. `doctors5.jpg` shows a five-person unit and describes it as "Our ENT – Head and
+Neck Surgery Department". None of the five are named in readable text.
+
+⚠️ `doctors6.jpg` is a **National Physicians Day group photograph** — roughly thirty medical staff
+in the hospital's own lobby. It is the single best "people caring for people" asset in the kit.
+
+⚠️ **Consent has not been established for any of this.** These are portraits of identifiable
+people, taken from social posts celebrating them, not from a website roster. Showing them in a
+pitch is one thing; publishing them on a live site is another, and needs each person's sign-off
+plus confirmation that the credentials are current. Every field the posters do not state is left
+visibly blank in the prototype rather than filled in.
+
 ## HMO partners — their own published list
 
 Twenty partners, transcribed from the **"Stronger Partnerships, Better Care"** poster
@@ -102,6 +128,10 @@ embedded in the prototype as `--ph-*` data URIs:
 | `--ph-sleep` | A sleep study in progress — a real patient and a staff member in a real room | `sleep study.jpg` |
 | `--ph-mother` | An expectant mother, from their maternity campaign | `banner logo.jpg` |
 | `--ph-front` | **The building from the street** — the full elevation, blue and yellow, monogram on the flank. Now the Direction B hero. | `hospital front real2.jpg` |
+| `--dr-yalung` / `--dr-regalado` / `--dr-laceda` / `--dr-gulliab` | Four named doctors' headshots | `doctors1–3,7.jpg` |
+| `--ph-team` | ~30 medical staff in their own lobby, National Physicians Day | `doctors6.jpg` |
+| `--ph-ent` | The five-person ENT – Head & Neck Surgery unit | `doctors5.jpg` |
+| `--ph-dith` | A real *Doctor in the House* still | `doctors7.jpg` |
 
 Two further views of the same building arrived with `real2`, both usable:
 
@@ -163,6 +193,11 @@ dental-AI product also called "KRISS.AI". Worth knowing before anyone Googles it
 - Ambulance service availability
 - Who owns/will own the domain
 - Whether the poster prices (gallbladder, CT aortogram, sleep study, maternity) are still current
-- The full specialty list — OB-Gyn is a fifth beyond the four on NowServing; are there more?
+- The full specialty list — OB-Gyn and ENT are a fifth and sixth beyond the four on NowServing;
+  are there more?
+- **Written consent from every named doctor** before their portrait and credentials go live, and
+  confirmation that each credential is current
+- Dr. Yalung's specialty, which his award post never states
+- The names of the five clinicians in the ENT unit photograph
 - Permission to use their own photography, and a shoot for the facade, ER entrance, lobby,
   rooms and staff
