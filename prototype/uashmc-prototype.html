@@ -224,6 +224,43 @@ body.pv-on .pvbar{display:flex}
 .pvdot{width:10px; height:10px; border-radius:3px; flex:none}
 .pvdot.v{background:var(--pv-verified)} .pvdot.c{background:var(--pv-confirm)} .pvdot.s{background:var(--pv-sample)}
 
+/* ============================ TWEAK PANEL ============================
+   Presenter-only disclosure: try alternate fonts/colors/roundness live
+   against the mocked-up site, in the room, without touching the committed
+   design tokens. Studio chrome, so it uses --studio-* (theme-aware), not
+   the site's own fixed-light palette. */
+.tweak-toggle{
+  font:inherit; font-size:0.75rem; font-weight:500; padding:5px 11px; border:1px solid var(--studio-line);
+  border-radius:var(--r-md); background:var(--studio-bg); color:var(--studio-muted); cursor:pointer;
+  display:flex; align-items:center; gap:6px;
+}
+.tweak-toggle[aria-expanded="true"]{background:var(--studio-panel); color:var(--studio-ink); box-shadow:var(--sh-1); font-weight:600}
+.tweak-toggle:hover{color:var(--studio-ink)}
+.tweak-toggle svg{width:14px;height:14px;stroke-width:1.9}
+.tweak-panel{
+  position:fixed; top:64px; right:18px; z-index:70; width:272px; max-height:calc(100vh - 90px); overflow-y:auto;
+  background:var(--studio-panel); border:1px solid var(--studio-line); border-radius:var(--r-lg);
+  box-shadow:var(--sh-3); padding:16px; display:none; flex-direction:column; gap:13px;
+}
+.tweak-panel.open{display:flex}
+.tweak-panel h3{margin:2px 0 0; font-size:0.75rem; font-weight:700; color:var(--studio-ink); text-transform:uppercase; letter-spacing:.07em}
+.tweak-row{display:flex; flex-direction:column; gap:5px}
+.tweak-row label{font-size:0.75rem; font-weight:600; color:var(--studio-muted)}
+.tweak-row input[type="text"]{
+  font:inherit; font-size:0.8125rem; padding:8px 10px; border:1px solid var(--studio-line); border-radius:var(--r-sm);
+  background:var(--studio-bg); color:var(--studio-ink);
+}
+.tweak-row input[type="range"]{width:100%}
+.tweak-swatches{display:flex; flex-wrap:wrap; gap:10px}
+.tweak-swatch{display:flex; flex-direction:column; gap:4px; font-size:0.6875rem; color:var(--studio-muted); text-align:center}
+.tweak-swatch input[type="color"]{width:40px; height:32px; padding:0; border:1px solid var(--studio-line); border-radius:var(--r-sm); background:none; cursor:pointer}
+.tweak-note{font-size:0.6875rem; color:var(--studio-muted); margin:0; line-height:1.4}
+.tweak-actions button{
+  font:inherit; font-size:0.75rem; font-weight:600; padding:9px 12px; width:100%; border-radius:var(--r-sm);
+  border:1px solid var(--studio-line); background:var(--studio-bg); color:var(--studio-ink); cursor:pointer;
+}
+.tweak-actions button:hover{background:var(--studio-panel)}
+
 .stage{flex:1; display:flex; justify-content:center; padding:22px 18px 30px}
 .frame{width:100%; max-width:1180px; display:flex; flex-direction:column}
 .frame.is-mobile{max-width:396px}
@@ -305,7 +342,7 @@ body.pv-on .pvbar{display:flex}
 .btn-urgent:hover{background:var(--urgent-ink)}
 .btn-care{background:var(--care-700); color:#fff}
 .btn-care:hover{background:#0F5A42}
-.btn-kriss{background:var(--brand-50); color:var(--brand-700); border-color:var(--brand-300)}
+.btn-kriss{background:var(--brand-50); color:var(--brand-700); border-color:var(--brand-100)}
 .btn-kriss:hover{background:var(--brand-100); border-color:var(--brand-500); color:var(--brand-900)}
 .btn-sm{font-size:0.8125rem; padding:11px 16px; min-height:44px}
 
@@ -886,6 +923,7 @@ table.t td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
 .acc summary::-webkit-details-marker{display:none}
 .acc summary::after{content:""; width:8px; height:8px; border-right:2px solid var(--brand-600); border-bottom:2px solid var(--brand-600); transform:rotate(45deg); margin-left:auto; transition:transform .18s}
 .acc details[open] summary::after{transform:rotate(-135deg)}
+@media (prefers-reduced-motion:reduce){ .acc summary::after{transition:none} }
 .acc .acc-b{padding:0 18px 18px; font-size:1rem; color:var(--text)}
 .acc .acc-b ul{margin:0; padding-left:19px; display:flex; flex-direction:column; gap:7px}
 
@@ -1253,7 +1291,47 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
       </div>
     </div>
 
+    <div class="sgroup">
+      <button id="tweak-toggle" class="tweak-toggle" type="button" aria-expanded="false" aria-controls="tweak-panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21v-7M4 10V3M12 21v-11M12 6V3M20 21v-5M20 12V3"/><circle cx="4" cy="13" r="2"/><circle cx="12" cy="8" r="2"/><circle cx="20" cy="14" r="2"/></svg>
+        Design tweaks
+      </button>
+    </div>
+
     <span class="pvcount" id="pvcount" hidden></span>
+  </div>
+
+  <!-- ══════════════ TWEAK PANEL — presenter-only, live preview against #site ══════════════ -->
+  <div class="tweak-panel" id="tweak-panel" role="region" aria-label="Design tweak panel">
+    <h3>Font family</h3>
+    <div class="tweak-row">
+      <label for="tw-font-display">Headings</label>
+      <input type="text" id="tw-font-display" placeholder="Source Serif 4, Georgia, serif">
+    </div>
+    <div class="tweak-row">
+      <label for="tw-font-body">Body</label>
+      <input type="text" id="tw-font-body" placeholder="Be Vietnam Pro, sans-serif">
+    </div>
+
+    <h3>Colors</h3>
+    <div class="tweak-swatches">
+      <div class="tweak-swatch"><label for="tw-c-navy">Navy</label><input type="color" id="tw-c-navy" value="#01487c"></div>
+      <div class="tweak-swatch"><label for="tw-c-cyan">Cyan</label><input type="color" id="tw-c-cyan" value="#0aadd0"></div>
+      <div class="tweak-swatch"><label for="tw-c-rose">Rose</label><input type="color" id="tw-c-rose" value="#d87898"></div>
+      <div class="tweak-swatch"><label for="tw-c-gold">Gold</label><input type="color" id="tw-c-gold" value="#d2a80c"></div>
+      <div class="tweak-swatch"><label for="tw-c-green">Green</label><input type="color" id="tw-c-green" value="#026b52"></div>
+    </div>
+
+    <h3>Corner roundness</h3>
+    <div class="tweak-row">
+      <label for="tw-radius">Scale — <span id="tw-radius-val">100%</span></label>
+      <input type="range" id="tw-radius" min="50" max="200" step="10" value="100">
+    </div>
+
+    <div class="tweak-actions">
+      <button type="button" id="tw-reset">Reset to defaults</button>
+    </div>
+    <p class="tweak-note">Preview only, for this session — nothing here is saved. A typed font only renders if it's already installed on this device; nothing new is downloaded.</p>
   </div>
 
   <!-- provenance legend -->
@@ -1448,7 +1526,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                   <div class="router">
                     <p class="eyebrow">Not sure which clinic</p>
                     <h2 style="font-size:1.5rem; margin-bottom:9px">Tell us what's bothering you</h2>
-                    <p style="color:var(--muted); font-size:0.9375rem">
+                    <p style="color:var(--muted)">
                       We'll show you which of our clinics usually looks after it. This is a directory, not a diagnosis.
                     </p>
 
@@ -1568,7 +1646,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                     <div>
                       <p class="eyebrow">Before you come</p>
                       <h2 style="margin-bottom:11px">Check your HMO <span class="duo">in one step</span></h2>
-                      <p style="color:var(--muted); margin-bottom:20px; font-size:0.96875rem">
+                      <p style="color:var(--muted); margin-bottom:20px">
                         Type the name of your HMO. We'll tell you whether they are one of our partners,
                         what to bring, and how long a Letter of Authorization usually takes.
                       </p>
@@ -1677,7 +1755,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                         <span>Our building, from Marcos Highway</span>
                       </div>
                       <svg class="locmap" style="margin-top:14px" role="img" aria-label="Locator map. United Antipolo Specialists Hospital and Medical Center sits on Marcos Highway in Barangay Mambugan, Antipolo City, with a Phoenix station immediately to its west and SM Center Downtown Antipolo about 350 metres further west along the same highway. Mambugan National High School lies to the south-east."><use href="#loc-map"/></svg>
-                      <p style="font-size:0.78125rem; color:var(--muted); margin-top:12px">
+                      <p style="color:var(--muted); margin-top:12px">
                         Both map links open the exact spot, not a search for our name.
                         In this corridor many drivers use Waze by default.
                       </p>
@@ -1799,11 +1877,11 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                     </div>
                     <div>
                       <h3 style="font-size:1.1875rem; margin-bottom:10px" data-src="verified">The ENT – Head &amp; Neck Surgery unit</h3>
-                      <p style="color:var(--muted); font-size:0.9375rem; line-height:1.62" data-src="verified">
+                      <p style="color:var(--muted); line-height:1.62" data-src="verified">
                         Specialised care for conditions of the ear, nose and throat, and of the head and
                         neck — better breathing, clearer hearing, and the surgery that goes with them.
                       </p>
-                      <p style="color:var(--muted); font-size:0.84375rem; line-height:1.6; margin-top:12px">
+                      <p style="color:var(--muted); margin-top:12px">
                         <span data-src="sample">Clinic days, the unit's direct line and each surgeon's name to be published here.</span>
                       </p>
                     </div>
@@ -1826,7 +1904,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                         <h3 data-src="verified">CT scanning</h3>
                         <p>Our Radiology department is on the ground floor. A CT aortogram
                         <b data-src="verified">starts at ₱25,000</b>.</p>
-                        <p style="margin-top:9px; font-size:0.8125rem; color:var(--muted)">Radiology
+                        <p style="margin-top:9px; color:var(--muted)">Radiology
                         <b data-src="verified">02 8248 3460 local 111</b> &middot; Viber <b data-src="verified">0962 245 3537</b></p>
                         <p class="faq-checked">Price as published by UASHMC, August 2026 — please confirm before you rely on it.</p>
                       </div>
@@ -1838,7 +1916,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                         <p>An overnight study in our Heart &amp; Lung Unit for snoring, daytime tiredness and
                         suspected sleep apnoea. Diagnostic, CPAP and split-night studies,
                         <b data-src="verified">from ₱25,500</b>.</p>
-                        <p style="margin-top:9px; font-size:0.8125rem; color:var(--muted)">Heart &amp; Lung Unit
+                        <p style="margin-top:9px; color:var(--muted)">Heart &amp; Lung Unit
                         <b data-src="verified">02 8248 3464</b> &middot; <b data-src="verified">0968 422 3538</b></p>
                         <p class="faq-checked">Price as published by UASHMC, August 2026 — please confirm before you rely on it.</p>
                       </div>
@@ -1906,8 +1984,8 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                     <div class="card">
                       <h3 data-src="verified">Telemedicine</h3>
                       <p>An online consultation with one of our doctors, and our own video series
-                      <b>Doctor in the House</b>.</p>
-                      <p style="margin-top:9px; font-size:0.78125rem" data-src="sample">What can and cannot be handled online, and how prescriptions work, to be published here.</p>
+                      <b data-src="verified">Doctor in the House</b>.</p>
+                      <p style="margin-top:9px" data-src="sample">What can and cannot be handled online, and how prescriptions work, to be published here.</p>
                     </div>
                   </div>
                 </div>
@@ -2088,7 +2166,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                         <a class="btn btn-urgent btn-sm" href="tel:+63282483460">Call UASHMC 02 8248 3460</a>
                         <a class="btn btn-ghost btn-sm" href="#/contact">Directions to the ER</a>
                       </div>
-                      <p style="margin-top:14px; font-size:0.8125rem; color:var(--urgent-ink)">
+                      <p style="margin-top:14px; color:var(--urgent-ink)">
                         <b>You will not be asked for a deposit first.</b> Under the Anti-Hospital Deposit Law
                         (RA 10932) it is unlawful for any hospital to demand a deposit or advance payment
                         before giving basic emergency care.
@@ -2140,7 +2218,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                           </tbody>
                         </table>
                       </div>
-                      <p style="font-size:0.8125rem; color:var(--muted); margin-top:14px; line-height:1.6">
+                      <p style="color:var(--muted); margin-top:14px; line-height:1.6">
                         We do publish package prices for <a href="#/services" style="color:var(--brand-700); font-weight:600">maternity,
                         gallbladder surgery, CT scans and sleep studies</a>. For anything else, our Billing Section
                         will give you a written estimate for your own case before you decide — call
@@ -2229,7 +2307,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                           </tbody>
                         </table>
                       </div>
-                      <p style="font-size:0.78125rem; color:var(--muted); margin-top:11px">
+                      <p style="color:var(--muted); margin-top:11px">
                         <span data-src="sample">Direct locals and opening hours for every department to follow</span>
                         — so you are not passed from desk to desk.
                       </p>
@@ -2239,7 +2317,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
                       <div class="landmark" data-src="verified" role="img" aria-label="United Antipolo Specialists Hospital and Medical Center seen from Marcos Highway">
                         <span>Blue and yellow, on the uphill side of Marcos Highway</span>
                       </div>
-                      <p style="font-size:0.78125rem; color:var(--muted); margin-top:11px">
+                      <p style="color:var(--muted); margin-top:11px">
                         <span data-src="sample">Photographs of the ER entrance, the lobby and the rooms to follow.</span>
                       </p>
                     </div>
@@ -2404,6 +2482,7 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
 "use strict";
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var PREFERS_STILL = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 /* ============================ STUDIO ============================ */
 var frame=$("#frame"), scroller=$("#scroller"), site=$("#site");
@@ -2418,17 +2497,15 @@ $$('.seg [data-dev]').forEach(function(b){
 
 /* Count only what is actually on screen — two hero directions and six pages
    share one DOM, so counting hidden nodes would overstate every figure. */
-function visible(sel){
-  return $$(sel).filter(function(el){ return el.offsetParent !== null }).length;
-}
 function refreshPvCount(){
   var c=$("#pvcount");
   if(!document.body.classList.contains("pv-on")){ c.hidden=true; return }
-  var v  = visible('.site [data-src="verified"]'),
-      cf = visible('.site [data-src="confirm"]'),
-      /* .figure placeholders carry their own data-src="sample", so they
-         are already in the count above — no second pass needed. */
-      s  = visible('.site [data-src="sample"]');
+  var v=0, cf=0, s=0;
+  $$('.site [data-src]').forEach(function(el){
+    if(el.offsetParent === null) return;
+    var t = el.getAttribute("data-src");
+    if(t==="verified") v++; else if(t==="confirm") cf++; else if(t==="sample") s++;
+  });
   c.textContent = v+" verified · "+cf+" to confirm · "+s+" placeholder — on this page";
   c.hidden=false;
 }
@@ -2460,6 +2537,66 @@ $$('.seg [data-dir]').forEach(function(b){
     scroller.scrollTop=0;
   });
 });
+
+/* ============================ TWEAK PANEL ============================
+   Presenter-only: try alternate fonts, colors and corner roundness live
+   against #site, in the room, without touching the committed tokens.
+   Every value is set as an inline override on #site itself, never on
+   :root — Reset just removes the overrides so the real defaults show
+   through again. Nothing here persists past a reload. */
+(function(){
+  var toggle = $("#tweak-toggle"), panel = $("#tweak-panel");
+  if(!toggle || !panel) return;
+
+  function setOpen(open){
+    panel.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+  }
+  toggle.addEventListener("click", function(){ setOpen(!panel.classList.contains("open")); });
+  document.addEventListener("keydown", function(e){
+    if(e.key==="Escape" && panel.classList.contains("open")){ setOpen(false); toggle.focus(); }
+  });
+
+  var FONT_DEFAULTS = { "tw-font-display":"--display", "tw-font-body":"--ui" };
+  Object.keys(FONT_DEFAULTS).forEach(function(id){
+    var prop = FONT_DEFAULTS[id];
+    $("#"+id).addEventListener("input", function(){
+      var v = this.value.trim();
+      if(v) site.style.setProperty(prop, v); else site.style.removeProperty(prop);
+    });
+  });
+
+  var COLOR_DEFAULTS = {
+    "tw-c-navy":["--brand-700","#01487c"], "tw-c-cyan":["--brand-500","#0aadd0"],
+    "tw-c-rose":["--rose-500","#d87898"], "tw-c-gold":["--accent","#d2a80c"],
+    "tw-c-green":["--care-700","#026b52"]
+  };
+  Object.keys(COLOR_DEFAULTS).forEach(function(id){
+    var prop = COLOR_DEFAULTS[id][0];
+    $("#"+id).addEventListener("input", function(){ site.style.setProperty(prop, this.value); });
+  });
+
+  var RADIUS_BASE = { "--r-sm":6, "--r-md":10, "--r-lg":16, "--r-xl":24 };
+  var radius = $("#tw-radius"), radiusVal = $("#tw-radius-val");
+  radius.addEventListener("input", function(){
+    var pct = Number(radius.value);
+    radiusVal.textContent = pct + "%";
+    Object.keys(RADIUS_BASE).forEach(function(k){
+      site.style.setProperty(k, (RADIUS_BASE[k] * pct / 100).toFixed(1) + "px");
+    });
+  });
+
+  $("#tw-reset").addEventListener("click", function(){
+    Object.keys(FONT_DEFAULTS).forEach(function(id){
+      site.style.removeProperty(FONT_DEFAULTS[id]); $("#"+id).value = "";
+    });
+    Object.keys(COLOR_DEFAULTS).forEach(function(id){
+      site.style.removeProperty(COLOR_DEFAULTS[id][0]); $("#"+id).value = COLOR_DEFAULTS[id][1];
+    });
+    Object.keys(RADIUS_BASE).forEach(function(k){ site.style.removeProperty(k); });
+    radius.value = 100; radiusVal.textContent = "100%";
+  });
+})();
 
 /* ============================ ROUTING ============================
    Deliberately does NOT depend on location.hash working. Some contexts
@@ -2986,6 +3123,10 @@ var KB=[
    billing question can beat a suicide disclosure. */
 FAQ.forEach(function(f){
   if(!f.kb) return;
+  if(!f.pat){
+    if(window.console) console.error("[FAQ] kb:true entry has no pat, skipped: " + f.q);
+    return;
+  }
   var pri = typeof f.kbpri === "number" ? f.kbpri : 3;
   if(pri < 3){
     if(window.console) console.error("[FAQ] pri " + pri + " clamped to 3 for: " + f.q);
@@ -3042,7 +3183,7 @@ function bubble(cls,html,src,acts){
 
 function typing(){
   var t=document.createElement("div");
-  t.className="typing"; t.innerHTML="<i></i><i></i><i></i>";
+  t.className="typing"; t.innerHTML="<i></i><i></i><i></i><span class=\"vh\">Assistant is typing</span>";
   klog.appendChild(t); klog.scrollTop=klog.scrollHeight;
   return t;
 }
@@ -3056,12 +3197,14 @@ function match(q){
 
 function ask(q){
   q=(q||"").trim(); if(!q) return;
-  bubble("me", q.replace(/[<>]/g,""));
+  bubble("me", q.replace(/[<>&]/g,""));
   $("#kin").value="";
-  var t=typing();
-  var delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 620;
+  /* Reduced motion disables the typing indicator outright, not just shortens
+     it — it's an animated cue with no other purpose. */
+  var reduced = PREFERS_STILL.matches;
+  var t = reduced ? null : typing();
   setTimeout(function(){
-    t.remove();
+    if(t) t.remove();
     var k=match(q);
     if(k){
       fails=0;
@@ -3076,7 +3219,7 @@ function ask(q){
         "Logged as an unanswered question — question #"+(1000+fails),
         [["Call now","tel:+63282483460",""],["Contact page","#/contact",""]]);
     }
-  }, delay);
+  }, reduced ? 0 : 620);
 }
 
 function openKriss(){
@@ -3105,16 +3248,13 @@ $("#kclose").addEventListener("click",function(){ closeKriss(); klaunch.focus() 
 $$("[data-kriss-open]").forEach(function(b){ b.addEventListener("click",openKriss) });
 $("#ksend").addEventListener("click",function(){ ask($("#kin").value) });
 $("#kin").addEventListener("keydown",function(e){ if(e.key==="Enter") ask(this.value) });
-document.addEventListener("keydown",function(e){
-  if(e.key==="Escape" && kpanel.classList.contains("open")){ closeKriss(); klaunch.focus() }
-});
 $$("[data-human]").forEach(function(b){
   b.addEventListener("click",function(){
     openKriss();
     bubble("bot",
       '<p>Of course. Here is how to reach a person at UASHMC:</p>'+
       '<ul><li><strong>Trunkline</strong> 02 8248 3460</li><li><strong>SMS or Viber</strong> 0947 875 4949</li>'+
-      '<li><strong>Emergency Room</strong> — open 24 hours, come straight in</li></ul>'+
+      '<li><strong>Emergency Room</strong> — come straight in <span class="tosupply">hours to confirm</span></li></ul>'+
       '<p>I\'ll pass along what we discussed so you don\'t have to repeat yourself.</p>',
       null, [["Call now","tel:+63282483460",""],["Contact page","#/contact",""]]);
   });
@@ -3137,12 +3277,11 @@ klog.addEventListener("click",function(e){
 
   var RATE = { "1":0.032 };  /* share of hero height; keep well under the 7% overhang */
   var plates = $$("[data-parallax-layer]", stage);
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   var ticking = false;
 
   function draw(){
     ticking = false;
-    if(reduce.matches || !stage.offsetParent) return;   /* Direction A is showing */
+    if(PREFERS_STILL.matches || !stage.offsetParent) return;   /* Direction A is showing */
     var h = stage.offsetHeight || 1;
     var p = Math.min(1, Math.max(0, scroller.scrollTop / h));
     plates.forEach(function(el){
@@ -3252,9 +3391,10 @@ function openFaqFromHash(){
 function faqJsonLd(){
   var items = FAQ.filter(function(f){
     /* verified is necessary but not sufficient: an answer can be verified overall
-       and still carry a "to be confirmed" clause. Never publish those as
-       structured data. */
-    return f.src === "verified" && f.a.indexOf("tosupply") < 0;
+       and still carry a "to be confirmed" clause, or a checked=true price that
+       is transcribed but not yet reconfirmed in writing. Never publish either
+       as structured data. */
+    return f.src === "verified" && f.a.indexOf("tosupply") < 0 && !f.checked;
   }).map(function(f){
     var txt = f.a.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
     return { "@type":"Question", "name":f.q,
@@ -3267,8 +3407,6 @@ function faqJsonLd(){
                                     "@type":"FAQPage", "mainEntity":items }, null, 1);
   document.head.appendChild(el);
 }
-
-var PREFERS_STILL = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 renderFaq();
 renderFaqInto($("#faq-hmo"), ["Cost"], "ih");
