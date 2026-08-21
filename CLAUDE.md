@@ -160,6 +160,22 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   building used to fill it, behind a "not UASHMC's building" caption; both are gone, as are the
   two `--hero-*` depth plates (~289KB). Do not reintroduce a stand-in building. If a hero photo
   is ever missing, the honest fallback is Direction A's structure, not a plausible facade.
+- **The locator map is real geometry, drawn, not embedded.** `#loc-map` is an inline SVG
+  `<symbol>` near the top of `.studio`, generated from OpenStreetMap way 949112926 and referenced
+  by both places that show it (`.locmap` on the homepage location block and on `/contact`). An
+  embedded Google or Waze map would need the network and break the offline constraint, so the
+  roads, the creek, the landmark dots and the pin are all paths. Three rules:
+    - **The ODbL attribution inside the SVG stays.** "Map data © OpenStreetMap contributors" is
+      the licence condition, not decoration.
+    - **It is styled with presentation attributes on `<g>` wrappers, not CSS classes.** Class
+      selectors reaching into `<use>` shadow content is the fiddly corner of SVG, and grouped
+      attributes cost less than duplicating 200 paths would.
+    - **The viewBox is sized for the ~490px slot it renders into** (620×349), because SVG text
+      scales with the viewBox: at the original 1120px width every label rendered at ~6px.
+      If you resize the slot, regenerate rather than stretch.
+- **Map links use coordinates, never a name search.** `14.6250262%2C121.1399902` for both Waze
+  and Google. Third-party listings carry the wrong street address for this hospital, so a search
+  by name is exactly the thing that can put a driver in the wrong place.
 - **The placeholder briefings live behind the toggle.** The three `.banner.pvblock` blocks on
   `/doctors`, `/services` and `/hmo` are notes about our content state, not website copy, so they
   are `display:none` until **Show content sources** is on. The one exception is `/doctors`, which

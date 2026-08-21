@@ -495,6 +495,23 @@ overhang is a percent of the photograph the frame never shows. Keep the overhang
 travel well under the overhang, or the frame edge shows through on scroll. If the subject cannot
 afford the crop, drop the parallax rather than the subject.
 
+**Maps: the prototype draws, production embeds.** These are two different problems and the
+answer differs. The prototype must open offline from a laptop, so its locator map is inline SVG
+generated from OpenStreetMap geometry — accurate, ~35KB of text, nothing fetched. The production
+site is served over the network and should embed a real interactive map, because a patient wants
+to pan, zoom and hand off to navigation. Two rules survive the switch:
+
+- **Deep links carry coordinates, not a name.** `?ll=14.6250262,121.1399902` for Waze,
+  `?api=1&query=14.6250262,121.1399902` for Google. Third-party listings carry a wrong street
+  address for this hospital; a search by name can land a driver somewhere else. Coordinates cannot.
+- **Name the landmarks, not just the address.** Along a highway corridor people navigate by what
+  they can see — the Phoenix station next door, SM Center Downtown Antipolo 350 m west. A street
+  number is for a courier; a landmark is for a patient.
+
+Whatever the map, keep the ODbL or provider attribution intact, and give the block a text
+alternative that describes the position in words — the landmark sentence is genuinely the more
+useful of the two for a screen-reader user.
+
 **Photographic placeholders are drawn, not photographed.** Where UASHMC has not shot something yet,
 the slot takes an abstract illustrated stand-in on one of the warm grounds, cycled for variety
 across a grid, with a quiet "to follow" caption. Two rules behind this:

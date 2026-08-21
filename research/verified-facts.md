@@ -68,6 +68,37 @@ prototype that quotes one carries a visible "as published August 2026, please co
 ⚠️ **OB-Gyn is a fifth specialty** beyond the four on NowServing. The real specialty list is
 still a content-gathering item.
 
+## Where they actually are
+
+OpenStreetMap has the hospital as **way 949112926**:
+
+| Field | Value |
+|---|---|
+| Coordinates | **14.6250262, 121.1399902** |
+| Bounding box | 14.6247755 – 14.6251797 N, 121.1398640 – 121.1401060 E (a footprint of roughly 45 × 26 m) |
+| OSM name | United Antipolo Specialists Hospital and Medical Center |
+| Place | Mambugan, Antipolo, Rizal, Calabarzon |
+| Source | [Nominatim lookup](https://nominatim.openstreetmap.org/lookup?osm_ids=W949112926&format=jsonv2) · data © OpenStreetMap contributors, ODbL |
+
+Landmarks along the corridor, from the same data — these are what a driver
+actually navigates by, and the prototype now names them:
+
+| Landmark | Relative to the hospital |
+|---|---|
+| **Phoenix station** | immediately west, ~120 m, same side of the highway |
+| **SM Center Downtown Antipolo** | ~350 m further west along Marcos Highway |
+| **Mambugan National High School** | south-east |
+| Peñafrancia Elementary School | north |
+| Sumulong Highway | joins from the east |
+
+⚠️ **OSM still tags them `landuse=construction` / `construction=hospital`.** That is stale —
+they opened in March 2025. Correcting the OSM entry to `amenity=hospital` is a cheap launch task
+with disproportionate reach, because OSM feeds a long tail of apps, and it sits alongside the
+same correction needed on Waze, Google, Facebook and NowServing.
+
+⚠️ The coordinates are crowd-sourced, so the prototype tags the landmark cues **confirm**, not
+verified. Worth having someone at the hospital stand outside and check the pin.
+
 ## Named staff, from their own posts
 
 Transcribed from the staff posters in [`images/`](../images/). Only what the post
