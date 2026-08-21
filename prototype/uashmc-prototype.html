@@ -546,6 +546,29 @@ a.card:hover{border-color:var(--brand-500); box-shadow:var(--sh-2)}
 .card-ic{width:36px;height:36px;border-radius:9px;background:var(--brand-500);color:var(--brand-700);display:grid;place-items:center;margin-bottom:13px}
 .card-ic svg{width:19px;height:19px}
 .spec-count{font-size:12px; color:var(--brand-700); font-weight:600; margin-top:9px; display:block}
+.spec-count.none{color:var(--muted); font-weight:500; font-style:italic}
+/* the tiles are buttons, so they get the same lift as the cards they filter */
+@media (hover:hover){
+  .gspec .card{transition:transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s, border-color .25s}
+  .gspec .card:hover{transform:translateY(-3px); box-shadow:var(--sh-2); border-color:var(--brand-400)}
+}
+@media (prefers-reduced-motion:reduce){
+  .gspec .card{transition:none} .gspec .card:hover{transform:none}
+}
+
+/* the empty state carries a reason and a way out, not just "no results" */
+.doc-empty{
+  grid-column:1/-1; padding:26px 24px; border-radius:var(--r-md);
+  background:linear-gradient(158deg, var(--sand-50) 0%, var(--brand-50) 100%);
+  border:1px solid var(--line-soft);
+}
+.doc-empty p{font-size:14.5px; line-height:1.6; color:var(--text); max-width:56ch}
+.doc-empty p+p{margin-top:9px; color:var(--muted); font-size:13.5px}
+/* scoped to the prose: unscoped, this repainted .btn-primary's white label navy
+   on a navy button and the "Call to book" text vanished */
+.doc-empty p a{color:var(--brand-700); font-weight:600}
+.doc-empty-a{display:flex; gap:9px; flex-wrap:wrap; margin-top:16px}
+.doc-empty-a a{text-decoration:none}
 
 .sec-head{margin-bottom:30px; max-width:58ch}
 .sec-head h2{font-size:clamp(22px,2.9cqi,30px); letter-spacing:-.015em; margin-bottom:9px}
@@ -719,13 +742,45 @@ a.card:hover{border-color:var(--brand-500); box-shadow:var(--sh-2)}
 .dgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
 @container vp (max-width:940px){ .dgrid{grid-template-columns:repeat(2,1fr)} }
 @container vp (max-width:620px){ .dgrid{grid-template-columns:1fr} }
-.doc{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; display:flex; flex-direction:column}
+.doc{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
+  overflow:hidden; display:flex; flex-direction:column;
+  transition:transform .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s cubic-bezier(.22,.61,.36,1), border-color .25s;
+}
+/* The frame clips; the layer inside it scales. One element cannot do both,
+   because overflow:hidden and transform would be fighting over the same box. */
 .doc .doc-fig,.doc .figure{border-radius:0; aspect-ratio:1/1}
-.doc .doc-fig{border-bottom:1px solid var(--line-soft)}
+.doc .doc-fig{border-bottom:1px solid var(--line-soft); overflow:hidden; position:relative}
 /* real headshots, cropped from UASHMC's own posters */
-.doc-ph{
+/* .site .doc-ph{position:relative} in the provenance block outranks a bare
+   .doc-ph, so this needs the extra class to win the specificity */
+.site .doc .doc-ph{
+  position:absolute; inset:0; display:block;
   background-size:cover; background-repeat:no-repeat; background-position:center 18%;
   background-color:var(--brand-100);
+  transition:transform .62s cubic-bezier(.22,.61,.36,1), filter .45s ease;
+}
+/* a navy wash that rises out of the bottom of the frame on hover, so the card
+   lifts as one object rather than the photo merely growing inside it */
+.doc .doc-fig::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:linear-gradient(to top, rgba(1,48,90,.34) 0%, rgba(1,48,90,.06) 42%, rgba(1,48,90,0) 70%);
+  opacity:0; transition:opacity .4s ease;
+}
+@media (hover:hover){
+  .doc:hover{transform:translateY(-6px); box-shadow:var(--sh-3); border-color:var(--brand-400)}
+  .doc:hover .doc-ph{transform:scale(1.055); filter:saturate(1.06)}
+  .doc:hover .doc-fig::after{opacity:1}
+  .doc:hover .doc-b h3{color:var(--brand-700)}
+}
+.doc:focus-within{border-color:var(--brand-500); box-shadow:var(--sh-2)}
+.doc .doc-b h3{transition:color .25s}
+/* Motion is decoration here, so it goes entirely rather than being reduced.
+   The colour and shadow cues stay, which is what actually signals "clickable". */
+@media (prefers-reduced-motion:reduce){
+  .doc,.doc-ph,.doc .doc-fig::after,.doc .doc-b h3{transition:none}
+  .doc:hover{transform:none}
+  .doc:hover .doc-ph{transform:none}
 }
 .p-yalung{background-image:var(--dr-yalung)}
 .p-regalado{background-image:var(--dr-regalado)}
@@ -1618,18 +1673,19 @@ body.pv-on .site .samp{outline:1px solid var(--pv-sample)}
 
                   <p class="note-slim">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
-                    <span><b>Four of the profiles below are real</b> — taken from UASHMC's own
-                    published posts, with the fields their posts do not state left visibly blank.
-                    The rest are template samples waiting on the full roster.</span>
+                    <span><b>These are the doctors UASHMC has published so far.</b> Fields their posts
+                    do not state are left visibly blank rather than filled in with a guess.</span>
                   </p>
 
                   <div class="banner pvblock">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="12" cy="12" r="10"/><path d="M12 16v-5M12 8h.01"/></svg>
                     <p>
-                      <b>The doctor profiles below are layout placeholders.</b>
-                      The specialties are real, taken from UASHMC's own NowServing listings. The names,
-                      portraits, schedules and HMO tags are ours, purely to show the template. UASHMC
-                      supplies the real roster, and a profile is published only once every field is complete.
+                      <b>Every profile here is real.</b> The four names, portraits and specialties come
+                      from UASHMC's own posts. The template samples that used to pad this page out have been
+                      removed. What is still missing is per-doctor detail — only one poster gives clinic
+                      days, and none give HMO coverage — so those fields show as "to confirm" rather than
+                      being filled in. The full roster, with a schedule and HMO list per doctor, is the
+                      single largest content item on the checklist.
                     </p>
                   </div>
 
@@ -2477,8 +2533,10 @@ renderLoa("en");
    renders as a visible placeholder rather than a plausible guess -- so a real
    profile can be half-empty, which is the truth. Entries with no `v` at all are
    template samples. */
+/* Photographed doctors only. A profile without a portrait was a template
+   sample, and samples are for showing a card layout, not for a presentation
+   that now has real faces to show. More profiles as UASHMC supplies them. */
 var DOCS=[
- /* ---- real, from their own published posters ---- */
  {n:"Dr. Elnah A. Gulliab", s:"Internal Medicine", note:"Acupuncture",
   d:["Mon","Wed","Fri"], t:"11:00 AM – 2:00 PM", r:"Rm 507, 5th Floor", h:[],
   ph:"gulliab", real:1, v:{n:1,s:1,note:1,d:1,t:1,r:1}},
@@ -2490,43 +2548,17 @@ var DOCS=[
  {n:"Dr. Alvin L. Yalung", s:"", note:"", d:[], t:"", r:"", h:[],
   ph:"yalung", real:1, v:{n:1}},
 
- /* ---- template samples, to show the card at volume ---- */
- {n:"Dr. A. Reyes",s:"Cardiology",d:["Mon","Wed","Fri"],t:"9:00 AM – 12:00 NN",r:"Rm 204",h:["MediCard","Intellicare"],v:{s:1}},
- {n:"Dr. B. Santos",s:"Cardiology",d:["Tue","Thu","Sat"],t:"1:00 – 5:00 PM",r:"Rm 206",h:["Intellicare","ValuCare"],v:{s:1}},
- {n:"Dr. C. Dizon",s:"Internal Medicine",d:["Mon","Tue","Thu"],t:"8:00 AM – 12:00 NN",r:"Rm 112",h:["MediCard","Pacific Cross"],v:{s:1}},
- {n:"Dr. E. Bautista",s:"Orthopedics",d:["Mon","Thu"],t:"9:00 AM – 1:00 PM",r:"Rm 308",h:["Intellicare","MediCard"],v:{s:1}},
- {n:"Dr. G. Cruz",s:"Pediatrics",d:["Mon","Wed","Fri","Sat"],t:"9:00 AM – 12:00 NN",r:"Rm 105",h:["MediCard","Intellicare","Pacific Cross"],v:{s:1}},
- {n:"Dr. J. Mercado",s:"Internal Medicine",d:["Mon","Fri"],t:"3:00 – 7:00 PM",r:"Rm 116",h:["MediCard"],v:{s:1}},
- {n:"Dr. K. Salazar",s:"Obstetrics & Gynaecology",d:["Mon","Wed","Fri"],t:"9:00 AM – 1:00 PM",r:"Rm 210",h:["MediCard","Intellicare"],v:{s:1}},
- {n:"Dr. L. Tamayo",s:"Obstetrics & Gynaecology",d:["Tue","Thu","Sat"],t:"1:00 – 5:00 PM",r:"Rm 212",h:["ValuCare","Pacific Cross"],v:{s:1}},
- {n:"Dr. M. Ocampo",s:"ENT – Head & Neck Surgery",d:["Mon","Thu"],t:"9:00 AM – 12:00 NN",r:"Rm 402",h:["MediCard","Intellicare"],v:{s:1}}
 ];
-/* An illustrated stand-in for the headshots UASHMC has not taken yet. Kept
-   abstract on purpose: it has to read as a drawing at a glance, because a
-   realistic face would be a picture of a doctor who does not exist. */
-function figure(i, cap){
-  return '<div class="figure t'+(i%4)+'" aria-hidden="true">'+
-    '<svg viewBox="0 0 120 104" fill="none">'+
-      '<circle cx="60" cy="34" r="18.5" fill="currentColor" opacity=".92"/>'+
-      '<path d="M15 104c0-21.5 20.1-39 45-39s45 17.5 45 39z" fill="currentColor" opacity=".92"/>'+
-      '<path d="M60 66 50 104h7.5l2.5-23 2.5 23H70z" fill="#fff" opacity=".72"/>'+
-      '<path d="M45.5 69c-6.5 4.5-9 12-6.5 19.5" stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity=".85"/>'+
-      '<circle cx="41.5" cy="93" r="5" fill="#fff" opacity=".85"/>'+
-    '</svg>'+
-    '<span class="fcap">'+cap+'</span></div>';
-}
-
 function renderDocs(){
   var q=$("#dq").value.trim().toLowerCase(), sp=$("#dspec").value, dy=$("#dday").value, hm=$("#dhmo").value;
   var list=DOCS.filter(function(d){
     return (!q || d.n.toLowerCase().indexOf(q)>-1) && (!sp || d.s===sp) &&
            (!dy || d.d.indexOf(dy)>-1) && (!hm || d.h.indexOf(hm)>-1);
   });
-  var real = 0;
-  for (var k = 0; k < DOCS.length; k++) if (DOCS[k].real) real++;
-  $("#dcount").textContent = list.length+" of "+DOCS.length+" doctors · "+real+
-    " published by UASHMC, the rest are template samples"+
-    (list.length?"":" — try removing a filter");
+  $("#dcount").textContent = (list.length === DOCS.length
+      ? DOCS.length+" doctors"
+      : list.length+" of "+DOCS.length+" doctors")+
+    " · more profiles are being added";
   $("#dgrid").innerHTML = list.length ? list.map(function(d,i){
     /* One field, three states. Verified when their own poster states it; shown
        as a violet placeholder value on a template sample; and shown as a "to
@@ -2542,12 +2574,12 @@ function renderDocs(){
       time:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
       room:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>'
     };
-    var pic = d.ph
-      ? '<div class="doc-fig doc-ph p-'+d.ph+'" data-src="verified" role="img" aria-label="'+d.n+'"></div>'
-      : '<div class="doc-fig" data-src="sample">'+figure(i,"Portrait to follow")+'</div>';
+    /* the frame clips, the layer inside it scales -- one element could not do
+       both, since overflow:hidden and transform would fight on the same box */
+    var pic = '<div class="doc-fig"><span class="doc-ph p-'+d.ph+'" data-src="verified"'+
+      ' role="img" aria-label="'+d.n+'"></span></div>';
     return '<article class="doc">'+pic+
       '<div class="doc-b">'+
-      (d.real ? '' : '<span class="samp">Sample profile</span>')+
       '<h3>'+f("n", d.n, d.n)+'</h3>'+
       '<span class="doc-spec">'+f("s", d.s, "Specialty to confirm")+'</span>'+
       (d.note ? '<p class="doc-note">'+f("note", d.note, "")+'</p>' : '')+
@@ -2561,10 +2593,43 @@ function renderDocs(){
         : '<span data-src="sample" class="tosupply">HMO coverage to confirm</span>')+'</div>'+
       '<div class="doc-act"><a class="btn btn-primary btn-sm" href="#/doctors" style="flex:1">Book via NowServing</a></div>'+
       '</div></article>';
-  }).join("") : '<p style="color:var(--muted); font-size:14px">No doctor matches those filters yet. '+
-    'Try removing one, or call <a href="tel:+63282483460" style="color:var(--brand-700);font-weight:600">02 8248 3460</a> '+
-    'and we will find you a clinic day.</p>';
+  }).join("") : emptyDocs(q, sp, dy, hm);
 }
+/* Naming the reason beats "no results". Most of these are not the visitor
+   failing to find something, they are us not having published it yet, and
+   saying so is the honest answer as well as the more useful one. */
+function emptyDocs(q, sp, dy, hm){
+  var why;
+  if (hm) why = "We have not published which HMOs each doctor is accredited with yet "+
+    "— our HMO desk can tell you over the phone.";
+  else if (sp) why = "We have not published a profile for <strong>"+sp+"</strong> yet, "+
+    "though the clinic is running.";
+  else if (dy) why = "We have not published every doctor's clinic days yet.";
+  else if (q) why = "No doctor on our published list matches that name.";
+  else why = "Nothing matches those filters yet.";
+  return '<div class="doc-empty"><p>'+why+'</p>'+
+    '<p>Call <a href="tel:+63282483460">02 8248 3460</a> or Viber '+
+    '<strong>0947 875 4949</strong> and we will book you with the right specialist.</p>'+
+    '<div class="doc-empty-a"><a class="btn btn-primary btn-sm" href="tel:+63282483460">Call to book</a>'+
+    '<button class="btn btn-ghost btn-sm" data-clear>Clear the filters</button></div></div>';
+}
+document.addEventListener("click", function(e){
+  var b = e.target && e.target.closest ? e.target.closest("[data-clear]") : null;
+  if(!b) return;
+  $("#dq").value=""; $("#dspec").value=""; $("#dday").value=""; $("#dhmo").value="";
+  renderDocs();
+});
+
+/* live count per clinic tile, so a thin roster is visible before the click */
+function specCounts(){
+  $$("[data-spec]").forEach(function(b){
+    var n = DOCS.filter(function(d){ return d.s === b.dataset.spec }).length;
+    var el = $(".spec-count", b) || b.appendChild(document.createElement("span"));
+    el.className = "spec-count" + (n ? "" : " none");
+    el.textContent = n ? (n + (n > 1 ? " doctors" : " doctor")) : "Profiles coming";
+  });
+}
+
 ["#dq","#dspec","#dday","#dhmo"].forEach(function(s){
   $(s).addEventListener("input",renderDocs); $(s).addEventListener("change",renderDocs);
 });
@@ -3134,6 +3199,6 @@ window.addEventListener("hashchange", function(){
 });
 
 /* init */
-renderHmo(""); renderDocs(); route();
+renderHmo(""); renderDocs(); specCounts(); route();
 })();
 </script>

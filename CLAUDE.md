@@ -109,22 +109,39 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   [research/verified-facts.md](research/verified-facts.md#photography-we-actually-have). Use them
   through `.shot`, `.hero-shot`, `.feature-shot` and `.landmark`. Anything else photographic is
   a placeholder, and placeholders are drawn, not photographed — see `.figure`.
-- **The doctor directory mixes real and sample, and each card marks its own gaps.** The first four
-  entries in `DOCS` are real people from UASHMC's own posters. `real:1` marks a published doctor
-  (drives the "Sample profile" chip and the tally); `v:{}` lists which fields that poster actually
-  states. The renderer's `f()` helper has **three** states, and the third is the point:
+- **`DOCS` holds photographed doctors only.** The nine template samples are gone: a profile
+  without a portrait exists to demonstrate a card layout, and there are real faces to show now.
+  Every entry is a real person from UASHMC's own posters. `v:{}` lists which fields that poster
+  actually states, and `f()` keeps **three** states because the middle one is how a new sample
+  would render if one is ever added back:
 
   | condition | render |
   |---|---|
   | field is in `v` | `data-src="verified"` — green |
-  | not in `v` but a value exists | `data-src="sample"` — a template sample's placeholder value |
+  | not in `v` but a value exists | `data-src="sample"` — a placeholder value (currently unused) |
   | not in `v` and no value | `.tosupply` "to confirm" chip |
 
-  So a **real** profile can be visibly half-empty, which is the truth: only Dr. Gulliab's poster
-  gives a schedule, and none of them give HMO coverage. Do not fill those in. A real name over an
-  invented clinic day is worse than a real name over a visible blank — and Dr. Yalung's card
-  deliberately carries a real face over a blank specialty, because his award post never states one.
-  The samples keep `v:{s:1}`: their specialties are real, from NowServing.
+  So a real profile is visibly half-empty, which is the truth: only Dr. Gulliab's poster gives a
+  schedule, and none give HMO coverage. Do not fill those in. A real name over an invented clinic
+  day is worse than a real name over a visible blank — and Dr. Yalung's card deliberately carries a
+  real face over a blank specialty, because his award post never states one.
+- **A four-doctor roster makes most of the filters return nothing, so the emptiness has to explain
+  itself.** Four of the six clinic tiles and *every* HMO value match no one. Two things stop that
+  reading as a broken page, and both must survive any roster change:
+    - `specCounts()` writes a live count into each clinic tile (`.spec-count`, or "Profiles coming"
+      when zero), so a visitor sees the gap before they click rather than after.
+    - `emptyDocs()` names the filter that emptied the grid. "We have not published which HMOs each
+      doctor is accredited with yet" is both the honest answer and the more useful one — it turns a
+      dead end into the content-checklist moment the whole prototype is built around. Never let it
+      degrade to "no results".
+- **The card hover is a frame that clips and a layer that scales.** `.doc-fig` holds
+  `overflow:hidden`; `.doc-ph` is absolutely positioned inside it and takes the `scale(1.055)`.
+  One element cannot do both, because `overflow:hidden` and `transform` fight over the same box.
+  Two traps: `.site .doc-ph{position:relative}` in the provenance block outranks a bare `.doc-ph`,
+  so the absolute positioning needs `.site .doc .doc-ph`; and scoping `.doc-empty a` without the
+  `p` repaints `.btn-primary`'s white label navy on a navy button and the text vanishes.
+  `prefers-reduced-motion` drops the transforms entirely and keeps the colour and shadow cues,
+  which are what actually signal "clickable".
 - **These are identifiable people and consent is not established.** The portraits come from posts
   celebrating staff, not from a published roster. Fine in a pitch; not fine on a live site without
   each person's sign-off. `research/verified-facts.md` carries this as an open item — keep it there.
