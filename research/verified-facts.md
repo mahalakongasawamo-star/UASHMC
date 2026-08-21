@@ -98,7 +98,17 @@ visibly blank in the prototype rather than filled in.
 
 Twenty partners, transcribed from the **"Stronger Partnerships, Better Care"** poster
 (`images/hmo partners.jpg`; the same building photo and framing appears again in
-`images/medicard.jpg`, which announces MediCard specifically):
+`images/medicard.jpg`, which announces MediCard specifically).
+
+**Source post, dated 19 June 2026** — 640 reactions, 6 shares
+([permalink](https://www.facebook.com/uashmc/posts/pfbid02mUASBCJ6iGgind8JeWymUjLSHJSAUzbVvwS8REjdXFX8FCfg1toiZ6QMq67BpjFCl)),
+caption verbatim:
+
+> "We are proud to be partnered with trusted HMOs and healthcare providers to bring accessible,
+> high-quality and reliable medical care. Stronger partnerships. Better care. Excellence in Every
+> Life We Touch."
+
+The twenty names:
 
 AMAPHIL (Advanced Medical Access Philippines) · AsianCare Health Systems · AVEGA ·
 Carewell Health Systems · Cocolife Healthcare · CoopHealth · EastWest Healthcare ·
@@ -112,9 +122,17 @@ placeholder names; they have been removed, because a patient reading a demo cann
 placeholder from a claim. Asking the HMO checker for Maxicare now correctly returns
 "not on our partner list".
 
-⚠️ Their poster says *"partnered with"*, which is not necessarily the same as a current
-accreditation agreement, and accreditation lapses. The list needs a named owner at the HMO
-desk and a visible last-checked date before it publishes.
+⚠️ **"Partnered with" is the only claim the source supports.** The caption says *"proud to be
+partnered with"*, never "accredited". In Philippine practice the two are used near-
+interchangeably and an accreditation agreement probably does exist behind each name — but
+probably is not a source. The prototype therefore says **partner** everywhere: the row badge
+reads "Partner", not "Agreement in place", and the assistant answers "we are partnered with 20
+HMOs". **Ask the HMO desk whether each is a current accreditation agreement**, and if so, the
+wording can be strengthened. Partnerships also lapse, so the live list needs a named owner and a
+visible last-checked date regardless.
+
+ℹ️ Worth noting for the pitch: that post drew **640 reactions and 6 shares**, against roughly
+33 followers on Instagram. Facebook is by a wide margin the channel their audience is actually on.
 
 ## Photography we actually have
 
