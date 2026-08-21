@@ -101,10 +101,25 @@ embedded in the prototype as `--ph-*` data URIs:
 | `--ph-ct` | Their CT suite | `ctscan.jpg` |
 | `--ph-sleep` | A sleep study in progress — a real patient and a staff member in a real room | `sleep study.jpg` |
 | `--ph-mother` | An expectant mother, from their maternity campaign | `banner logo.jpg` |
+| `--ph-front` | **The building from the street** — the full elevation, blue and yellow, monogram on the flank. Now the Direction B hero. | `hospital front real2.jpg` |
 
-⚠️ **The white multi-storey campus in the Direction B hero is not their building.** The real
-one looks nothing like it. That plate stays tagged `sample` and captioned "Concept visual".
-Replacing it with photography shot on location is a scoped content item.
+Two further views of the same building arrived with `real2`, both usable:
+
+| File | What it is |
+|---|---|
+| `hospital front real.jpg` | A **drone photograph** — the building from above in its actual barangay. 480×251, low resolution. The most unambiguously real image in the kit. |
+| `hospital front real.jfif` | Portrait crop of the same drone pass. 480×640. |
+
+⚠️ **`hospital front real2.jpg` reads as an architectural visualisation, not a photograph** —
+painted sky, composited birds, flat figures. It is unmistakably *their* building (same massing,
+same blue-and-yellow, same monogram as the drone shot and the poster crops), so it is honest as
+"our building", and it is by far the most flattering view of the front. But it should be
+confirmed as UASHMC's own artwork before it publishes, and it is not a substitute for a
+photograph shot on location.
+
+✅ The white multi-storey campus that used to fill the Direction B hero has been **removed
+entirely**, along with the two `--hero-*` depth plates behind it (~289KB). It was a generated
+building that was not theirs, and the prototype no longer contains it.
 
 ## Brand
 

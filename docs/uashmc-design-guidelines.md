@@ -473,11 +473,27 @@ or conversational polish.
   Automated checkers return *incomplete*, not *fail*, for text over a gradient or an image — those
   ratios are computed by hand or they are not computed at all.
 
-**Scrims.** A hero scrim heavy enough to guarantee white text also throws away the daylight in the
-photograph, and a dark full-bleed hero is what makes an institution read as an institution. Prefer
-the inverse: a **warm paper veil** feathered across the copy column, brand-navy text on it, and the
-right side of the frame left bright. Ground the veil in `#FCFAF6`, not white — a neutral veil over
-a warm photograph goes grey.
+**Full-bleed or contained is decided by the source, not by taste.** Measure the asset before
+choosing the layout. A hero photograph must be **at least 2× the artboard width** and land within
+about 20% of the hero's aspect ratio to go full-bleed; anything else is contained in a panel, where
+it renders near 1:1 and keeps its subject. UASHMC's own building photography is portrait and
+low-resolution, so the hero is a **split** — copy on a warm ground, building in a bordered panel.
+Blowing a 500px-wide portrait across a 1180px hero is a 2.3× upscale of a 44% vertical slice: it
+looks cheap in the room *and* crops off the crown and the entrance, which are the only two things
+that let a driver recognise the place from the highway.
+
+**Scrims.** If a hero does go full-bleed, a scrim heavy enough to guarantee white text also throws
+away the daylight in the photograph, and a dark full-bleed hero is what makes an institution read
+as an institution. Prefer the inverse: a **warm paper veil** feathered across the copy column,
+brand-navy text on it, and the far side of the frame left bright. Ground the veil in `#FCFAF6`, not
+white — a neutral veil over a warm photograph goes grey. A contained panel needs no scrim at all,
+which is one more reason to prefer it.
+
+**Parallax inside a panel costs subject.** A contained plate parallaxes by being oversized inside
+its frame's `overflow: hidden`, so the overhang *is* the travel budget — and every percent of
+overhang is a percent of the photograph the frame never shows. Keep the overhang under 10% and the
+travel well under the overhang, or the frame edge shows through on scroll. If the subject cannot
+afford the crop, drop the parallax rather than the subject.
 
 **Photographic placeholders are drawn, not photographed.** Where UASHMC has not shot something yet,
 the slot takes an abstract illustrated stand-in on one of the warm grounds, cycled for variety

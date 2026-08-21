@@ -123,13 +123,24 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   via `background:var(--ua-mark) …`; on dark grounds put it on a white chip (see `.ftr .fmark`)
   because the mark keeps its own navy. Because it is a background image, the provenance rules
   must set **`background-color`**, never the `background` shorthand — the shorthand erases it.
-- **Direction B's hero is a layered parallax, hand-rolled.** Two WebP depth plates
-  (`--hero-back`, `--hero-front`) are embedded as data URIs and translated at different rates by a
-  rAF-throttled listener on `#scroller` — the artboard scrolls internally, not the window, so
-  window-scroll libraries do not apply. It deliberately uses **no GSAP, no Lenis, no React**:
-  a dependency would break the single-file, offline, opens-by-double-click constraint. Honour
-  `prefers-reduced-motion` (it disables the transforms) and keep the plates `data-src="sample"` —
-  **the facade in that photo is not UASHMC's building**, so it must never read as fact.
+- **Direction B's hero shows UASHMC's actual building, in a panel, and the panel is not
+  negotiable.** `--ph-front` is a 501×544 portrait source. Full-bleed at the 1178px artboard it
+  would be a 2.3× upscale *and* a 44% vertical slice — mushy, and it would crop off the crown and
+  the entrance, which are the two things that make the building recognisable from the highway.
+  Contained at ~456px it renders close to 1:1. If you widen the hero, widen the copy column, not
+  the photo.
+- **The parallax is hand-rolled and lives inside the panel's overflow.** `.heroB-plate` is
+  oversized by a **7% overhang** and translated by a rAF-throttled listener on `#scroller` — the
+  artboard scrolls internally, not the window, so window-scroll libraries do not apply. It
+  deliberately uses **no GSAP, no Lenis, no React**: a dependency would break the single-file,
+  offline, opens-by-double-click constraint. Two constraints on any change: `RATE` must stay well
+  under that overhang or the top edge of the panel shows through, and **every extra percent of
+  overhang is a percent of the building the frame never shows** — that trade is why the numbers
+  are 7% and 0.032, not something rounder. Honour `prefers-reduced-motion`.
+- **There is no concept-render hero any more.** A generated white campus that was not their
+  building used to fill it, behind a "not UASHMC's building" caption; both are gone, as are the
+  two `--hero-*` depth plates (~289KB). Do not reintroduce a stand-in building. If a hero photo
+  is ever missing, the honest fallback is Direction A's structure, not a plausible facade.
 - **The placeholder briefings live behind the toggle.** The three `.banner.pvblock` blocks on
   `/doctors`, `/services` and `/hmo` are notes about our content state, not website copy, so they
   are `display:none` until **Show content sources** is on. The one exception is `/doctors`, which
