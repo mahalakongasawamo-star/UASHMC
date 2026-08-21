@@ -67,6 +67,34 @@ icon fills, the second phrase of a two-tone headline — not only on hover.
 
 Their graphics contain **no green**. Green is reserved for status meaning only (§2.3, §2.7).
 
+### 2.1a Colour — the warm ramp
+
+Navy, cyan and white alone read cold and clinical. UASHMC's own maternity poster
+(`images/banner logo.jpg`) sets *"Quality Care for you!"* in a dusty-rose script beside the navy:
+**this is the one warm hue the brand already owns**, and it is what stops a hospital site reading
+as a laboratory. The sands are its neutral companion — the warm counterpart to `brand.100`, so
+alternating sections can breathe warm as well as cool.
+
+| Token | Value | Role |
+|---|---|---|
+| `color.rose.700` | `#A8446A` | **Text-safe rose.** Eyebrows, the warm phrase of a two-tone headline. 5.2:1 on white. |
+| `color.rose.600` | `#C05B7D` | Icon strokes on light grounds. |
+| `color.rose.500` | `#D87898` | **Poster rose.** Fills and washes only — 3.0:1 on white, so never small text. |
+| `color.rose.100` | `#FBE3EB` | Tick discs, chips, photo mattes. |
+| `color.rose.50` | `#FDF2F6` | Warm bloom in a section gradient. |
+| `color.sand.100` | `#F6EBDA` | Warm band border. |
+| `color.sand.50` | `#FBF5EC` | **Warm section ground.** The counterpart to `brand.100`. |
+
+**Rules**
+
+- Rose follows the same discipline as cyan: `500` is a fill, `700` is the text step. Small rose
+  text takes `700`, never `500`.
+- `color.text.muted` clears AA on `sand.50` (5.3:1), so the muted floor holds on warm bands too.
+- **No more than two cool section bands in a row.** A page that alternates only white and
+  `brand.100` is the cold, clinical result this ramp exists to prevent. Alternate
+  `sec` / `sec.warm` / `sec.alt` so the temperature moves down the page.
+- Rose never carries status meaning. Status is `urgent`, `care` and the provenance hues only.
+
 ### 2.2 Colour — neutrals and surfaces
 
 | Token | Value | Role |
@@ -442,6 +470,31 @@ or conversational polish.
 - Parallax and other scroll effects **must** disable fully under reduced motion, and **must not**
   be the only way any content is revealed.
 - Text over imagery **must** be measured against the rendered pixels, not assumed from the scrim.
+  Automated checkers return *incomplete*, not *fail*, for text over a gradient or an image — those
+  ratios are computed by hand or they are not computed at all.
+
+**Scrims.** A hero scrim heavy enough to guarantee white text also throws away the daylight in the
+photograph, and a dark full-bleed hero is what makes an institution read as an institution. Prefer
+the inverse: a **warm paper veil** feathered across the copy column, brand-navy text on it, and the
+right side of the frame left bright. Ground the veil in `#FCFAF6`, not white — a neutral veil over
+a warm photograph goes grey.
+
+**Photographic placeholders are drawn, not photographed.** Where UASHMC has not shot something yet,
+the slot takes an abstract illustrated stand-in on one of the warm grounds, cycled for variety
+across a grid, with a quiet "to follow" caption. Two rules behind this:
+
+- A grey diagonal hatch reads as a *broken image*, not as a content item. A grid of nine of them
+  makes a finished page look like a fault.
+- The stand-in must be abstract. A realistic portrait in a doctor-card slot is a photograph of a
+  doctor who does not exist — the exact fabrication §6 prohibits.
+
+**Real UASHMC photography outranks everything.** Their published collateral is the only imagery
+allowed to be tagged `verified`, and it is used wherever it fits before any placeholder is
+considered: the building itself on the location and contact pages (patients navigate this corridor
+by landmark), the CT suite and the sleep-study room on the services page, the maternity campaign on
+the homepage. Commissioning the facade, ER entrance, lobby, rooms and staff is a scoped content
+item, not an optional extra — for a hospital this new, stock photography actively undermines the
+trust the rest of the site is built to earn.
 
 ---
 

@@ -90,10 +90,34 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   where green means status (the HMO accredited badge, the KRISS distress card), which also keeps
   green meaning "verified" during the provenance demo. The gold rule under headings is theirs;
   keep it thin — the large yellow in their posters is the building's paint, not brand chrome.
+- **The brand also owns one warm hue, and the site needs it.** Navy + cyan + white alone reads
+  cold and clinical, which is the note the work came back on. `--rose-500` (#D87898) is sampled
+  from the dusty-rose script on their maternity poster ([images/banner logo.jpg](images/banner%20logo.jpg));
+  `--sand-50`/`--sand-100` are the warm counterpart to `--brand-100` so alternating sections can
+  breathe warm as well as cool (`.sec.warm` vs `.sec.alt`). Same contrast discipline as the cyan:
+  rose-500 is a **fill**, `--rose-700` (#A8446A) is the text-safe step at 5.2:1 on white. Don't
+  let the page run more than two cool bands in a row.
 - **Watch contrast when touching the palette.** Cyan #0AADD0 is only 2.7:1 against white, so it is
   a fill, never small text: white-on-cyan fails, navy-on-cyan (3.6:1) passes the 3:1 graphic bar,
   and the headline cyan steps down to `--brand-600` on light grounds. `--muted` is #4E6981 because
   anything lighter fails AA on the `--brand-100` section bands.
+- **Real UASHMC photography is embedded, and it is the only photography allowed to be
+  `verified`.** Four crops of their own published collateral live in `:root` as `--ph-building`
+  (the actual blue-and-yellow building on Marcos Highway), `--ph-ct` (their CT suite),
+  `--ph-sleep` (a sleep study in progress, real patient and staff) and `--ph-mother` (from their
+  maternity campaign) — all sourced in
+  [research/verified-facts.md](research/verified-facts.md#photography-we-actually-have). Use them
+  through `.shot`, `.hero-shot`, `.feature-shot` and `.landmark`. Anything else photographic is
+  a placeholder, and placeholders are drawn, not photographed — see `.figure`.
+- **Placeholders are illustrations on purpose.** `.figure` renders an abstract head-and-shoulders
+  SVG on one of four warm grounds (`.t0`–`.t3`), cycled by index across the roster. It replaced a
+  grey diagonal hatch that read as a broken image; nine of them down `/doctors` was the single
+  coldest thing on the site. Keep it abstract: a realistic portrait here would be a photograph
+  of a doctor who does not exist.
+- **Opaque images need an `::after` wash under `body.pv-on`, not a `background-color`.** Same trap
+  as the hero plates — a background colour paints *underneath* the photograph and never shows.
+  `.shot`, `.hero-shot`, `.feature-shot`, `.landmark` get the green verified wash; `.figure` gets
+  the violet placeholder one.
 - **The logo is the real one.** `--ua-mark` in `:root` holds the UASHMC monogram as a
   background-image data URI, extracted from `images/logo.jpg` with the white knocked out. Use it
   via `background:var(--ua-mark) …`; on dark grounds put it on a white chip (see `.ftr .fmark`)
@@ -106,6 +130,13 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   a dependency would break the single-file, offline, opens-by-double-click constraint. Honour
   `prefers-reduced-motion` (it disables the transforms) and keep the plates `data-src="sample"` —
   **the facade in that photo is not UASHMC's building**, so it must never read as fact.
+- **The placeholder briefings live behind the toggle.** The three `.banner.pvblock` blocks on
+  `/doctors`, `/services` and `/hmo` are notes about our content state, not website copy, so they
+  are `display:none` until **Show content sources** is on. The one exception is `/doctors`, which
+  invents eleven names: it keeps a quiet standing `.note-slim` line with the toggle off, because
+  unmarked invention is the failure mode this whole kit exists to avoid. If you add a briefing,
+  gate it the same way — and never write one addressed to UASHMC ("your team", "your licence",
+  "a launch task"). The client reads this page as their website.
 - **The FAQ page is not in the top nav, deliberately.** The header content box is 1012px with ~16px
   of slack; a seventh nav item breaks it. `/faq` is reached from the footer, from the assistant
   panel, and from the inline blocks on the topic pages.
@@ -138,19 +169,30 @@ There are no tests. Verify by opening the file and driving it:
 2. Toggle **Show content sources** — new content lights up in the right colour and the count
    moves.
 3. `/faq` renders from the array — 8 groups, 29 questions — and the inline blocks on `/hmo`,
-   `/patients` and `/contact` render the matching groups. Nothing duplicated in markup.
+   `/patients` and `/contact` render the matching groups (6 / 3 / 4). Nothing duplicated in markup.
 4. Toggle **Desktop / Mobile** — mobile shows the sticky `Call · Book · Ask` bar.
 5. Toggle **Direction A / B** — both homepages render fully.
-6. Ask KRISS: a distress phrase (crisis card, not the ER card), `may maxicare ba kayo?`,
-   `magkano ang room?` (refuses to quote), and something unanswerable (hands off to a human).
-7. Check the header still fits: brand + nav + CTA must not exceed the 1012px content box of
+6. Ask KRISS: a distress phrase (the **calm green** crisis card, not the red ER card),
+   `may medicard ba kayo?`, `magkano ang room?` (refuses to quote a room rate while still naming
+   the four packages they *do* publish), and something unanswerable (hands off to a human).
+   `k.kind` drives the bubble class — `alarm` red, `calm` green — so a new card gets its tone
+   from the KB entry, not from `ask()`.
+7. Type `Maxicare` into the HMO checker. It must say **not on our partner list**: they are not on
+   UASHMC's own poster, and the page, the FAQ and the assistant all now answer from that poster.
+8. Check the header still fits: brand + nav + CTA must not exceed the 1012px content box of
    `.hdr-in`. It has ~16px of slack and the nav flex-shrinks silently when it overflows, so the
    damage is easy to miss by eye — measure, don't squint.
-8. Accessibility is a gate, not a nice-to-have: the prototype currently passes **axe-core
-   WCAG 2.0/2.1/2.2 A+AA with zero violations across all six pages**, and every interactive
-   target meets WCAG 2.2 §2.5.8 (24x24 minimum) on both desktop and mobile. Keep it there —
-   `npx @axe-core/playwright` against `#site`, plus a bounding-box sweep for under-size targets.
-9. If you touched a client file, run the leak grep from Non-negotiable #1.
+9. Accessibility is a gate, not a nice-to-have: the prototype currently passes **axe-core
+   WCAG 2.0/2.1/2.2 A+AA with zero violations across all seven routes, in both homepage
+   directions, at desktop and phone widths**, and every interactive target meets WCAG 2.2
+   §2.5.8 (24x24 minimum) except inline links inside a sentence, which the success criterion
+   exempts. Keep it there — `npx @axe-core/playwright` against `#site`, plus a bounding-box
+   sweep for under-size targets.
+
+   One gap to cover by hand: axe returns **incomplete, not violation**, for text over a gradient
+   or a background image, so it cannot see the hero copy, the `.figure` captions or the photo
+   caption bars. Compute those ratios yourself when you touch them.
+10. If you touched a client file, run the leak grep from Non-negotiable #1.
 
 ## Tone
 

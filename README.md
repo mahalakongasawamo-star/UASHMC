@@ -6,7 +6,7 @@ Prepared for the onsite with Dr. Bravo, Dr. Pedraja, Tere Barcelona, Dr. Directo
 
 | File | What it is | Show the client? |
 |---|---|---|
-| [`prototype/uashmc-prototype.html`](prototype/uashmc-prototype.html) | **The clickable homepage concept.** Six pages, two homepage directions, desktop/mobile toggle, a working HMO checker, and a live KRISS AI demo. Runs offline from a laptop. | ✅ **Yes — this is the centrepiece** |
+| [`prototype/uashmc-prototype.html`](prototype/uashmc-prototype.html) | **The clickable homepage concept.** Six pages, two homepage directions, desktop/mobile toggle, a working HMO checker, and a live KRISS AI demo. Uses UASHMC's own photography — the real building, the CT suite, a sleep study, their maternity campaign. Runs offline from a laptop. | ✅ **Yes — this is the centrepiece** |
 | [`docs/uashmc-presentation-pack.html`](docs/uashmc-presentation-pack.html) | **The plan.** Sitemap, three patient journeys, KRISS integration + safety model, content checklist by owner, 8-week build plan, risks, 10 discovery questions, 90-minute agenda. | ✅ Yes |
 | [`docs/uashmc-design-guidelines.md`](docs/uashmc-design-guidelines.md) | **The build contract.** Design tokens taken from UASHMC's own logo and collateral, component state rules, WCAG 2.2 AA acceptance criteria, tone standards and a QA checklist. Written to be attached to the SOW. | ✅ Yes — if the conversation turns to how it gets built |
 | [`docs/INTERNAL-before-the-onsite.md`](docs/INTERNAL-before-the-onsite.md) | **⛔ Internal only.** The client-reference gap, the commercial numbers still unset, what not to claim about KRISS, the three hardest questions, and defects already fixed. | ❌ **Never** |
@@ -27,8 +27,19 @@ Three controls in the dark bar along the top:
 - **Homepage direction** — A (task-first) or B (story-first). Both keep UASHMC's tagline; they differ
   in whether the hospital leads with utility or with presence. This is Harvey's decision to make.
 
-Things worth demonstrating live: type `may maxicare ba kayo?` into the assistant, then ask it
-something it cannot answer and let the room watch it refuse. **The refusal is the demo.**
+Things worth demonstrating live:
+
+- Type `may medicard ba kayo?` into the assistant. It answers from UASHMC's **own** published
+  partner poster — twenty names, transcribed from `images/hmo partners.jpg`.
+- Then type `Maxicare` into the HMO checker on `/hmo`. It says *not on our partner list*, because
+  they are not on that poster. Placeholder HMO names have been removed from the prototype
+  entirely: in a demo a patient cannot tell a placeholder from a claim.
+- Type `magkano ang room?`. It refuses to quote a room rate, then names the four packages UASHMC
+  *does* publish a price for.
+- Then ask it something it cannot answer and let the room watch it refuse.
+  **The refusal is the demo.**
+- A distress phrase gets a calm green crisis card routed to the NCMH hotline — never the red ER
+  card, and never UASHMC's ER.
 
 ## Research behind it
 
