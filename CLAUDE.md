@@ -216,10 +216,38 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   are theme-aware (`prefers-color-scheme` + `[data-theme]`). Everything inside `.site` is the
   mocked-up website and is **deliberately fixed light** in both themes. Don't "fix" that.
 - **Routing** is hash-based (`#/home`, `#/doctors`, …) via `go()`/`route()`; pages are sibling
-  `.page` divs toggled with `.on`.
+  `.page` divs live inside a single `<main id="content">`. The footer is a sibling of `<main>`, not
+  of any one `.page` — it used to live inside `#p-home` alone, which meant six of seven routes had
+  no footer, no FAQ link, no phone numbers. Never nest it back inside a page.
 - **Accessibility is part of the pitch.** Keep `aria-pressed` on toggles, `aria-live` on the
   assistant log and router output, labels on inputs, and the `prefers-reduced-motion` branch in
-  `ask()`.
+  `ask()`. The document shell carries a real `<!doctype html>`, `<html lang="en">`, a `viewport`
+  meta (without it a real phone renders the whole page at 0.4× scale — the studio's mobile toggle
+  cannot catch this, it only simulates a narrow viewport, not a missing meta tag), a skip link as
+  the first focusable element, and `<main>` as its target. The Filipino LOA steps carry
+  `lang="fil"` per string, not just on the language toggle.
+- **Type is in `rem`, and 16px is a floor, not a target to round down from.** `html{font-size:100%}`
+  is what makes the scale answer the reader's own browser font-size setting — a `px` scale doesn't,
+  which is how the prototype spent most of a session with a stated 16px floor while 86% of its
+  rendered text sat under it. Anything holding running prose (`.card p`, `.faq-p`, `.acc .acc-b`,
+  `.doc-empty p`, …) is `1rem` or above; UI chrome (eyebrows, table headers, badges) floors at
+  `0.75rem` (12px) and nothing on the page goes lower. The two lockup sub-lines
+  (`.brand-sub`, `.ftr .fsub`) are the deliberate exception — they're part of a logo, not prose,
+  and 12px would break the lockup's proportions, so they sit at 10px instead.
+- **Interactive targets are 44px, not the 24px WCAG floor.** PRODUCT.md asks for "generous well
+  beyond the accessibility minimum" and names tremor; 24×24 is the legal floor, not the bar this
+  project set for itself. Inline links inside a sentence (`.specnote a`, the FAQ "cannot find your
+  question" line) are the one WCAG 2.2 §2.5.8 exemption and are deliberately left alone — don't
+  "fix" them by wrapping them in a bigger hit box, that would look broken.
+- **A clinic list is a list, not six icon cards.** `.clinics` renders name · description ·
+  (optional) count as hairline-ruled rows in two columns, on both `/doctors` (filterable buttons,
+  fed by `specCounts()`) and `/services` (static rows). It replaced two identical 6-tile icon-card
+  grids — the exact "identical card grid" shape the shared design laws ban by name. If a new
+  clinic-like listing is ever needed, reach for `.clinics` before reaching for `.card`.
+- **`DESIGN.md` / `DESIGN.json` exist at the repo root** and are the token-schema counterpart to
+  `docs/uashmc-design-guidelines.md` (which stays the prose-and-rationale version, written for a
+  production SOW rather than for a design-tool linter). Keep the two in sync by hand when either
+  changes — there's no build step to generate one from the other.
 - Both HTML files are published as private Claude Artifacts (URLs in the README). To update one,
   edit the file and republish **with its existing URL** so the link the team already has keeps
   working — a fresh publish creates a second artifact and a dead link in the room.
@@ -255,7 +283,22 @@ There are no tests. Verify by opening the file and driving it:
    One gap to cover by hand: axe returns **incomplete, not violation**, for text over a gradient
    or a background image, so it cannot see the hero copy, the `.figure` captions or the photo
    caption bars. Compute those ratios yourself when you touch them.
-10. If you touched a client file, run the leak grep from Non-negotiable #1.
+
+   Another gap that bit this project once: **`.kriss-layer` used to be `inset:0`** — a full-bleed,
+   `pointer-events:none` box over the entire artboard. It changed nothing visually and nothing
+   clickable, so nobody noticed, but it meant axe could not resolve the background colour of
+   *anything* underneath it and quietly turned 25–46 real contrast checks per route into
+   "incomplete" instead of running them — which is how a genuine AA failure on the HMO partner
+   badge (`#027F61` on `#E4F4EF`, 4.38:1) sat unflagged. It's `display:contents` now, so its
+   children position against `.site-frame` directly and carry their own `z-index`. If the "zero
+   violations" number ever looks too good against how much the page changed, check whether
+   something is sitting on top of it and hiding the check, not just whether the page passed.
+10. Real hardware, not just the studio's mobile toggle, for viewport bugs. The toggle simulates a
+    narrow *width* — it cannot simulate a missing `<meta name="viewport">`, which is a phone-only
+    failure mode (a real 390px phone with no viewport meta renders the page at 980px logical width,
+    scaled to fit — everything looks "wrong-sized," not "wrong-width"). If a phone-specific bug is
+    reported and the toggle looks fine, that's the first thing to check.
+11. If you touched a client file, run the leak grep from Non-negotiable #1.
 
 ## Tone
 

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T00:00:00Z",
+  "title": "Design System: UASHMC Digital Front Door",
+  "extensions": {
+    "colorMeta": {
+      "brand-700": { "role": "primary", "displayName": "Logo Navy", "canonical": "#01487C", "tonalRamp": ["#01305A", "#01487C", "#0A6FA0", "#0AADD0", "#5AC0E4", "#D2F0FC", "#E7F6FD"] },
+      "brand-500": { "role": "primary", "displayName": "Logo Cyan", "canonical": "#0AADD0" },
+      "rose-500":  { "role": "secondary", "displayName": "Poster Rose", "canonical": "#D87898", "tonalRamp": ["#A8446A", "#C05B7D", "#D87898", "#FBE3EB", "#FDF2F6"] },
+      "accent-gold": { "role": "secondary", "displayName": "Collateral Gold", "canonical": "#D2A80C" },
+      "surface-page": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#FBFAF8" },
+      "sand-50": { "role": "neutral", "displayName": "Warm Section Band", "canonical": "#FBF5EC" },
+      "urgent": { "role": "status", "displayName": "Reserved Emergency Red", "canonical": "#C0271A" },
+      "care-700": { "role": "status", "displayName": "Confirmed / Calm Green", "canonical": "#026B52" },
+      "provenance-verified": { "role": "status", "displayName": "Verified (UASHMC's own channels)", "canonical": "#167355" },
+      "provenance-confirm": { "role": "status", "displayName": "Plausible, needs confirmation", "canonical": "#B45309" },
+      "provenance-sample": { "role": "status", "displayName": "Agency placeholder", "canonical": "#6D5BA8" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Source Serif Display", "purpose": "Story-first hero headline and the tagline. At most one two-tone treatment per view." },
+      "headline": { "displayName": "Section Headline", "purpose": "Section headings, paired with the thin gold rule beneath." },
+      "body": { "displayName": "Be Vietnam Pro Body", "purpose": "All running prose. 16px floor, expressed in rem so browser font-size preference is honoured." },
+      "label": { "displayName": "Eyebrow Label", "purpose": "Uppercase, tracked +0.08em. Legal microcopy and section eyebrows only." }
+    },
+    "shadows": [
+      { "name": "elevation-1", "value": "0 1px 2px rgba(8,42,56,.06), 0 1px 3px rgba(8,42,56,.05)", "purpose": "Resting state for cards and inputs." },
+      { "name": "elevation-2", "value": "0 4px 12px rgba(8,42,56,.08), 0 1px 3px rgba(8,42,56,.06)", "purpose": "Hover on linked cards; focused inputs." },
+      { "name": "elevation-3", "value": "0 18px 44px rgba(8,42,56,.18), 0 4px 12px rgba(8,42,56,.10)", "purpose": "Floating panels: the assistant, sheets." }
+    ],
+    "motion": [
+      { "name": "motion-fast", "value": "120ms", "purpose": "Colour and border changes." },
+      { "name": "motion-base", "value": "180ms", "purpose": "Hover, focus, small transforms." },
+      { "name": "motion-slow", "value": "280ms", "purpose": "Panels, sheets, disclosure." },
+      { "name": "motion-ease", "value": "cubic-bezier(.2,.6,.2,1)", "purpose": "Default easing across the system. All motion tokens resolve to 0ms under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "bp.sm", "value": "560px" },
+      { "name": "bp.md", "value": "900px" },
+      { "name": "bp.lg", "value": "1080px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single main action in a view. 44px tall, radius-md, navy ground.",
+      "html": "<button class=\"ds-btn-primary\">Find a doctor</button>",
+      "css": ".ds-btn-primary { font: inherit; font-size: 0.875rem; font-weight: 600; background: #01487C; color: #fff; padding: 12px 20px; min-height: 44px; border: none; border-radius: 10px; cursor: pointer; transition: background 180ms cubic-bezier(.2,.6,.2,1); } .ds-btn-primary:hover { background: #01305A; } .ds-btn-primary:focus-visible { outline: 2.5px solid #fff; outline-offset: 2px; box-shadow: 0 0 0 4.5px #01487C; }"
+    },
+    {
+      "name": "Urgent Button",
+      "kind": "button",
+      "refersTo": "button-urgent",
+      "description": "Emergency-only action: call the ER, call 911. Never decorative, never reused for a non-emergency CTA.",
+      "html": "<a class=\"ds-btn-urgent\" href=\"tel:911\">Call 911</a>",
+      "css": ".ds-btn-urgent { font: inherit; font-size: 0.875rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #C0271A; color: #fff; padding: 12px 20px; min-height: 44px; border-radius: 10px; text-decoration: none; transition: background 180ms cubic-bezier(.2,.6,.2,1); } .ds-btn-urgent:hover { background: #7A1710; }"
+    },
+    {
+      "name": "Provenance Chip",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The signature affordance. Recolours a claim green/amber/violet depending on whether UASHMC's own channels confirmed it, it is plausible but unconfirmed, or it is an agency placeholder.",
+      "html": "<span data-src=\"verified\">02 8248 3460</span>",
+      "css": "[data-src] { transition: background 180ms ease; } [data-src=\"verified\"] { background-color: rgba(22,115,85,.10); box-shadow: 0 1.5px 0 #167355; } [data-src=\"confirm\"] { background-color: rgba(180,83,9,.11); box-shadow: 0 1.5px 0 #B45309; } [data-src=\"sample\"] { background-color: rgba(109,91,168,.11); box-shadow: 0 1.5px 0 #6D5BA8; }"
+    },
+    {
+      "name": "Linked Card",
+      "kind": "card",
+      "refersTo": "card-static",
+      "description": "Whole-card link with exactly one interactive target inside it. Rises to elevation-2 with a cyan border on hover; must not contain nested interactive elements.",
+      "html": "<a class=\"ds-card-linked\" href=\"#\"><h3>Cardiology</h3><p>Heart consultation, ECG, cardiac evaluation.</p></a>",
+      "css": ".ds-card-linked { display: block; background: #FFFFFF; border: 1px solid #D9E2EA; border-radius: 10px; padding: 20px; text-decoration: none; color: inherit; box-shadow: 0 1px 2px rgba(8,42,56,.06), 0 1px 3px rgba(8,42,56,.05); transition: border-color 180ms cubic-bezier(.2,.6,.2,1), box-shadow 180ms cubic-bezier(.2,.6,.2,1); } .ds-card-linked:hover { border-color: #0AADD0; box-shadow: 0 4px 12px rgba(8,42,56,.08), 0 1px 3px rgba(8,42,56,.06); } .ds-card-linked h3 { font-family: 'Source Serif 4', Georgia, serif; font-size: 1.03125rem; margin: 0 0 7px; color: #062B46; } .ds-card-linked p { font-size: 1rem; color: #4E6981; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Honest Directory",
+    "overview": "A lobby directory board, digitised — not a hospital brochure, not a SaaS dashboard. UASHMC opened in 2025 with no owned web presence at all, so this system's job is to be the hospital's first authoritative surface, and its central discipline is one most brand work never has to hold: every visible fact carries a provenance state, verified, confirm, or sample. The palette is sampled rather than chosen: navy and cyan pixel-exact from the logo, gold from their printed posters, a dusty rose from their maternity campaign specifically because navy-cyan-white alone read cold and clinical. Real UASHMC photography is the only imagery permitted to be tagged verified, and it is used everywhere it fits before any illustrated placeholder is considered.",
+    "keyCharacteristics": [
+      "Calm, plain Philippine English; the patient's word before the clinical one",
+      "Navy and cyan at roughly 40/60, with one warm rose accent so no more than two cool bands run in a row",
+      "Every fact colour-coded by source; nothing stated as fact unless UASHMC confirmed it",
+      "The emergency path is a phone number, never more than one tap away, on every page",
+      "Real photography before any placeholder; placeholders are drawn, never a stock stand-in"
+    ],
+    "rules": [
+      { "name": "The Two Cool Bands Rule", "body": "A page that alternates only white and brand-100 is the cold, clinical result the warm ramp exists to prevent. Never run more than two cool section bands in a row.", "section": "colors" },
+      { "name": "The No Green Rule", "body": "UASHMC's own collateral contains no green. Green is reserved for status meaning — a confirmed accreditation, the assistant's calm state — because it doubles as the provenance system's verified hue.", "section": "colors" },
+      { "name": "The Reserved Red Rule", "body": "Urgent red is for genuine emergency affordances only: the ER strip, calling 911. A red booking button on a hospital site is the anti-pattern this rule exists to name.", "section": "colors" },
+      { "name": "The Presbyopia Floor Rule", "body": "16px is a floor for body copy, stated as a requirement rather than an aspiration, because the primary audience includes a large senior and PWD cohort. The scale is expressed in rem so the reader's own font-size preference is honoured.", "section": "typography" },
+      { "name": "The Response-Not-Rest Rule", "body": "Elevation increases only in response to interaction state. A static card that never receives interaction stays flat and must not simulate a hover it cannot fulfil.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do sample colour from UASHMC's own artwork rather than inventing it",
+      "Do tag every content element with a provenance state; untagged content is a build defect",
+      "Do hold cyan in resting states, not only on hover — this is a navy and cyan brand",
+      "Do use real UASHMC photography wherever it fits before considering a placeholder",
+      "Do keep the emergency number one tap away, on every page, outside the nav",
+      "Do keep body copy at a 16px floor expressed in rem",
+      "Do make illustrated placeholders abstract on purpose"
+    ],
+    "donts": [
+      "Don't use the international-hospital template: stock clinicians, blue gradients, lens flare",
+      "Don't use green decoratively — it collides with the provenance system's own meaning",
+      "Don't put white text on brand-500 cyan; 2.66:1 fails contrast",
+      "Don't present stock or generated photography as UASHMC's premises",
+      "Don't let the assistant invent a plausible answer to fill a gap; refuse and hand off",
+      "Don't render a bare empty state; always offer a way forward",
+      "Don't use a border-left/border-right stripe greater than 1px as a colour accent",
+      "Don't use gradient text or decorative glassmorphism",
+      "Don't organise the site by hospital org chart",
+      "Don't let motion ignore prefers-reduced-motion"
+    ]
+  }
+}

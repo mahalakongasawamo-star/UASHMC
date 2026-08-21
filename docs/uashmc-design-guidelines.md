@@ -380,12 +380,15 @@ Covers Find-a-Doctor, Find-a-Service, and the HMO checker.
 The single highest-intent component on the site. Specific rules apply because the answer has
 financial consequences for the patient.
 
-- A match **must** be phrased as *"we have an accreditation agreement"*, never *"you are covered"*.
+- A match **must** be phrased as *"we are partnered with them"*, never *"you are covered"*. UASHMC's
+  own published wording is "partnered with", not "accredited" — see §9. Say only what the source
+  says; strengthen to "accreditation agreement" only once the hospital confirms that is the correct
+  term for each one.
 - Every result **must** carry the standing caveat that plan tier, doctor and procedure can change
   the outcome, and that only the HMO can confirm what they will pay.
 - Every result **must** offer a route to a human at the billing desk.
-- Accreditation entries **must** show a last-checked date. An entry with no date must render as
-  `confirm` provenance, not `verified`.
+- Partner entries **must** show the date the list was published. An entry with no date must render
+  as `confirm` provenance, not `verified`.
 
 ### 4.7 Accordion (FAQ)
 
@@ -582,7 +585,7 @@ superlatives. No claim the hospital has not made itself.
 | "Learn more" | "See our cardiologists" | Says where it goes |
 | "Submit" | "Check my HMO" | Names the outcome |
 | "No results found." | "No doctor matches those filters — here is everyone in Cardiology." | Offers a way forward |
-| "You're covered!" | "We have an accreditation agreement with them." | Does not promise someone else's decision |
+| "You're covered!" | "We are partnered with them." | Does not promise someone else's decision, and matches UASHMC's own published wording |
 | "Error: invalid input" | "Enter your HMO's name — for example, MediCard." | Says how to fix it |
 | "Open 24/7" *(unconfirmed)* | "Open 24 hours" tagged `confirm` until UASHMC verifies | Provenance discipline |
 
