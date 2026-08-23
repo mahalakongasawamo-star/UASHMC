@@ -615,6 +615,7 @@
       }
       .live .stage {
         padding: 0;
+        min-height: 0;
       }
       .live .frame {
         max-width: none;
@@ -625,6 +626,17 @@
         border: 0;
         border-radius: 0;
         box-shadow: none;
+      }
+      /* .studio's min-height:100vh is a floor, not a ceiling — it never stopped
+   .site-frame's height:100% chain from growing to fit all the page content
+   instead of clipping it, which silently turned #scroller into a non-scrolling
+   box and moved real scrolling to the window. go() only resets
+   #scroller.scrollTop, so after that, navigating left the window scrolled
+   wherever the visitor last left it. An explicit, capped height keeps
+   #scroller the one scrolling container in both modes. */
+      .live .studio {
+        height: 100vh;
+        height: 100dvh;
       }
       .scroller {
         height: 100%;
