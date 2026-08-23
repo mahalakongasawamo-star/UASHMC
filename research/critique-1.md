@@ -1,4 +1,5 @@
 # ADVERSARIAL REVIEW — Dr. Myrna Pedraja, Medical Director
+
 ## Pre-board review of the Iozera website + KRISS AI package
 
 I championed this internally. That means if it goes wrong, it goes wrong with my name on it. What follows is what I would say in a closed room before this is shown to Dr. Bravo and Dr. Directo.
@@ -10,6 +11,7 @@ I championed this internally. That means if it goes wrong, it goes wrong with my
 # P0 — BLOCKERS. Fix before the Board sees anything.
 
 ### P0-1 · The vendor's internal file is in the client bundle
+
 **Category 6**
 
 > "**APPENDIX A — OPEN ITEMS FOR ALLAN, BEFORE THE ONSITE** … Internal. Not for the client deck."
@@ -25,26 +27,28 @@ I championed this internally. That means if it goes wrong, it goes wrong with my
 ---
 
 ### P0-2 · The section written to win me describes a system that does not exist
+
 **Category 6**
 
-> "**[OPEN — INTERNAL, for Allan before the onsite]** KRISS's published setup process today is *vendor-managed*: a questionnaire, then manual expert training by the KRISS team… **There is no documented document-upload or site-crawl ingestion, and no customer-facing content console.** The CMS-indexed architecture above is therefore a **build requirement we are placing on the KRISS deployment**, not a capability to assert as already shipped."
+> "**[OPEN — INTERNAL, for Allan before the onsite]** KRISS's published setup process today is _vendor-managed_: a questionnaire, then manual expert training by the KRISS team… **There is no documented document-upload or site-crawl ingestion, and no customer-facing content console.** The CMS-indexed architecture above is therefore a **build requirement we are placing on the KRISS deployment**, not a capability to assert as already shipped."
 
-**Risk:** Section 5 is explicitly framed as "*the section that wins the Medical Director*," and its entire argument rests on the single-source CMS→index pipeline. The vendor's own note concedes that pipeline is unbuilt and the ingestion path is unconfirmed. So is the 24-gate deterministic safety stack in §6.7. Yet CONTENT-PLAN promises "**KRISS AI live | Week 12**" with Day-One deliverables including "**Guardrail pipeline G1–G24**", "Emergency lexicon… signed", "CMS → index sync with the automated verify + rollback gate", and "PIA completed and signed." That is not a four-week build on top of an unconfirmed ingestion path. I am being asked to sign a clinical guardrail spec for software that does not yet have a way to read our content.
+**Risk:** Section 5 is explicitly framed as "_the section that wins the Medical Director_," and its entire argument rests on the single-source CMS→index pipeline. The vendor's own note concedes that pipeline is unbuilt and the ingestion path is unconfirmed. So is the 24-gate deterministic safety stack in §6.7. Yet CONTENT-PLAN promises "**KRISS AI live | Week 12**" with Day-One deliverables including "**Guardrail pipeline G1–G24**", "Emergency lexicon… signed", "CMS → index sync with the automated verify + rollback gate", and "PIA completed and signed." That is not a four-week build on top of an unconfirmed ingestion path. I am being asked to sign a clinical guardrail spec for software that does not yet have a way to read our content.
 
 **Fix:** Before any date is presented, split the KRISS scope into (a) confirmed shipped capability, (b) configuration, (c) new engineering — line by line, with the vendor's engineering owner named against each. Then re-derive the timeline. If the honest answer is "KRISS live at week 20 with a staged corpus," say week 20. I would rather defend a slow, true plan than a fast one that collapses in month three.
 
 ---
 
 ### P0-3 · Invented UASHMC facts inside KRISS answer bubbles, with fabricated citations and fabricated update dates
+
 **Category 2 — highest risk**
 
 The journeys document has a marker convention (`[TO SUPPLY: …]`) and then repeatedly abandons it. These are asserted as our facts, in quoted assistant answers, with source lines and "updated" dates:
 
-> "**Yes — UASHMC has an accreditation agreement with Maxicare.** *(HMO list as of 12 Aug 2026.)*"
+> "**Yes — UASHMC has an accreditation agreement with Maxicare.** _(HMO list as of 12 Aug 2026.)_"
 > "**No referral is needed for a first Cardiology consultation at UASHMC.** You can book directly."
 > "Dr. J. Ocampo · Tue & Thu, 1:00–4:00 PM · Room 305 / Dr. R. Sandoval · Mon & Sat, 9:00 AM–12:00 NN · Room 305"
 > "**Internal Medicine** — general adult medicine, often the first stop `[3 doctors →]`"
-> "*From: Patient Information — Outpatient Consultations · updated 12 Aug 2026*"
+> "_From: Patient Information — Outpatient Consultations · updated 12 Aug 2026_"
 > "Our Billing Section applies this automatically when the ID is presented."
 > "Room 305 is on the 3rd floor."
 > "PhilHealth CF1 forms are available at our **PhilHealth Section / Admitting counter**, and the staff fill them out with you at admission."
@@ -53,7 +57,7 @@ The journeys document has a marker convention (`[TO SUPPLY: …]`) and then repe
 > "**Real photographs:** the building from Marcos Highway, the ER entrance, reception, each room type, **the OR, the imaging suite**, named staff."
 > "In-house X-ray with **a radiologist's reading**, so you are not sent to another facility for your tests."
 > "Consultant clinics, **in-house imaging and laboratory**, and an Emergency Room that does not close."
-> "Heart care *(Cardiology)* | `Chest pain, blood pressure, ECG, heart station tests.`"
+> "Heart care _(Cardiology)_ | `Chest pain, blood pressure, ECG, heart station tests.`"
 > "20% off and VAT-exempt on **medical and dental services**…"
 
 None of the following are established facts about this hospital: a Maxicare agreement, a no-referral policy, an ICU, an OR photographable as ours, a clinical laboratory, a staff radiologist, ECG/heart-station services, dental services, a PhilHealth Section, a 24-hour ER, Room 305 or a third floor, doctor counts per specialty, or an admission-hour room-charging rule. The "updated 12 Aug 2026" stamps are the worst detail: they model the exact behaviour the governance section forbids — a dated citation on unverified content.
@@ -65,6 +69,7 @@ None of the following are established facts about this hospital: a Maxicare agre
 ---
 
 ### P0-4 · The flagship demo transcript violates the package's own emergency rules — three times
+
 **Categories 1 and 4**
 
 The safety spec is unambiguous:
@@ -87,7 +92,7 @@ KRISS answers routinely. It does not trigger. Yet the lexicon in §6.5 contains 
 
 > "At UASHMC, high blood pressure and **shortness of breath** are usually handled by Cardiology or Internal Medicine."
 
-The system normalised "pahingal" to "shortness of breath" *for routing* but not *for red-flag screening*. Exertional dyspnoea in a 68-year-old hypertensive is a presentation I want escalated, not routed to a Tuesday clinic. The demo, as written, shows the safety gate missing on turn one of the flagship journey.
+The system normalised "pahingal" to "shortness of breath" _for routing_ but not _for red-flag screening_. Exertional dyspnoea in a 68-year-old hypertensive is a presentation I want escalated, not routed to a Tuesday clinic. The demo, as written, shows the safety gate missing on turn one of the flagship journey.
 
 Compounding this: three documents specify three different post-card behaviours — KRISS-CONCEPT §6.5 ("session clinically closed"), HOMEPAGE-SPEC §8.3 ("Any further symptom text re-shows the identical card"), and JOURNEYS (conversation continues and books). **There is no single normative spec, so there is nothing for me to sign.**
 
@@ -96,6 +101,7 @@ Compounding this: three documents specify three different post-card behaviours �
 ---
 
 ### P0-5 · KRISS gives condition-specific clinical safety-netting and makes an urgency determination
+
 **Category 1**
 
 Journey B, unprompted, to a patient with gallstones:
@@ -111,7 +117,7 @@ That is a tailored complication watch-list for a named condition, plus the words
 And separately in the same journey:
 
 > Patient: "may maxicare ba kayo? need ko kasi opera sa gallstone"
-> KRISS: "*'I need a laparoscopic cholecystectomy at United Antipolo Specialists Hospital and Medical Center…'*"
+> KRISS: "_'I need a laparoscopic cholecystectomy at United Antipolo Specialists Hospital and Medical Center…'_"
 
 The patient said "gallstone surgery." KRISS converted that into a specific named operative approach and scripted the patient to say it to his insurer. If his surgeon plans an open cholecystectomy, the LOA is requested for the wrong procedure and the admission is delayed or denied. That is clinical inference with a financial consequence.
 
@@ -120,6 +126,7 @@ The patient said "gallstone surgery." KRISS converted that into a specific named
 ---
 
 ### P0-6 · Suicidal ideation is routed to a chest-pain card
+
 **Categories 1 and 4**
 
 HOMEPAGE-SPEC §8.3 lists the red-flag triggers, including "**suicide, ayaw nang mabuhay**", and then specifies one response card:
@@ -133,6 +140,7 @@ KRISS-CONCEPT does better — "E7 | **Distress signal** (self-harm, suicidal ide
 ---
 
 ### P0-7 · "Call ER" points at the trunkline
+
 **Category 4**
 
 > "Slot 1 | Label `Call ER`, red ground. `href='tel:+63282483460'` until an ER direct line exists"
@@ -149,6 +157,7 @@ Also: "**Do not drive him yourself if he is in pain — call 911 for an ambulanc
 ---
 
 ### P0-8 · Patient chat logs are repurposed for insurer negotiation and monthly Marketing reporting
+
 **Category 5**
 
 > "`requested_hmo_not_accredited` | HMO name + volume | **Contract negotiation ammunition.** 'We turned away 140 Intellicare inquiries this quarter' is how you get a better rate."
@@ -166,9 +175,10 @@ Improving answers is not the same purpose as commercial leverage over an insurer
 ---
 
 ### P0-9 · The "TODAY" journeys allege specific operational failures by our own staff, as if documented
+
 **Category 6**
 
-> "**Worse than lost: the Messenger reply was dangerously wrong.** *'Yes po, accredited po kami sa Maxicare'* is the answer that produces a family at the billing counter with an unexpected bill. Nobody was negligent. A front-desk staffer at 9 AM gave the natural, friendly, incomplete answer…"
+> "**Worse than lost: the Messenger reply was dangerously wrong.** _'Yes po, accredited po kami sa Maxicare'_ is the answer that produces a family at the billing counter with an unexpected bill. Nobody was negligent. A front-desk staffer at 9 AM gave the natural, friendly, incomplete answer…"
 > "Admission processes at ~9:10 AM. Lola Consuelo waits in a wheelchair in the lobby for three hours, NPO since midnight."
 > "**Steps: 9. Time elapsed: ~31 hours. Outcome: lost — and lost to a competitor**"
 
@@ -181,47 +191,56 @@ The cross-journey summary table presents these as findings, with step counts and
 # P1 — HIGH. Fix before implementation; several before the Board.
 
 **P1-1 · The staleness matrix has the risk ordering backwards. (Cat 1)**
+
 > "`financial` (HMO, PhilHealth, prices) | **Refuse to serve the figure.**" but "`clinical-adjacent` | **Serve** prep/logistics; suppress any clinical detail; append the review date."
-An out-of-date fasting or preparation instruction can harm a diabetic patient. An out-of-date price generates a complaint. Overdue clinical-adjacent content must refuse the preparation instruction and route to the department. **Fix:** move `clinical-adjacent` into the refusing tier for anything actionable (fasting, medication-hold, arrival timing), and give me the overdue alert.
+> An out-of-date fasting or preparation instruction can harm a diabetic patient. An out-of-date price generates a complaint. Overdue clinical-adjacent content must refuse the preparation instruction and route to the department. **Fix:** move `clinical-adjacent` into the refusing tier for anything actionable (fasting, medication-hold, arrival timing), and give me the overdue alert.
 
 **P1-2 · "Do I need to fast?" answered from a generic page. (Cat 1)**
+
 > "**A3 — Preparation & logistics** | How do I prepare? … **Do I need to fast?**" / "Stop eating 8 hours before"
-Fasting instructions interact with insulin, anticoagulants and paediatric weight. **Fix:** all preparation answers carry a mandatory non-removable line — "your doctor's instruction overrides this" — and must refuse and route whenever the patient's message names a condition, a medication, a pregnancy or a child.
+> Fasting instructions interact with insulin, anticoagulants and paediatric weight. **Fix:** all preparation answers carry a mandatory non-removable line — "your doctor's instruction overrides this" — and must refuse and route whenever the patient's message names a condition, a medication, a pregnancy or a child.
 
 **P1-3 · The launch gate cannot measure what matters. (Cat 4)**
+
 > "□ 100% of red-flag lexicon terms trigger the emergency card — automated suite"
-Testing that lexicon terms trigger measures nothing about the false negatives — the paraphrases not in the lexicon, which is exactly how Journey A fails. **Fix:** add a held-out set of at least 300 real Taglish and Tagalog phrasings, collected from Harvey's Messenger inbox and written by clinical staff, none of which appear in the lexicon, with a stated minimum recall I sign off on. Publish the measured recall to me monthly. And the 500-query adversarial suite must include cases authored outside Iozera.
+> Testing that lexicon terms trigger measures nothing about the false negatives — the paraphrases not in the lexicon, which is exactly how Journey A fails. **Fix:** add a held-out set of at least 300 real Taglish and Tagalog phrasings, collected from Harvey's Messenger inbox and written by clinical staff, none of which appear in the lexicon, with a stated minimum recall I sign off on. Publish the measured recall to me monthly. And the 500-query adversarial suite must include cases authored outside Iozera.
 
 **P1-4 · Third-party health data has no basis, notice or rule. (Cat 5)**
 Every journey is a relative disclosing a patient's sensitive personal information: "yung tatay ko 68…", "admission po bukas ng nanay ko", "My mother, 79, is scheduled for orthopedic surgery". Consent for that data is not the sender's to give. Nothing in the package addresses it. **Fix:** an explicit rule and a visible notice covering third-party disclosures, a hard prohibition on retaining identifiable third-party clinical detail, and the DPO's written position before launch.
 
 **P1-5 · Consent is collected after collection, and may not meet the SPI standard. (Cat 5)**
+
 > "☐ Send my question to the UASHMC HMO Desk … Held for `[TO SUPPLY: retention period]`."
-This appears at turn six, after health information has already been typed and logged at turn one. And a chat checkbox for sensitive personal information needs to be evidenced — stored with a timestamp, the exact notice text, and the notice version. **Fix:** move the layered notice to session start; log the consent artefact with its version; and resolve the direct contradiction with G18 ("**volunteered SPI truncated, not persisted; log the event, not the content**"), which the inquiry-capture flow plainly breaks.
+> This appears at turn six, after health information has already been typed and logged at turn one. And a chat checkbox for sensitive personal information needs to be evidenced — stored with a timestamp, the exact notice text, and the notice version. **Fix:** move the layered notice to session start; log the consent artefact with its version; and resolve the direct contradiction with G18 ("**volunteered SPI truncated, not persisted; log the event, not the content**"), which the inquiry-capture flow plainly breaks.
 
 **P1-6 · The Call button disappears when a form field is focused. (Cat 4)**
+
 > "**Suppressed on:** `#/emergency`, and while any form field on the page has focus (the bar hides on `focusin`…)"
-The bar contains "Call". A patient typing into the HMO checker loses the call button. This contradicts the package's own principle that "for a hospital **the call button must win every time**." **Fix:** suppress the `Ask` slot on form focus; the `Call` slot never hides. Add this to the automated occlusion test.
+> The bar contains "Call". A patient typing into the HMO checker loses the call button. This contradicts the package's own principle that "for a hospital **the call button must win every time**." **Fix:** suppress the `Ask` slot on form focus; the `Call` slot never hides. Add this to the automated occlusion test.
 
 **P1-7 · The senior/PWD discount arithmetic may be wrong for hospital services. (Cat 3)**
+
 > "**the correct computation order (strip 12% VAT first, then 20%)**" — presented as a worked example on a public page and in a KRISS answer.
-Hospital and medical services are already VAT-exempt under the Tax Code; professional fees are treated differently. Stripping a 12% VAT that was never charged overstates the discount, and a published worked example is exactly what a family will hold up at the counter. **Fix:** no worked arithmetic goes online until Billing and Finance sign the computation per line-item class. Publish the entitlement and the documents required; leave the arithmetic to Billing.
+> Hospital and medical services are already VAT-exempt under the Tax Code; professional fees are treated differently. Stripping a 12% VAT that was never charged overstates the discount, and a published worked example is exactly what a family will hold up at the counter. **Fix:** no worked arithmetic goes online until Billing and Finance sign the computation per line-item class. Publish the entitlement and the documents required; leave the arithmetic to Billing.
 
 **P1-8 · RA 10932 is stated over-broadly in some places and correctly in others. (Cat 3)**
+
 > "no hospital may ask you for a deposit or advance payment **before giving emergency care**" (Journey A) versus "before giving **basic emergency care**" (Homepage S5), alongside the standalone sentence "**We will not ask you for one.**"
-The law is bounded — basic emergency care, emergency or serious cases. An unbounded promise on our own website invites a dispute at a non-emergency admission. **Fix:** one approved sentence, containing "basic emergency care", used verbatim everywhere; the promise is never separated from that qualifier.
+> The law is bounded — basic emergency care, emergency or serious cases. An unbounded promise on our own website invites a dispute at a non-emergency admission. **Fix:** one approved sentence, containing "basic emergency care", used verbatim everywhere; the promise is never separated from that qualifier.
 
 **P1-9 · Unsourced performance statistics presented to a board. (Cat 6)**
+
 > "Expect roughly **60–75% grounded coverage** in month one"
 > "the **~60–70%** of inquiries that are purely informational"
-There is no basis given for either number, and the vendor's only comparable deployments are US dental practices. **Fix:** delete both, or state the source. Replace with "we will publish the measured coverage rate monthly from month one, with a falling target" — which is the honest and more persuasive claim.
+> There is no basis given for either number, and the vendor's only comparable deployments are US dental practices. **Fix:** delete both, or state the source. Replace with "we will publish the measured coverage rate monthly from month one, with a falling target" — which is the honest and more persuasive claim.
 
 **P1-10 · Statutory citations are load-bearing and unverified. (Cats 3 and 6)**
 The package builds whole pages on specific issuances: "**RA 10932 §3**" as the authority for posting classification level and authorised services; "AO 2024-0017 / FDA Circular 2025-005" on the purchase booklet; "FDA AO 2018-0002" for the software-as-medical-device boundary; "AO 2012-0012" on facility naming; "NCDA MC 2017-004". Dr. Directo will check one of these. If a single citation is misattributed, the Board will discount all of them — including the SaMD argument, which is the argument protecting our licence. **Fix:** one person reads the primary text of every issuance cited and initials a citation table. Anything unverified is phrased as "we understand, and recommend your counsel confirm."
 
 **P1-11 · Absolute and perishable competitive claims. (Cat 6)**
+
 > "which **no Philippine hospital currently does**" · "**no Philippine hospital has a real on-site assistant**" · "metroantipolo.com is **returning 503 on every path** right now" · "Chong Hua publishes 15 rates from ₱1,200/day to ₱16,750/day"
-Absolute negatives are one counter-example away from collapse, and the 503 is one deploy away. Also: naming a Metro Pacific outage in our boardroom is a weak move — they are a potential counterparty. **Fix:** "we found none in a sample of eleven, as of [date]"; drop the competitor outage from the spoken script; date every competitor price.
+> Absolute negatives are one counter-example away from collapse, and the 503 is one deploy away. Also: naming a Metro Pacific outage in our boardroom is a weak move — they are a potential counterparty. **Fix:** "we found none in a sample of eleven, as of [date]"; drop the competitor outage from the spoken script; date every competitor price.
 
 ---
 
@@ -229,7 +248,7 @@ Absolute negatives are one counter-example away from collapse, and the 503 is on
 
 - **Sample doctors imply capability we may not be licensed for. (Cat 2)** "Interventional cardiology, heart failure" implies a cath lab; "Fellow, Philippine Orthopedic Association" attaches a real professional body to a fabricated physician. **Fix:** sample sub-specialties must be deliberately unremarkable, and no real board or society name attaches to a fake doctor.
 - **Example questions leak invented service lines. (Cat 2)** "Is there a female OB?", "What's in the executive check-up?", "Do you do CT scans?" **Fix:** draw all examples from the four confirmed specialties and confirmed services only.
-- **The demo script manufactures agreement. (Cat 6)** "Ask Tere to drive it, or drive it yourself and say so: '**I'm marking that as agreed**.'" And Beat 6 asks for my signature as a piece of theatre: "*We want your name in it.*" **Fix:** remove the self-declared "agreed" mechanism — items are agreed when the owner says so. And any request for my countersignature comes to me as a written, versioned document with a change-control process, reviewed offline. I will not sign a clinical artefact in a demo.
+- **The demo script manufactures agreement. (Cat 6)** "Ask Tere to drive it, or drive it yourself and say so: '**I'm marking that as agreed**.'" And Beat 6 asks for my signature as a piece of theatre: "_We want your name in it._" **Fix:** remove the self-declared "agreed" mechanism — items are agreed when the owner says so. And any request for my countersignature comes to me as a written, versioned document with a change-control process, reviewed offline. I will not sign a clinical artefact in a demo.
 - **Vendor credit in our footer. (Cat 6)** "`Website by Iozera.ai`" — presented as a given, before a contract. **Fix:** make it a negotiated line, not a default.
 - **Homepage cannot ship without facts we do not have. (Cat 2)** Sitemap's homepage minimum includes "trust row (DOH level, PhilHealth, **bed count**, 24/7 ER)". **Fix:** make the trust row degrade gracefully, or mark the homepage itself as LTO-blocked.
 - **CF1 signing advice. (Cat 3)** "she signs the member portions herself, or **you sign as her authorised representative**" — a claims-validity determination. **Fix:** describe the form and route the question to the PhilHealth/Admitting desk.
@@ -242,13 +261,13 @@ Absolute negatives are one counter-example away from collapse, and the 503 is on
 I am not going to manufacture criticism of the parts that are right.
 
 - **The refusal set R1–R9** is the best-drafted patient-facing refusal copy I have read. R4 (results), R6 (coverage), R7 (comparative claims) are correct in both substance and tone.
-- **Journey D's two refusals** — the nurse-to-patient ratio and the medical records request — are exactly how I want this system to behave. "*I have no access to patient records and I'm not able to confirm anything about her care. That's by design*" is the sentence I would use myself.
+- **Journey D's two refusals** — the nurse-to-patient ratio and the medical records request — are exactly how I want this system to behave. "_I have no access to patient records and I'm not able to confirm anything about her care. That's by design_" is the sentence I would use myself.
 - **"HMOs we have accreditation agreements with," never "HMOs we accept,"** plus the four caveats and the LOA lead-time warning. That framing is the single most protective decision in the package and it should not be softened by anyone in marketing.
 - **The LTO field as a required CMS publish gate** — "`Is this service on the DOH LTO? [Yes/No]` … No is unpublishable" — is real governance, not a memo, and it is the mechanism that makes "feature new services as we expand" safe. Keep it, and the answer to the open decision is that the approval sits with me, not Marketing.
 - **Suppressing the widget on `/emergency`**, colour-reserving red for emergency only, no auto-open, no sound, no badge, and the persistent "Talk to a person" that is not failure-gated. All correct. Quiet is the right register for us.
 - **Refusing to publish ER wait times**, and **refusing to compute a personal bill estimate**. Both right, for the reasons given.
 - **The honest-placeholder marker system** is the best idea in the package — when it is actually applied. My complaint in P0-3 is not with the mechanism, it is that the journeys stopped using it.
-- **The gates-are-code-not-prompts principle** — "*A prompt is a request; a gate is a guarantee*" — is the argument that lets me defend this to the Board. It only holds if the gates exist (P0-2) and if the demo obeys them (P0-4).
+- **The gates-are-code-not-prompts principle** — "_A prompt is a request; a gate is a guarantee_" — is the argument that lets me defend this to the Board. It only holds if the gates exist (P0-2) and if the demo obeys them (P0-4).
 
 ---
 

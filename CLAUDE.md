@@ -9,14 +9,14 @@ on a laptop in a meeting room.
 
 ## Layout
 
-| Path | What it is |
-|---|---|
-| [prototype/uashmc-prototype.html](prototype/uashmc-prototype.html) | The centrepiece. 6-page clickable website concept in one file — desktop/mobile toggle, provenance overlay, homepage directions A/B, HMO checker, KRISS AI demo. **Client-facing.** |
-| [docs/uashmc-presentation-pack.html](docs/uashmc-presentation-pack.html) | The plan: sitemap, journeys, KRISS safety model, content checklist, 8-week build, agenda. **Client-facing.** |
-| [docs/uashmc-design-guidelines.md](docs/uashmc-design-guidelines.md) | The design system for the production build: semantic tokens sampled from the real brand, component state rules, WCAG 2.2 AA acceptance criteria, tone standards, QA checklist. **Client-facing** — intended as an SOW annex. |
-| [docs/INTERNAL-before-the-onsite.md](docs/INTERNAL-before-the-onsite.md) | ⛔ Iozera-only. Our own gaps, commercial numbers, what not to claim. **Never client-facing.** |
-| [research/](research/) | Source material behind the two client documents. Public sources only; nothing confirmed by UASHMC. |
-| [images/](images/) | UASHMC's own published collateral. The source of truth for the logo and brand palette; also the best evidence of their real service list, prices and HMO partners. |
+| Path                                                                     | What it is                                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [prototype/uashmc-prototype.html](prototype/uashmc-prototype.html)       | The centrepiece. 6-page clickable website concept in one file — desktop/mobile toggle, provenance overlay, homepage directions A/B, HMO checker, KRISS AI demo. **Client-facing.**                                           |
+| [docs/uashmc-presentation-pack.html](docs/uashmc-presentation-pack.html) | The plan: sitemap, journeys, KRISS safety model, content checklist, 8-week build, agenda. **Client-facing.**                                                                                                                 |
+| [docs/uashmc-design-guidelines.md](docs/uashmc-design-guidelines.md)     | The design system for the production build: semantic tokens sampled from the real brand, component state rules, WCAG 2.2 AA acceptance criteria, tone standards, QA checklist. **Client-facing** — intended as an SOW annex. |
+| [docs/INTERNAL-before-the-onsite.md](docs/INTERNAL-before-the-onsite.md) | ⛔ Iozera-only. Our own gaps, commercial numbers, what not to claim. **Never client-facing.**                                                                                                                                |
+| [research/](research/)                                                   | Source material behind the two client documents. Public sources only; nothing confirmed by UASHMC.                                                                                                                           |
+| [images/](images/)                                                       | UASHMC's own published collateral. The source of truth for the logo and brand palette; also the best evidence of their real service list, prices and HMO partners.                                                           |
 
 [README.md](README.md) is the operator's guide for running the meeting. Keep it in sync when the
 deliverables change.
@@ -34,9 +34,12 @@ any edit that moves text between files.
 what is placeholder. Any new content element must be tagged:
 
 ```html
-<span data-src="verified">02 8248 3460</span>   <!-- green: UASHMC's own public channels -->
-<span data-src="confirm">Open 24 hours.</span>  <!-- amber: plausible, UASHMC to confirm -->
-<span data-src="sample">Dr. …</span>            <!-- violet: our placeholder -->
+<span data-src="verified">02 8248 3460</span>
+<!-- green: UASHMC's own public channels -->
+<span data-src="confirm">Open 24 hours.</span>
+<!-- amber: plausible, UASHMC to confirm -->
+<span data-src="sample">Dr. …</span>
+<!-- violet: our placeholder -->
 ```
 
 `verified` means it appears in [research/verified-facts.md](research/verified-facts.md) with a
@@ -83,7 +86,7 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   come off the logo artwork in [images/logo.jpg](images/logo.jpg); `--brand-400` (#5AC0E4) and
   `--brand-100` (#D2F0FC) are the cyan and pale-panel blues their posters actually print.
   Re-sample rather than eyeball if these ever change.
-- **UASHMC is a navy *and* cyan brand, not a navy one.** Measured across their collateral the
+- **UASHMC is a navy _and_ cyan brand, not a navy one.** Measured across their collateral the
   split inside the blue band is roughly 40/60 navy-to-cyan, carried by pale-blue section panels,
   cyan icon discs and two-tone headlines (navy phrase + cyan phrase, see `.duo`). Cyan belongs in
   resting states, not just hovers. Their graphics contain **no green** — `--care-*` survives only
@@ -115,25 +118,26 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   actually states, and `f()` keeps **three** states because the middle one is how a new sample
   would render if one is ever added back:
 
-  | condition | render |
-  |---|---|
-  | field is in `v` | `data-src="verified"` — green |
+  | condition                     | render                                                       |
+  | ----------------------------- | ------------------------------------------------------------ |
+  | field is in `v`               | `data-src="verified"` — green                                |
   | not in `v` but a value exists | `data-src="sample"` — a placeholder value (currently unused) |
-  | not in `v` and no value | `.tosupply` "to confirm" chip |
+  | not in `v` and no value       | `.tosupply` "to confirm" chip                                |
 
   So a real profile is visibly half-empty, which is the truth: only Dr. Gulliab's poster gives a
   schedule, and none give HMO coverage. Do not fill those in. A real name over an invented clinic
   day is worse than a real name over a visible blank — and Dr. Yalung's card deliberately carries a
   real face over a blank specialty, because his award post never states one.
+
 - **A four-doctor roster makes most of the filters return nothing, so the emptiness has to explain
-  itself.** Four of the six clinic tiles and *every* HMO value match no one. Two things stop that
+  itself.** Four of the six clinic tiles and _every_ HMO value match no one. Two things stop that
   reading as a broken page, and both must survive any roster change:
-    - `specCounts()` writes a live count into each clinic tile (`.spec-count`, or "Profiles coming"
-      when zero), so a visitor sees the gap before they click rather than after.
-    - `emptyDocs()` names the filter that emptied the grid. "We have not published which HMOs each
-      doctor is accredited with yet" is both the honest answer and the more useful one — it turns a
-      dead end into the content-checklist moment the whole prototype is built around. Never let it
-      degrade to "no results".
+  - `specCounts()` writes a live count into each clinic tile (`.spec-count`, or "Profiles coming"
+    when zero), so a visitor sees the gap before they click rather than after.
+  - `emptyDocs()` names the filter that emptied the grid. "We have not published which HMOs each
+    doctor is accredited with yet" is both the honest answer and the more useful one — it turns a
+    dead end into the content-checklist moment the whole prototype is built around. Never let it
+    degrade to "no results".
 - **The card hover is a frame that clips and a layer that scales.** `.doc-fig` holds
   `overflow:hidden`; `.doc-ph` is absolutely positioned inside it and takes the `scale(1.055)`.
   One element cannot do both, because `overflow:hidden` and `transform` fight over the same box.
@@ -151,7 +155,7 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   coldest thing on the site. Keep it abstract: a realistic portrait here would be a photograph
   of a doctor who does not exist.
 - **Opaque images need an `::after` wash under `body.pv-on`, not a `background-color`.** Same trap
-  as the hero plates — a background colour paints *underneath* the photograph and never shows.
+  as the hero plates — a background colour paints _underneath_ the photograph and never shows.
   `.shot`, `.hero-shot`, `.feature-shot`, `.landmark` get the green verified wash; `.figure` gets
   the violet placeholder one.
 - **The logo is the real one.** `--ua-mark` in `:root` holds the UASHMC monogram as a
@@ -161,7 +165,7 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   must set **`background-color`**, never the `background` shorthand — the shorthand erases it.
 - **Direction B's hero shows UASHMC's actual building, in a panel, and the panel is not
   negotiable.** `--ph-front` is a 501×544 portrait source. Full-bleed at the 1178px artboard it
-  would be a 2.3× upscale *and* a 44% vertical slice — mushy, and it would crop off the crown and
+  would be a 2.3× upscale _and_ a 44% vertical slice — mushy, and it would crop off the crown and
   the entrance, which are the two things that make the building recognisable from the highway.
   Contained at ~456px it renders close to 1:1. If you widen the hero, widen the copy column, not
   the photo.
@@ -182,14 +186,14 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   by both places that show it (`.locmap` on the homepage location block and on `/contact`). An
   embedded Google or Waze map would need the network and break the offline constraint, so the
   roads, the creek, the landmark dots and the pin are all paths. Three rules:
-    - **The ODbL attribution inside the SVG stays.** "Map data © OpenStreetMap contributors" is
-      the licence condition, not decoration.
-    - **It is styled with presentation attributes on `<g>` wrappers, not CSS classes.** Class
-      selectors reaching into `<use>` shadow content is the fiddly corner of SVG, and grouped
-      attributes cost less than duplicating 200 paths would.
-    - **The viewBox is sized for the ~490px slot it renders into** (620×349), because SVG text
-      scales with the viewBox: at the original 1120px width every label rendered at ~6px.
-      If you resize the slot, regenerate rather than stretch.
+  - **The ODbL attribution inside the SVG stays.** "Map data © OpenStreetMap contributors" is
+    the licence condition, not decoration.
+  - **It is styled with presentation attributes on `<g>` wrappers, not CSS classes.** Class
+    selectors reaching into `<use>` shadow content is the fiddly corner of SVG, and grouped
+    attributes cost less than duplicating 200 paths would.
+  - **The viewBox is sized for the ~490px slot it renders into** (620×349), because SVG text
+    scales with the viewBox: at the original 1120px width every label rendered at ~6px.
+    If you resize the slot, regenerate rather than stretch.
 - **Map links use coordinates, never a name search.** `14.6250262%2C121.1399902` for both Waze
   and Google. Third-party listings carry the wrong street address for this hospital, so a search
   by name is exactly the thing that can put a driver in the wrong place.
@@ -208,7 +212,7 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   to publish without written confirmation it is current. The stamp renders on the page and in the
   assistant's answer.
 - **FAQPage JSON-LD is generated from the same array**, and only from entries that are `verified`
-  *and* free of `.tosupply` placeholders — an answer can be verified overall and still carry a
+  _and_ free of `.tosupply` placeholders — an answer can be verified overall and still carry a
   "to be confirmed" clause, which must never reach structured data.
 - **Plain ES5-style JS** — `var`, `function`, `$`/`$$` helpers, no modules, no optional chaining.
   Match it.
@@ -265,7 +269,7 @@ There are no tests. Verify by opening the file and driving it:
 5. Toggle **Direction A / B** — both homepages render fully.
 6. Ask KRISS: a distress phrase (the **calm green** crisis card, not the red ER card),
    `may medicard ba kayo?`, `magkano ang room?` (refuses to quote a room rate while still naming
-   the four packages they *do* publish), and something unanswerable (hands off to a human).
+   the four packages they _do_ publish), and something unanswerable (hands off to a human).
    `k.kind` drives the bubble class — `alarm` red, `calm` green — so a new card gets its tone
    from the KB entry, not from `ask()`.
 7. Type `Maxicare` into the HMO checker. It must say **not on our partner list**: they are not on
@@ -287,14 +291,15 @@ There are no tests. Verify by opening the file and driving it:
    Another gap that bit this project once: **`.kriss-layer` used to be `inset:0`** — a full-bleed,
    `pointer-events:none` box over the entire artboard. It changed nothing visually and nothing
    clickable, so nobody noticed, but it meant axe could not resolve the background colour of
-   *anything* underneath it and quietly turned 25–46 real contrast checks per route into
+   _anything_ underneath it and quietly turned 25–46 real contrast checks per route into
    "incomplete" instead of running them — which is how a genuine AA failure on the HMO partner
    badge (`#027F61` on `#E4F4EF`, 4.38:1) sat unflagged. It's `display:contents` now, so its
    children position against `.site-frame` directly and carry their own `z-index`. If the "zero
    violations" number ever looks too good against how much the page changed, check whether
    something is sitting on top of it and hiding the check, not just whether the page passed.
+
 10. Real hardware, not just the studio's mobile toggle, for viewport bugs. The toggle simulates a
-    narrow *width* — it cannot simulate a missing `<meta name="viewport">`, which is a phone-only
+    narrow _width_ — it cannot simulate a missing `<meta name="viewport">`, which is a phone-only
     failure mode (a real 390px phone with no viewport meta renders the page at 980px logical width,
     scaled to fit — everything looks "wrong-sized," not "wrong-width"). If a phone-specific bug is
     reported and the toggle looks fine, that's the first thing to check.

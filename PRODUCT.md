@@ -49,7 +49,7 @@ and what to bring; and no one is ever told something the hospital has not confir
 - **Unembarrassed** — a new hospital with gaps says so. Publishing what is not yet known, in plain
   sight, is the credibility play. Hedging is the failure.
 
-The emotional target is *relief*: the feeling of having found the one page that actually answers the
+The emotional target is _relief_: the feeling of having found the one page that actually answers the
 question.
 
 ## Anti-references

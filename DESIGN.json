@@ -4,34 +4,128 @@
   "title": "Design System: UASHMC Digital Front Door",
   "extensions": {
     "colorMeta": {
-      "brand-700": { "role": "primary", "displayName": "Logo Navy", "canonical": "#01487C", "tonalRamp": ["#01305A", "#01487C", "#0A6FA0", "#0AADD0", "#5AC0E4", "#D2F0FC", "#E7F6FD"] },
-      "brand-500": { "role": "primary", "displayName": "Logo Cyan", "canonical": "#0AADD0" },
-      "rose-500":  { "role": "secondary", "displayName": "Poster Rose", "canonical": "#D87898", "tonalRamp": ["#A8446A", "#C05B7D", "#D87898", "#FBE3EB", "#FDF2F6"] },
-      "accent-gold": { "role": "secondary", "displayName": "Collateral Gold", "canonical": "#D2A80C" },
-      "surface-page": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#FBFAF8" },
-      "sand-50": { "role": "neutral", "displayName": "Warm Section Band", "canonical": "#FBF5EC" },
-      "urgent": { "role": "status", "displayName": "Reserved Emergency Red", "canonical": "#C0271A" },
-      "care-700": { "role": "status", "displayName": "Confirmed / Calm Green", "canonical": "#026B52" },
-      "provenance-verified": { "role": "status", "displayName": "Verified (UASHMC's own channels)", "canonical": "#167355" },
-      "provenance-confirm": { "role": "status", "displayName": "Plausible, needs confirmation", "canonical": "#B45309" },
-      "provenance-sample": { "role": "status", "displayName": "Agency placeholder", "canonical": "#6D5BA8" }
+      "brand-700": {
+        "role": "primary",
+        "displayName": "Logo Navy",
+        "canonical": "#01487C",
+        "tonalRamp": [
+          "#01305A",
+          "#01487C",
+          "#0A6FA0",
+          "#0AADD0",
+          "#5AC0E4",
+          "#D2F0FC",
+          "#E7F6FD"
+        ]
+      },
+      "brand-500": {
+        "role": "primary",
+        "displayName": "Logo Cyan",
+        "canonical": "#0AADD0"
+      },
+      "rose-500": {
+        "role": "secondary",
+        "displayName": "Poster Rose",
+        "canonical": "#D87898",
+        "tonalRamp": ["#A8446A", "#C05B7D", "#D87898", "#FBE3EB", "#FDF2F6"]
+      },
+      "accent-gold": {
+        "role": "secondary",
+        "displayName": "Collateral Gold",
+        "canonical": "#D2A80C"
+      },
+      "surface-page": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#FBFAF8"
+      },
+      "sand-50": {
+        "role": "neutral",
+        "displayName": "Warm Section Band",
+        "canonical": "#FBF5EC"
+      },
+      "urgent": {
+        "role": "status",
+        "displayName": "Reserved Emergency Red",
+        "canonical": "#C0271A"
+      },
+      "care-700": {
+        "role": "status",
+        "displayName": "Confirmed / Calm Green",
+        "canonical": "#026B52"
+      },
+      "provenance-verified": {
+        "role": "status",
+        "displayName": "Verified (UASHMC's own channels)",
+        "canonical": "#167355"
+      },
+      "provenance-confirm": {
+        "role": "status",
+        "displayName": "Plausible, needs confirmation",
+        "canonical": "#B45309"
+      },
+      "provenance-sample": {
+        "role": "status",
+        "displayName": "Agency placeholder",
+        "canonical": "#6D5BA8"
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Source Serif Display", "purpose": "Story-first hero headline and the tagline. At most one two-tone treatment per view." },
-      "headline": { "displayName": "Section Headline", "purpose": "Section headings, paired with the thin gold rule beneath." },
-      "body": { "displayName": "Be Vietnam Pro Body", "purpose": "All running prose. 16px floor, expressed in rem so browser font-size preference is honoured." },
-      "label": { "displayName": "Eyebrow Label", "purpose": "Uppercase, tracked +0.08em. Legal microcopy and section eyebrows only." }
+      "display": {
+        "displayName": "Source Serif Display",
+        "purpose": "Story-first hero headline and the tagline. At most one two-tone treatment per view."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Section headings, paired with the thin gold rule beneath."
+      },
+      "body": {
+        "displayName": "Be Vietnam Pro Body",
+        "purpose": "All running prose. 16px floor, expressed in rem so browser font-size preference is honoured."
+      },
+      "label": {
+        "displayName": "Eyebrow Label",
+        "purpose": "Uppercase, tracked +0.08em. Legal microcopy and section eyebrows only."
+      }
     },
     "shadows": [
-      { "name": "elevation-1", "value": "0 1px 2px rgba(8,42,56,.06), 0 1px 3px rgba(8,42,56,.05)", "purpose": "Resting state for cards and inputs." },
-      { "name": "elevation-2", "value": "0 4px 12px rgba(8,42,56,.08), 0 1px 3px rgba(8,42,56,.06)", "purpose": "Hover on linked cards; focused inputs." },
-      { "name": "elevation-3", "value": "0 18px 44px rgba(8,42,56,.18), 0 4px 12px rgba(8,42,56,.10)", "purpose": "Floating panels: the assistant, sheets." }
+      {
+        "name": "elevation-1",
+        "value": "0 1px 2px rgba(8,42,56,.06), 0 1px 3px rgba(8,42,56,.05)",
+        "purpose": "Resting state for cards and inputs."
+      },
+      {
+        "name": "elevation-2",
+        "value": "0 4px 12px rgba(8,42,56,.08), 0 1px 3px rgba(8,42,56,.06)",
+        "purpose": "Hover on linked cards; focused inputs."
+      },
+      {
+        "name": "elevation-3",
+        "value": "0 18px 44px rgba(8,42,56,.18), 0 4px 12px rgba(8,42,56,.10)",
+        "purpose": "Floating panels: the assistant, sheets."
+      }
     ],
     "motion": [
-      { "name": "motion-fast", "value": "120ms", "purpose": "Colour and border changes." },
-      { "name": "motion-base", "value": "180ms", "purpose": "Hover, focus, small transforms." },
-      { "name": "motion-slow", "value": "280ms", "purpose": "Panels, sheets, disclosure." },
-      { "name": "motion-ease", "value": "cubic-bezier(.2,.6,.2,1)", "purpose": "Default easing across the system. All motion tokens resolve to 0ms under prefers-reduced-motion." }
+      {
+        "name": "motion-fast",
+        "value": "120ms",
+        "purpose": "Colour and border changes."
+      },
+      {
+        "name": "motion-base",
+        "value": "180ms",
+        "purpose": "Hover, focus, small transforms."
+      },
+      {
+        "name": "motion-slow",
+        "value": "280ms",
+        "purpose": "Panels, sheets, disclosure."
+      },
+      {
+        "name": "motion-ease",
+        "value": "cubic-bezier(.2,.6,.2,1)",
+        "purpose": "Default easing across the system. All motion tokens resolve to 0ms under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
       { "name": "bp.sm", "value": "560px" },
@@ -84,11 +178,31 @@
       "Real photography before any placeholder; placeholders are drawn, never a stock stand-in"
     ],
     "rules": [
-      { "name": "The Two Cool Bands Rule", "body": "A page that alternates only white and brand-100 is the cold, clinical result the warm ramp exists to prevent. Never run more than two cool section bands in a row.", "section": "colors" },
-      { "name": "The No Green Rule", "body": "UASHMC's own collateral contains no green. Green is reserved for status meaning — a confirmed accreditation, the assistant's calm state — because it doubles as the provenance system's verified hue.", "section": "colors" },
-      { "name": "The Reserved Red Rule", "body": "Urgent red is for genuine emergency affordances only: the ER strip, calling 911. A red booking button on a hospital site is the anti-pattern this rule exists to name.", "section": "colors" },
-      { "name": "The Presbyopia Floor Rule", "body": "16px is a floor for body copy, stated as a requirement rather than an aspiration, because the primary audience includes a large senior and PWD cohort. The scale is expressed in rem so the reader's own font-size preference is honoured.", "section": "typography" },
-      { "name": "The Response-Not-Rest Rule", "body": "Elevation increases only in response to interaction state. A static card that never receives interaction stays flat and must not simulate a hover it cannot fulfil.", "section": "elevation" }
+      {
+        "name": "The Two Cool Bands Rule",
+        "body": "A page that alternates only white and brand-100 is the cold, clinical result the warm ramp exists to prevent. Never run more than two cool section bands in a row.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Green Rule",
+        "body": "UASHMC's own collateral contains no green. Green is reserved for status meaning — a confirmed accreditation, the assistant's calm state — because it doubles as the provenance system's verified hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reserved Red Rule",
+        "body": "Urgent red is for genuine emergency affordances only: the ER strip, calling 911. A red booking button on a hospital site is the anti-pattern this rule exists to name.",
+        "section": "colors"
+      },
+      {
+        "name": "The Presbyopia Floor Rule",
+        "body": "16px is a floor for body copy, stated as a requirement rather than an aspiration, because the primary audience includes a large senior and PWD cohort. The scale is expressed in rem so the reader's own font-size preference is honoured.",
+        "section": "typography"
+      },
+      {
+        "name": "The Response-Not-Rest Rule",
+        "body": "Elevation increases only in response to interaction state. A static card that never receives interaction stays flat and must not simulate a hover it cannot fulfil.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do sample colour from UASHMC's own artwork rather than inventing it",
