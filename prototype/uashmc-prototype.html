@@ -9278,8 +9278,8 @@
           $$(".seg [data-dir]").forEach(function (b) {
             b.addEventListener("click", onScroll);
           });
-          reduce.addEventListener("change", function () {
-            if (reduce.matches)
+          PREFERS_STILL.addEventListener("change", function () {
+            if (PREFERS_STILL.matches)
               plates.forEach(function (el) {
                 el.style.transform = "";
               });
