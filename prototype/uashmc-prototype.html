@@ -2270,22 +2270,207 @@
         font-weight: 600;
       }
 
-      /* new services rail */
-      .rail {
-        display: flex;
+      /* featured services & packages — editorial bento. One tile (Maternity)
+   gets the hero spot; the rest are sized by how much we can actually say
+   about each one. Reuses .shot for the four services we have real UASHMC
+   photography for, and .figure for the two we don't — same components as
+   everywhere else, just filling a grid cell instead of sitting atop a card. */
+      .feat-bento {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: minmax(160px, 1fr);
         gap: 16px;
-        overflow-x: auto;
-        padding-bottom: 6px;
-        scroll-snap-type: x mandatory;
+        grid-template-areas:
+          "mother mother sleep sleep"
+          "mother mother ct    gall"
+          "dith   dith   ape   ape";
       }
-      .rail > * {
-        flex: 0 0 288px;
-        scroll-snap-align: start;
-      }
-      @container vp (max-width:600px) {
-        .rail > * {
-          flex: 0 0 84%;
+      @container vp (max-width:760px) {
+        .feat-bento {
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-areas:
+            "mother mother"
+            "sleep  ct"
+            "gall   dith"
+            "ape    ape";
         }
+      }
+      @container vp (max-width:480px) {
+        .feat-bento {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "mother"
+            "sleep"
+            "ct"
+            "gall"
+            "dith"
+            "ape";
+        }
+      }
+      .feat-mother {
+        grid-area: mother;
+      }
+      .feat-sleep {
+        grid-area: sleep;
+      }
+      .feat-ct {
+        grid-area: ct;
+      }
+      .feat-gall {
+        grid-area: gall;
+      }
+      .feat-dith {
+        grid-area: dith;
+      }
+      .feat-ape {
+        grid-area: ape;
+      }
+      /* a .shot filling a bento cell instead of sitting atop a card: no
+   negative margin to bleed against, no fixed aspect-ratio, and the whole
+   tile is the link rather than a separate CTA below it. */
+      .feat-bento .shot {
+        display: block;
+        margin: 0;
+        aspect-ratio: auto;
+        height: 100%;
+        border-radius: var(--r-lg);
+        box-shadow: var(--sh-1);
+        color: inherit;
+        text-decoration: none;
+        transition:
+          transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+          box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      .feat-bento .newtag,
+      .feat-bento .tosupply {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 1;
+      }
+      .feat-cap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 34px 16px 14px;
+        color: #fff;
+        background: linear-gradient(
+          to top,
+          color-mix(in srgb, var(--brand-900) 92%, transparent) 0%,
+          color-mix(in srgb, var(--brand-900) 74%, transparent) 55%,
+          transparent 100%
+        );
+      }
+      .feat-mother .feat-cap {
+        padding-top: 64px;
+      }
+      .feat-cap h3 {
+        font-size: 1rem;
+        color: #fff;
+        margin: 0 0 3px;
+      }
+      .feat-mother .feat-cap h3 {
+        font-size: 1.5rem;
+      }
+      .feat-cap .feat-price {
+        display: block;
+        font-family: var(--ui);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--navy-muted);
+      }
+      .feat-mother .feat-cap .feat-price {
+        font-size: 0.9375rem;
+      }
+      .feat-cap .feat-cta {
+        display: block;
+        font-family: var(--ui);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #fff;
+        margin-top: 8px;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.25s;
+      }
+      .feat-bento .shot:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: -3px;
+        box-shadow: inset 0 0 0 6px
+          color-mix(in srgb, var(--brand-900) 55%, transparent);
+      }
+      /* the whole-tile "pop": lift + a brand ring, the same recipe .doc already
+   uses for its own hover, so the two photographic card types feel like one
+   system. Gated behind (hover: hover) so a tap on a touch screen can't leave
+   a tile stuck mid-lift. */
+      @media (hover: hover) {
+        .feat-bento a:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 0 0 2px var(--brand-400), var(--sh-3);
+        }
+        .feat-bento a:hover .feat-cta {
+          text-decoration: underline;
+          text-decoration-color: currentColor;
+        }
+      }
+      /* Same "motion is decoration, so it goes entirely" rule as .doc — the
+   colour and shadow cues stay (they're what signals "clickable"), only the
+   movement is removed. */
+      @media (prefers-reduced-motion: reduce) {
+        .feat-bento .shot,
+        .feat-slot {
+          transition: none;
+        }
+        .feat-bento a:hover {
+          transform: none;
+        }
+      }
+      /* the two packages with no UASHMC photo yet: same .figure placeholder
+   used everywhere else, filling the tile instead of sitting atop a card. */
+      .feat-slot {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: var(--r-lg);
+        box-shadow: var(--sh-1);
+        color: inherit;
+        text-decoration: none;
+        transition:
+          transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+          box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      .feat-slot .figure {
+        flex: 1;
+        border-radius: 0;
+      }
+      .feat-fig-cap {
+        padding: 12px 14px 13px;
+        background: var(--surface);
+        border-top: 1px solid var(--line);
+      }
+      .feat-fig-cap h3 {
+        font-size: 0.9375rem;
+        margin: 0 0 3px;
+      }
+      .feat-fig-cap p {
+        font-family: var(--ui);
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin: 0;
+        line-height: 1.45;
+      }
+      .feat-fig-cap .feat-cta {
+        display: block;
+        font-family: var(--ui);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--brand-700);
+        margin-top: 6px;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.25s;
       }
       /* a real photograph in a card, as opposed to a .figure placeholder.
    The frame clips; a ::before layer inside it scales on hover — same split as
@@ -2407,11 +2592,6 @@
         .bandshot:hover::before {
           transform: none;
         }
-      }
-      .railfig {
-        aspect-ratio: 16/10;
-        margin: -20px -20px 15px;
-        border-radius: var(--r-md) var(--r-md) 0 0;
       }
       .newtag {
         display: inline-flex;
@@ -5770,7 +5950,7 @@
                     </div>
                     <!-- /hero-b -->
 
-                    <!-- ░░ FEATURED SERVICES & PACKAGES — moved up front so priced packages stay prominent, not buried after the symptom router ░░ -->
+                    <!-- ░░ FEATURED SERVICES & PACKAGES — moved up front so priced packages stay prominent, not buried after the symptom router. Editorial bento: Maternity is the newest, most photogenic service, so it gets the hero tile; the other five size down to how much we can actually say about each. ░░ -->
                     <section class="sec alt">
                       <div class="wrap">
                         <div class="sec-head row">
@@ -5784,136 +5964,61 @@
                           </div>
                         </div>
 
-                        <div class="rail">
-                          <div class="card">
-                            <div
-                              class="shot s-mother"
-                              data-src="verified"
-                              role="img"
-                              aria-label="Maternity care at UASHMC"
-                            ></div>
-                            <span class="newtag">Now available</span>
-                            <h3 data-src="verified">Maternity packages</h3>
-                            <p>
-                              Normal delivery and caesarean packages with our
-                              OB-Gyn team, net of PhilHealth.
-                              <b data-src="verified"
+                        <div class="feat-bento">
+                          <a
+                            class="shot s-mother feat-mother"
+                            href="#/services"
+                            data-src="verified"
+                          >
+                            <span class="newtag" aria-hidden="true"
+                              >Now available</span
+                            >
+                            <span class="feat-cap">
+                              <h3 data-src="verified">Maternity packages</h3>
+                              <span class="feat-price" data-src="verified"
                                 >NSD from ₱23,000 &middot; caesarean from
-                                ₱55,200</b
-                              >, semi-private.
-                            </p>
-                            <p class="faq-checked">
-                              Price as published by UASHMC, August 2026.
-                              Please confirm before you rely on it.
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="#/services"
-                              style="margin-top: 14px"
-                              >See the packages</a
-                            >
-                          </div>
-                          <div class="card">
-                            <div
-                              class="figure t3 railfig"
-                              aria-hidden="true"
-                              data-src="sample"
-                            >
-                              <svg viewBox="0 0 120 104" fill="none">
-                                <circle
-                                  cx="60"
-                                  cy="34"
-                                  r="18.5"
-                                  fill="currentColor"
-                                  opacity=".92"
-                                />
-                                <path
-                                  d="M15 104c0-21.5 20.1-39 45-39s45 17.5 45 39z"
-                                  fill="currentColor"
-                                  opacity=".92"
-                                />
-                                <path
-                                  d="M60 66 50 104h7.5l2.5-23 2.5 23H70z"
-                                  fill="#fff"
-                                  opacity=".72"
-                                />
-                              </svg>
-                              <span class="fcap">Photo to follow</span>
-                            </div>
-                            <span class="tosupply">To confirm</span>
-                            <h3 data-src="sample">
-                              APE &amp; executive check-up packages
-                            </h3>
-                            <p>
-                              Annual physical exams and executive health
-                              packages.
-                              <span data-src="sample"
-                                >Package contents and pricing to confirm with
-                                UASHMC.</span
+                                ₱55,200, semi-private</span
                               >
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="tel:+63282483460"
-                              style="margin-top: 14px"
-                              >Ask our billing desk</a
+                              <span class="feat-cta">See the packages ›</span>
+                            </span>
+                          </a>
+                          <a
+                            class="shot s-sleep feat-sleep"
+                            href="#/services"
+                            data-src="verified"
+                          >
+                            <span class="newtag" aria-hidden="true"
+                              >Now available</span
                             >
-                          </div>
-                          <div class="card">
-                            <div
-                              class="shot s-sleep"
-                              data-src="verified"
-                              role="img"
-                              aria-label="A sleep study in progress in the Heart and Lung Unit"
-                            ></div>
-                            <span class="newtag">Now available</span>
-                            <h3 data-src="verified">Sleep studies</h3>
-                            <p>
-                              An overnight study in our Heart &amp; Lung Unit,
-                              for snoring, daytime tiredness and suspected sleep
-                              apnoea.
-                              <b data-src="verified">From ₱25,500</b>.
-                            </p>
-                            <p class="faq-checked">
-                              Price as published by UASHMC, August 2026.
-                              Please confirm before you rely on it.
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="#/services"
-                              style="margin-top: 14px"
-                              >What to expect</a
+                            <span class="feat-cap">
+                              <h3 data-src="verified">Sleep studies</h3>
+                              <span class="feat-price" data-src="verified"
+                                >From ₱25,500</span
+                              >
+                              <span class="feat-cta">What to expect ›</span>
+                            </span>
+                          </a>
+                          <a
+                            class="shot s-ct feat-ct"
+                            href="#/services"
+                            data-src="verified"
+                          >
+                            <span class="newtag" aria-hidden="true"
+                              >Now available</span
                             >
-                          </div>
-                          <div class="card">
+                            <span class="feat-cap">
+                              <h3 data-src="verified">
+                                CT scanning &amp; imaging
+                              </h3>
+                              <span class="feat-price" data-src="verified"
+                                >Aortogram from ₱25,000</span
+                              >
+                              <span class="feat-cta">See all tests ›</span>
+                            </span>
+                          </a>
+                          <a class="feat-slot feat-gall" href="#/services">
                             <div
-                              class="shot s-ct"
-                              data-src="verified"
-                              role="img"
-                              aria-label="The CT suite at UASHMC"
-                            ></div>
-                            <span class="newtag">Now available</span>
-                            <h3 data-src="verified">
-                              CT scanning &amp; imaging
-                            </h3>
-                            <p>
-                              X-ray and CT scanning on the ground floor.
-                              <b data-src="verified">CT aortogram from ₱25,000</b>.
-                            </p>
-                            <p class="faq-checked">
-                              Price as published by UASHMC, August 2026.
-                              Please confirm before you rely on it.
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="#/services"
-                              style="margin-top: 14px"
-                              >See all tests</a
-                            >
-                          </div>
-                          <div class="card">
-                            <div
-                              class="figure t2 railfig"
+                              class="figure t2"
                               aria-hidden="true"
                               data-src="sample"
                             >
@@ -5938,49 +6043,81 @@
                               </svg>
                               <span class="fcap">Photo to follow</span>
                             </div>
-                            <span class="newtag">Now available</span>
-                            <h3 data-src="verified">
-                              Laparoscopic gallbladder surgery
-                            </h3>
-                            <p>
-                              The gallbladder removed through small incisions
-                              instead of one large cut, smaller scars and a
-                              shorter stay.
-                              <b data-src="verified"
-                                >From ₱65,000, net of PhilHealth</b
-                              >.
-                            </p>
-                            <p class="faq-checked">
-                              Price as published by UASHMC, August 2026.
-                              Please confirm before you rely on it.
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="#/services"
-                              style="margin-top: 14px"
-                              >What to expect</a
+                            <span class="newtag" aria-hidden="true"
+                              >Now available</span
                             >
-                          </div>
-                          <div class="card">
+                            <span class="feat-fig-cap">
+                              <h3 data-src="verified">
+                                Laparoscopic gallbladder surgery
+                              </h3>
+                              <p data-src="verified">
+                                From ₱65,000, net of PhilHealth
+                              </p>
+                              <span class="feat-cta">What to expect ›</span>
+                            </span>
+                          </a>
+                          <a
+                            class="shot s-dith feat-dith"
+                            href="#/services"
+                            data-src="verified"
+                          >
+                            <span class="newtag" aria-hidden="true"
+                              >Online</span
+                            >
+                            <span class="feat-cap">
+                              <h3 data-src="verified">Doctor in the House</h3>
+                              <span class="feat-price"
+                                >Our own video series</span
+                              >
+                              <span class="feat-cta">Watch episodes ›</span>
+                            </span>
+                          </a>
+                          <a
+                            class="feat-slot feat-ape"
+                            href="tel:+63282483460"
+                          >
                             <div
-                              class="shot s-dith"
-                              data-src="verified"
-                              role="img"
-                              aria-label="Dr. Elnah A. Gulliab recording an episode of Doctor in the House"
-                            ></div>
-                            <span class="newtag">Online</span>
-                            <h3 data-src="verified">Doctor in the House</h3>
-                            <p>
-                              Our own video series, our doctors answering the
-                              questions patients ask us most.
-                            </p>
-                            <a
-                              class="btn btn-ghost btn-sm"
-                              href="#/services"
-                              style="margin-top: 14px"
-                              >Watch episodes</a
+                              class="figure t3"
+                              aria-hidden="true"
+                              data-src="sample"
                             >
-                          </div>
+                              <svg viewBox="0 0 120 104" fill="none">
+                                <circle
+                                  cx="60"
+                                  cy="34"
+                                  r="18.5"
+                                  fill="currentColor"
+                                  opacity=".92"
+                                />
+                                <path
+                                  d="M15 104c0-21.5 20.1-39 45-39s45 17.5 45 39z"
+                                  fill="currentColor"
+                                  opacity=".92"
+                                />
+                                <path
+                                  d="M60 66 50 104h7.5l2.5-23 2.5 23H70z"
+                                  fill="#fff"
+                                  opacity=".72"
+                                />
+                              </svg>
+                              <span class="fcap">Photo to follow</span>
+                            </div>
+                            <span class="tosupply" aria-hidden="true"
+                              >To confirm</span
+                            >
+                            <span class="feat-fig-cap">
+                              <h3 data-src="sample">
+                                APE &amp; executive check-up packages
+                              </h3>
+                              <p>
+                                <span data-src="sample"
+                                  >Package contents and pricing to confirm with
+                                  UASHMC.</span
+                                >
+                              </p>
+                              <span class="feat-cta">Ask our billing desk ›</span>
+                            </span>
+                          </a>
                         </div>
                       </div>
                     </section>
