@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "project": {
+    "name": "site",
+    "productType": "healthcare / hospital patient-facing website",
+    "stack": [
+      "astro",
+      "react",
+      "tailwind-v4"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/styles/tokens.css"
+    ],
+    "components": [
+      "src/components/ui",
+      "src/components"
+    ],
+    "assets": [
+      "src/styles/photos.css"
+    ],
+    "instructions": [
+      "AGENTS.md",
+      "docs/uashmc-design-guidelines.md (pitch-kit repo, source of truth for tokens.css)"
+    ]
+  },
+  "design": {
+    "colorMode": "light-only (fixed, no dark mode)",
+    "colors": {
+      "brand-900": "#01305a",
+      "brand-700": "#01487c",
+      "brand-600": "#0a6fa0",
+      "brand-500": "#0aadd0",
+      "brand-400": "#5ac0e4",
+      "brand-100": "#d2f0fc",
+      "brand-50": "#e7f6fd",
+      "accent-gold": "#d2a80c",
+      "rose-700": "#a8446a",
+      "rose-500": "#d87898",
+      "sand-100": "#f6ebda",
+      "surface-page": "#fbfaf8",
+      "surface-raised": "#ffffff",
+      "surface-sunken": "#f2f7fa",
+      "text-primary": "#062b46",
+      "text-body": "#173f5c",
+      "text-muted": "#4e6981",
+      "text-faint": "#8da3b6",
+      "border-default": "#d9e2ea",
+      "urgent": "#c0271a",
+      "care": "#027f61",
+      "provenance-verified": "#167355",
+      "provenance-confirm": "#b45309",
+      "provenance-sample": "#6d5ba8"
+    },
+    "typography": {
+      "display": "Source Serif 4, Georgia, Times New Roman, serif — h1/h2/h3 only",
+      "ui": "Be Vietnam Pro, ui-sans-serif, system-ui, sans-serif — everything else",
+      "bodyFloor": "16px (1rem) — never smaller for running prose",
+      "scale": "11px/12px/13px/14px/16px/18px/21px/22-30px(clamp)/30-45px(clamp)"
+    },
+    "spacing": {
+      "grid": "strict 4px scale, tokens --space-1 (4px) through --space-10 (80px), no off-scale values"
+    },
+    "radius": {
+      "sm": "6px (inputs, chips)",
+      "md": "10px (cards, buttons)",
+      "lg": "16px (panels)",
+      "xl": "24px (sheets)",
+      "pill": "999px"
+    },
+    "shadows": {
+      "elevation-1": "resting cards",
+      "elevation-2": "hover state",
+      "elevation-3": "floating panels/sheets"
+    },
+    "motion": {
+      "durations": "120/180/280ms",
+      "easing": "cubic-bezier(0.2, 0.6, 0.2, 1)",
+      "reducedMotion": "all duration tokens resolve to 0ms under prefers-reduced-motion; transform-based effects must still branch explicitly"
+    },
+    "density": "comfortable — 44px minimum interactive target height, 4px baseline grid, generous spacing (not compact/dashboard-dense)"
+  },
+  "components": {
+    "installed": [
+      "demo",
+      "gallery-animation",
+      "DoctorGalleryPreview"
+    ],
+    "preferredPrimitives": [
+      ".btn/.btn-primary/.btn-ghost/.btn-urgent (global.css, not shadcn Button)",
+      ".field (label+input/select pattern used in filters)",
+      ".doc / .doc-fig / .doc-b (existing doctor card anatomy)"
+    ],
+    "patterns": [
+      "server-rendered content, client-side <script> filters over already-real HTML (no client-side data fetching/generation)",
+      "provenance data-src attribute carried as build-time metadata only — NOT visually styled on the public site (unlike the pitch-kit prototype's colour-coded demo overlay)"
+    ]
+  },
+  "constraints": {
+    "must": [
+      "Reference tokens.css custom properties only — no raw hex/px/ms values in new CSS",
+      "16px body-copy floor; type scale in rem so it honours the reader's browser font-size setting",
+      "44px minimum height on interactive targets (buttons, inputs, filter chips) — audience skews senior/PWD",
+      "Filtering must stay a progressive enhancement over real server-rendered HTML — never hide content behind client-side-only rendering",
+      "Empty state must always explain WHY (which filter emptied it) and offer a phone/Viber fallback — never a bare 'no results'",
+      "prefers-reduced-motion must be honoured for any transform-based interaction",
+      "Never fabricate doctor facts (specialty/clinic day/room/HMO) — unverified fields render an explicit 'to confirm' placeholder, never a guess",
+      "[data-src] provenance attribute stays visually unstyled on this public build"
+    ],
+    "avoid": [
+      "shadcn default Button/Input/Select primitives — this project has its own .btn/.field system",
+      "Dark mode / color-scheme branching — the site is fixed light",
+      "Client-side-only doctor data (breaks crawlability + the no-JS baseline)",
+      "Any card grid that reads as generic SaaS (guidelines explicitly reject the 'identical icon card grid' pattern elsewhere in this project)"
+    ]
+  },
+  "decisions": [
+    {
+      "surface": "src/pages/doctors/index.astro (Find a Doctor)",
+      "explored": ["A — Guided Triage", "B — Faceted Directory", "C — Specialty-First Sections"],
+      "chosen": "C, with A's doctor-card anatomy (small square photo + text row, not C's large 4:3 editorial card) and A's click-to-filter specialty tiles (tiles isolate a section instead of just scrolling to it)",
+      "rationale": "With only 4 published doctors across 2 of 6 clinics, a flat filter bar mostly returns nothing (the pitch-kit's own documented finding). Sectioning by specialty plus an explicit 'not yet published' list turns that gap into upfront content instead of a dead end reached after filtering.",
+      "notConsistent": "Day/HMO filtering from A and B was dropped — kept to name-search + specialty tiles only, to stay in line with C's minimalism rationale. Easy to add back if the roster grows.",
+      "abandonedVariants": "explore-a-guided.astro, explore-b-faceted.astro, explore-c-sections.astro, explore.astro — removed after implementation; this decision record is the surviving trace.",
+      "decidedAt": "2026-08-28"
+    },
+    {
+      "surface": "src/pages/services/index.astro (Featured services & packages section)",
+      "explored": ["A — Editorial Highlights Strip", "B — Package Spotlight", "C — Category Tabs"],
+      "note": "21st AI's free daily 'generate' quota was exhausted before any sketch ran, so these 3 were hand-drafted (not AI-generated) against the same tokens/real content.",
+      "chosen": "C — Diagnostics / Surgery / Maternity tabs, mirroring services/index.astro's own CATEGORY_ORDER. 'Emergency and online' has no featured item so it has no tab.",
+      "rationale": "Foreshadows the full category grid immediately below it instead of introducing an unrelated flat list of 4 — the highlight section and the full grid read as one system.",
+      "notConsistent": "Recommendation had been B (Package Spotlight, since Maternity is the only service with a real price table) — user picked C instead. Maternity's price table is still shown in full inside its tab panel, so that content isn't lost, just not visually spotlighted.",
+      "abandonedVariants": "explore-a-strip.astro, explore-b-spotlight.astro, explore-c-tabs.astro, explore.astro — removed after implementation; this decision record is the surviving trace.",
+      "decidedAt": "2026-08-28"
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "design.colors",
+      "source": "src/styles/tokens.css §2.1-2.4"
+    },
+    {
+      "fact": "design.typography",
+      "source": "src/styles/tokens.css §2.5"
+    },
+    {
+      "fact": "design.spacing",
+      "source": "src/styles/tokens.css §2.6"
+    },
+    {
+      "fact": "design.motion",
+      "source": "src/styles/tokens.css §2.6 + prefers-reduced-motion block"
+    },
+    {
+      "fact": "components.patterns:provenance-unstyled",
+      "source": "src/styles/global.css lines 329-336"
+    },
+    {
+      "fact": "components.patterns:server-rendered-filter",
+      "source": "src/pages/doctors/index.astro <script> block"
+    },
+    {
+      "fact": "components.installed",
+      "source": "src/components/ui"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.stack:astro",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-08-28T09:32:05.351Z"
+}

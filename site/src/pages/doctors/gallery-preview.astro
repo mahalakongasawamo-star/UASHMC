@@ -1,0 +1,54 @@
+---
+// Standalone preview of the gallery-animation component (framer-motion +
+// Tailwind), not linked from the site nav. Not wired into /doctors/index.astro —
+// this page exists only so the interaction can be judged before that decision.
+// Deliberately NOT using Layout.astro: Tailwind's Preflight reset (imported
+// below) would otherwise apply to the real header/nav/footer on every page.
+import "../../styles/tailwind-preview.css";
+import DoctorGalleryPreview from "../../components/DoctorGalleryPreview";
+import DemoOne from "../../components/ui/demo";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery component preview — Find a Doctor</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+    />
+    <style>
+      body {
+        font-family: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-neutral-900">
+    <div class="max-w-5xl mx-auto px-6 py-10">
+      <p class="text-xs font-semibold uppercase tracking-wide text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2 inline-block mb-6">
+        Preview only — not linked from navigation, not wired into /doctors
+      </p>
+      <a href="/doctors" class="block text-sm text-blue-700 hover:underline mb-8">← Back to Find a Doctor</a>
+
+      <h1 class="text-2xl font-semibold mb-2">Expandable gallery — with UASHMC's real doctor photos</h1>
+      <p class="text-neutral-600 mb-6 max-w-prose">
+        Hover a panel to expand it; click to open the full-size viewer with prev/next and a counter.
+        Images are the same four real photos already used on /doctors.
+      </p>
+      <DoctorGalleryPreview client:load />
+
+      <hr class="my-14 border-neutral-200" />
+
+      <h2 class="text-xl font-semibold mb-2">Component as supplied — stock demo images</h2>
+      <p class="text-neutral-600 mb-6 max-w-prose">
+        Unmodified <code>Component</code> from the pasted <code>gallery-animation.tsx</code>, for comparison against the untouched source.
+      </p>
+      <DemoOne client:load />
+    </div>
+  </body>
+</html>

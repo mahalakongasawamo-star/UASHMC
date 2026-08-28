@@ -9,6 +9,18 @@ const byCategory = CATEGORY_ORDER.map((name) => ({
   items: services.filter((s) => s.data.category === name),
 }));
 
+// "Featured services & packages" — chosen from /services/explore's direction C
+// (category tabs). A curated 4 of the 10 real services, grouped by the same
+// CATEGORY_ORDER the full grid below uses. Only categories that have a
+// featured item get a tab — Emergency and online has none of the 4, so it's
+// skipped here rather than shown empty.
+const byId = (id: string) => services.find((s) => s.id === id)!;
+const FEATURED_TABS = [
+  { key: "Diagnostics", label: "Diagnostics", items: ["ct-scanning", "sleep-studies"].map(byId) },
+  { key: "Surgery", label: "Surgery", items: ["gallbladder-surgery"].map(byId) },
+  { key: "Maternity", label: "Maternity", items: ["maternity"].map(byId) },
+];
+
 const CLINICS = [
   { name: "Cardiology", blurb: "Heart consultation, ECG, cardiac evaluation." },
   { name: "Internal Medicine", blurb: "Adult check-up, diabetes, hypertension, thyroid." },
@@ -52,6 +64,57 @@ const CLINICS = [
     </ul>
   </section>
 
+  <section class="featured">
+    <h2>Featured services &amp; packages</h2>
+    <p class="featured-lead">Browse by the same clinics you'll see in the full list below.</p>
+
+    <div class="tablist" role="tablist" aria-label="Featured service category">
+      {
+        FEATURED_TABS.map((t, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${t.key}`}
+            aria-controls={`panel-${t.key}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            class="tab"
+          >
+            {t.label}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      FEATURED_TABS.map((t, i) => (
+        <div role="tabpanel" id={`panel-${t.key}`} aria-labelledby={`tab-${t.key}`} class="panel" hidden={i !== 0}>
+          <div class="panel-grid">
+            {t.items.map((s) => (
+              <a class="pcard" href={`/services/${s.id}`}>
+                <h3 data-src={s.data.src}>{s.data.name}</h3>
+                <p>{s.data.summary}</p>
+                {s.data.priceTable && (
+                  <table class="mini-table">
+                    <tbody>
+                      {s.data.priceTable.map((row) => (
+                        <tr>
+                          <td>{row.package}</td>
+                          <td>{row.semiPrivate}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+                {s.data.priceChecked && <p class="pcard-checked">Price to confirm before it goes live</p>}
+                <span class="pcard-link">See details →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
   {
     byCategory.map(
       (group) =>
@@ -73,8 +136,29 @@ const CLINICS = [
   }
 </Layout>
 
+<script>
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
+  const panels = Array.from(document.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
+
+  function select(tab: HTMLButtonElement) {
+    tabs.forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+    panels.forEach((p) => {
+      p.hidden = p.getAttribute("aria-labelledby") !== tab.id;
+    });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => select(tab));
+    tab.addEventListener("keydown", (e) => {
+      const i = tabs.indexOf(tab);
+      if (e.key === "ArrowRight") tabs[(i + 1) % tabs.length].focus();
+      if (e.key === "ArrowLeft") tabs[(i - 1 + tabs.length) % tabs.length].focus();
+    });
+  });
+</script>
+
 <style>
-  .page-head, .clinics, .category {
+  .page-head, .clinics, .category, .featured {
     max-width: var(--layout-content-max);
     margin: 0 auto;
     padding: var(--space-8) var(--layout-gutter-mobile);
@@ -92,7 +176,7 @@ const CLINICS = [
     padding: var(--space-3) var(--space-4); margin-top: var(--space-4);
   }
 
-  .clinics h2, .category h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-4); }
+  .clinics h2, .category h2, .featured h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-4); }
   .clinics-list {
     list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-border-default);
     display: grid; grid-template-columns: 1fr 1fr; gap: 0;
@@ -104,6 +188,35 @@ const CLINICS = [
   .clinics-list b { color: var(--color-text-primary); }
   .clinics-list span { color: var(--color-text-muted); font-size: var(--font-size-sm); }
   @media (max-width: 700px) { .clinics-list { grid-template-columns: 1fr; } }
+
+  .featured-lead { color: var(--color-text-muted); margin: 0 0 var(--space-6); max-width: 60ch; }
+  .tablist { display: flex; gap: var(--space-2); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .tab {
+    font: inherit; font-size: var(--font-size-md); font-weight: 600; color: var(--color-text-muted);
+    background: none; border: none; border-bottom: 2px solid transparent;
+    padding: var(--space-3) var(--space-4); min-height: 44px; cursor: pointer;
+    transition: color var(--motion-base) var(--motion-ease), border-color var(--motion-base) var(--motion-ease);
+  }
+  .tab:hover { color: var(--color-brand-700); }
+  .tab[aria-selected="true"] { color: var(--color-brand-700); border-bottom-color: var(--color-brand-500); }
+
+  .panel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+  @media (max-width: 700px) { .panel-grid { grid-template-columns: 1fr; } }
+  .pcard {
+    display: block; background: var(--color-surface-raised); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); padding: var(--space-5); text-decoration: none; color: inherit;
+    box-shadow: var(--elevation-1);
+    transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+  }
+  .pcard:hover { border-color: var(--color-brand-500); box-shadow: var(--elevation-2); }
+  .pcard h3 { font-size: var(--font-size-lg); margin: 0 0 var(--space-2); }
+  .pcard p { margin: 0 0 var(--space-2); color: var(--color-text-muted); font-size: var(--font-size-sm); }
+  .mini-table { width: 100%; border-collapse: collapse; margin: var(--space-3) 0; }
+  .mini-table td { padding: var(--space-1) 0; font-size: var(--font-size-sm); border-bottom: 1px solid var(--color-border-soft); }
+  .mini-table tr:last-child td { border-bottom: 0; }
+  .mini-table td:last-child { text-align: right; color: var(--color-brand-700); font-weight: 700; }
+  .pcard-checked { font-style: italic; color: var(--color-text-faint); font-size: var(--font-size-xs); margin: 0 0 var(--space-2); }
+  .pcard-link { color: var(--color-brand-700); font-weight: 600; font-size: var(--font-size-sm); }
 
   .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
   @media (max-width: 900px) { .service-grid { grid-template-columns: 1fr 1fr; } }

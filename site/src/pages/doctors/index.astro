@@ -1,4 +1,9 @@
 ---
+// "Specialty-first sections" (explore direction C) as the page structure,
+// with direction A's doctor-card anatomy (small square photo beside the
+// text) and direction A's click-to-filter specialty tiles — clicking a tile
+// isolates that section instead of just scrolling to it. See
+// /doctors/explore for the three directions this was chosen from.
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
@@ -12,141 +17,148 @@ const SPECIALTIES = [
   { value: "Obstetrics & Gynaecology", label: "Obstetrics & Gynaecology", blurb: "Pregnancy and women's health" },
   { value: "ENT – Head & Neck Surgery", label: "ENT – Head & Neck Surgery", blurb: "Ear, nose, throat and sinuses" },
 ];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function specCount(value: string) {
   return doctors.filter((d) => d.data.specialty === value).length;
 }
-
-// Field renderer matching the prototype's f(): verified when the doctor's own
-// poster states it, otherwise a plain "to confirm" note. Never a plausible guess.
 function field(d: (typeof doctors)[number]["data"], key: "specialty" | "note" | "clinicTime" | "room", missing: string) {
   const verified = d.verifiedFields.includes(key);
   const value = d[key];
   if (verified) return { text: value, verified: true };
   return { text: missing, verified: false };
 }
+
+const published = SPECIALTIES.filter((s) => doctors.some((d) => d.data.specialty === s.value));
+const unpublished = SPECIALTIES.filter((s) => !doctors.some((d) => d.data.specialty === s.value));
+const unspecified = doctors.filter((d) => !d.data.specialty);
+
+function docCard(d: (typeof doctors)[number]) {
+  const specialty = field(d.data, "specialty", "Specialty to confirm");
+  const note = d.data.note ? field(d.data, "note", "") : null;
+  const time = field(d.data, "clinicTime", "Clinic hours to confirm");
+  const room = field(d.data, "room", "Room to confirm");
+  const daysVerified = d.data.verifiedFields.includes("clinicDays");
+  return { d, specialty, note, time, room, daysVerified };
+}
 ---
 
 <Layout
   title="Find a Doctor"
-  description="Find a specialist at United Antipolo Specialists Hospital and Medical Center by name, specialty, clinic day or HMO."
+  description="Find a specialist at United Antipolo Specialists Hospital and Medical Center by name or clinic."
 >
   <section class="page-head">
     <p class="eyebrow">Find a Doctor</p>
-    <h1>Find the right specialist for you</h1>
+    <h1>Our doctors, by clinic</h1>
     <p class="lead">
-      Browse by specialty, or filter by the day you're free and the HMO you
-      carry.
+      {doctors.length} doctors published so far, across {published.length} of our {SPECIALTIES.length} clinics.
+      Pick a clinic, or search a name directly.
     </p>
     <p class="note-slim">
-      <strong>These are the doctors UASHMC has published so far.</strong>
-      Fields their posts do not state are left visibly blank rather than
-      filled in with a guess.
+      <strong>These are the doctors UASHMC has published so far.</strong>{" "}
+      Fields their posts do not state are left visibly blank rather than filled in with a guess.
     </p>
   </section>
 
-  <section class="clinics" aria-label="Filter by clinic">
-    {
-      SPECIALTIES.map((s) => (
-        <button type="button" data-spec-filter={s.value}>
-          <b>{s.label}</b>
-          <span>{s.blurb}</span>
-          <i class:list={["spec-count", { none: specCount(s.value) === 0 }]}>
-            {specCount(s.value) === 0
-              ? "Profiles coming"
-              : `${specCount(s.value)} ${specCount(s.value) > 1 ? "doctors" : "doctor"}`}
-          </i>
-        </button>
-      ))
-    }
-  </section>
+  <section class="controls">
+    <label for="dq" class="sr-only">Search by doctor's name</label>
+    <div class="search-row">
+      <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" />
+      </svg>
+      <input id="dq" type="search" placeholder="Search a doctor's name" />
+    </div>
 
-  <section class="filters">
-    <div class="field" style="flex:2">
-      <label for="dq">Doctor's name</label>
-      <input id="dq" type="search" placeholder="Type a surname" />
-    </div>
-    <div class="field">
-      <label for="dspec">Specialty</label>
-      <select id="dspec">
-        <option value="">All specialties</option>
-        {SPECIALTIES.map((s) => <option value={s.value}>{s.label}</option>)}
-      </select>
-    </div>
-    <div class="field">
-      <label for="dday">Clinic day</label>
-      <select id="dday">
-        <option value="">Any day</option>
-        {DAYS.map((d) => <option value={d}>{d}</option>)}
-      </select>
-    </div>
-    <div class="field">
-      <label for="dhmo">HMO</label>
-      <select id="dhmo">
-        <option value="">Any HMO</option>
-        <option>MediCard</option>
-        <option>Intellicare</option>
-        <option>ValuCare</option>
-      </select>
+    <div class="clinics" aria-label="Filter by clinic">
+      {
+        SPECIALTIES.map((s) => (
+          <button type="button" class="spec-tile" data-spec-filter={s.value} aria-pressed="false">
+            <b>{s.label}</b>
+            <span>{s.blurb}</span>
+            <i class:list={["spec-count", { none: specCount(s.value) === 0 }]}>
+              {specCount(s.value) === 0 ? "Profiles coming" : `${specCount(s.value)} ${specCount(s.value) > 1 ? "doctors" : "doctor"}`}
+            </i>
+          </button>
+        ))
+      }
     </div>
   </section>
 
-  <p id="dcount" class="dcount" aria-live="polite">
-    {doctors.length} doctors · more profiles are being added
-  </p>
+  <p id="dcount" class="dcount" aria-live="polite">{doctors.length} doctors · more profiles are being added</p>
 
-  <section id="dgrid" class="dgrid">
+  <div id="dsections">
     {
-      doctors.map((d) => {
-        const specialty = field(d.data, "specialty", "Specialty to confirm");
-        const note = d.data.note ? field(d.data, "note", "") : null;
-        const time = field(d.data, "clinicTime", "Clinic hours to confirm");
-        const room = field(d.data, "room", "Room to confirm");
-        const daysVerified = d.data.verifiedFields.includes("clinicDays");
+      published.map((s) => {
+        const docs = doctors.filter((d) => d.data.specialty === s.value);
         return (
-          <article
-            class="doc"
-            data-name={d.data.name.toLowerCase()}
-            data-specialty={d.data.specialty}
-            data-days={JSON.stringify(d.data.clinicDays)}
-            data-hmos={JSON.stringify(d.data.hmos)}
-          >
-            <a class="doc-link" href={`/doctors/${d.id}`}>
-              <div class="doc-fig">
-                <span class={`doc-ph p-${d.data.photoSlug}`} data-src="verified" role="img" aria-label={d.data.name} />
-              </div>
-              <div class="doc-b">
-                <h2 data-src="verified">{d.data.name}</h2>
-                <span class="doc-spec" data-src={specialty.verified ? "verified" : "sample"}>
-                  {specialty.text}
-                </span>
-                {note && (
-                  <p class="doc-note" data-src={note.verified ? "verified" : "sample"}>
-                    {note.text}
-                  </p>
-                )}
-                <div class="doc-meta">
-                  <span data-src={daysVerified ? "verified" : "sample"}>
-                    {daysVerified ? d.data.clinicDays.join(" · ") : "Clinic days to confirm"}
-                  </span>
-                  <span data-src={time.verified ? "verified" : "sample"}>{time.text}</span>
-                  <span data-src={room.verified ? "verified" : "sample"}>{room.text}</span>
-                </div>
-                <div class="doc-hmo">
-                  {d.data.hmos.length ? (
-                    <span data-src="sample">{d.data.hmos.join(", ")}</span>
-                  ) : (
-                    <span data-src="sample">HMO coverage to confirm</span>
-                  )}
-                </div>
-              </div>
-            </a>
-          </article>
+          <section class="clinic-sec" data-specialty={s.value}>
+            <div class="clinic-head">
+              <h2>{s.label}</h2>
+              <p>{s.blurb}</p>
+            </div>
+            <div class="dgrid">
+              {docs.map((doc) => {
+                const { d, specialty, note, time, room, daysVerified } = docCard(doc);
+                return (
+                  <article class="doc" data-name={d.data.name.toLowerCase()}>
+                    <a class="doc-link" href={`/doctors/${d.id}`}>
+                      <div class="doc-fig">
+                        <span class={`doc-ph p-${d.data.photoSlug}`} role="img" aria-label={d.data.name} />
+                      </div>
+                      <div class="doc-b">
+                        <h3>{d.data.name}</h3>
+                        <span class="doc-spec">{specialty.text}</span>
+                        {note && <p class="doc-note">{note.text}</p>}
+                        <div class="doc-meta">
+                          <span>{daysVerified ? d.data.clinicDays.join(" · ") : "Clinic days to confirm"}</span>
+                          <span>{time.text}</span>
+                          <span>{room.text}</span>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
         );
       })
     }
-  </section>
+
+    {
+      unspecified.length > 0 && (
+        <section class="clinic-sec" data-specialty="">
+          <div class="clinic-head">
+            <h2>Specialty to confirm</h2>
+            <p>Published, but their clinic has not been stated yet.</p>
+          </div>
+          <div class="dgrid">
+            {unspecified.map((doc) => {
+              const { d, note, time, room, daysVerified } = docCard(doc);
+              return (
+                <article class="doc" data-name={d.data.name.toLowerCase()}>
+                  <a class="doc-link" href={`/doctors/${d.id}`}>
+                    <div class="doc-fig">
+                      <span class={`doc-ph p-${d.data.photoSlug}`} role="img" aria-label={d.data.name} />
+                    </div>
+                    <div class="doc-b">
+                      <h3>{d.data.name}</h3>
+                      <span class="doc-spec">Specialty to confirm</span>
+                      {note && <p class="doc-note">{note.text}</p>}
+                      <div class="doc-meta">
+                        <span>{daysVerified ? d.data.clinicDays.join(" · ") : "Clinic days to confirm"}</span>
+                        <span>{time.text}</span>
+                        <span>{room.text}</span>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )
+    }
+  </div>
 
   <div id="dempty" class="doc-empty" hidden>
     <p id="dempty-why"></p>
@@ -156,162 +168,160 @@ function field(d: (typeof doctors)[number]["data"], key: "specialty" | "note" | 
     </p>
     <div class="doc-empty-a">
       <a class="btn btn-primary" href="tel:+63282483460">Call to book</a>
-      <button class="btn btn-ghost" id="dclear" type="button">Clear the filters</button>
+      <button class="btn btn-ghost" id="dclear" type="button">Clear filters</button>
     </div>
   </div>
+
+  <section class="unpub">
+    <h2>Not yet published</h2>
+    <p>
+      These clinics are running, but we don't have doctor profiles online for them yet:{" "}
+      {unpublished.map((s, i) => (
+        <strong>
+          {s.label}
+          {i < unpublished.length - 1 ? ", " : "."}
+        </strong>
+      ))}
+    </p>
+  </section>
 </Layout>
 
-<script>
-  // Client-side filter over the server-rendered, fully-crawlable doctor cards
-  // above — filtering only ever hides/shows what's already real HTML, it never
-  // generates the content. Ported from the prototype's renderDocs()/emptyDocs().
-  const $ = (s: string, r: Document | Element = document) => r.querySelector(s);
-  const $$ = (s: string, r: Document | Element = document) => Array.from(r.querySelectorAll(s));
+<script is:inline define:vars={{ unpublishedList: unpublished.map((s) => s.label) }}>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-  const dq = $("#dq") as HTMLInputElement;
-  const dspec = $("#dspec") as HTMLSelectElement;
-  const dday = $("#dday") as HTMLSelectElement;
-  const dhmo = $("#dhmo") as HTMLSelectElement;
-  const cards = $$(".doc") as HTMLElement[];
+  const dq = $("#dq");
+  const tiles = $$(".spec-tile");
+  const sections = $$(".clinic-sec");
+  const cards = $$(".doc");
   const total = cards.length;
+  let activeSpec = "";
 
-  function emptyReason(q: string, sp: string, dy: string, hm: string) {
-    if (hm) return "We have not published which HMOs each doctor is accredited with yet — our HMO desk can tell you over the phone.";
-    if (sp) return `We have not published a profile for <strong>${sp}</strong> yet, though the clinic is running.`;
-    if (dy) return "We have not published every doctor's clinic days yet.";
-    if (q) return "No doctor on our published list matches that name.";
-    return "Nothing matches those filters yet.";
+  function emptyReasonForSpec(spec) {
+    if (unpublishedList.includes(spec)) {
+      return `We have not published a profile for <strong>${spec}</strong> yet, though the clinic is running.`;
+    }
+    return "";
   }
 
   function render() {
     const q = dq.value.trim().toLowerCase();
-    const sp = dspec.value;
-    const dy = dday.value;
-    const hm = dhmo.value;
 
+    // Specialty tiles isolate a section (or, for an unpublished clinic, there
+    // is no section to isolate — that's its own empty state below).
     let shown = 0;
-    cards.forEach((card) => {
-      const days = JSON.parse(card.dataset.days || "[]") as string[];
-      const hmos = JSON.parse(card.dataset.hmos || "[]") as string[];
-      const match =
-        (!q || (card.dataset.name || "").indexOf(q) > -1) &&
-        (!sp || card.dataset.specialty === sp) &&
-        (!dy || days.indexOf(dy) > -1) &&
-        (!hm || hmos.indexOf(hm) > -1);
-      card.hidden = !match;
-      if (match) shown++;
+    sections.forEach((sec) => {
+      const secMatchesSpec = !activeSpec || sec.dataset.specialty === activeSpec;
+      let shownInSec = 0;
+      $$(".doc", sec).forEach((card) => {
+        const nameMatch = !q || (card.dataset.name || "").indexOf(q) > -1;
+        const match = secMatchesSpec && nameMatch;
+        card.hidden = !match;
+        if (match) shownInSec++;
+      });
+      sec.hidden = shownInSec === 0;
+      shown += shownInSec;
     });
 
-    ($("#dcount") as HTMLElement).textContent =
-      (shown === total ? `${total} doctors` : `${shown} of ${total} doctors`) +
-      " · more profiles are being added";
+    ($("#dcount")).textContent =
+      (shown === total ? `${total} doctors` : `${shown} of ${total} doctors`) + " · more profiles are being added";
 
-    const emptyEl = $("#dempty") as HTMLElement;
-    emptyEl.hidden = shown !== 0;
-    if (shown === 0) {
-      ($("#dempty-why") as HTMLElement).innerHTML = emptyReason(q, sp, dy, hm);
+    const emptyEl = $("#dempty");
+    const specHasNoSection = activeSpec && unpublishedList.includes(activeSpec);
+    emptyEl.hidden = shown !== 0 && !specHasNoSection;
+    if (emptyEl.hidden === false) {
+      let why;
+      if (specHasNoSection) why = emptyReasonForSpec(activeSpec);
+      else if (q && activeSpec) why = `No doctor in <strong>${activeSpec}</strong> matches that name.`;
+      else if (q) why = "No doctor on our published list matches that name.";
+      else why = "Nothing matches those filters yet.";
+      ($("#dempty-why")).innerHTML = why;
     }
   }
 
-  [dq, dspec, dday, dhmo].forEach((el) => el.addEventListener("input", render));
+  dq.addEventListener("input", render);
 
-  $$("[data-spec-filter]").forEach((btn) => {
+  tiles.forEach((btn) => {
     btn.addEventListener("click", () => {
-      dspec.value = (btn as HTMLElement).dataset.specFilter || "";
+      const val = btn.dataset.specFilter || "";
+      activeSpec = activeSpec === val ? "" : val;
+      tiles.forEach((t) => t.setAttribute("aria-pressed", String(t === btn && activeSpec !== "")));
       render();
     });
   });
 
-  ($("#dclear") as HTMLElement)?.addEventListener("click", () => {
+  $("#dclear")?.addEventListener("click", () => {
     dq.value = "";
-    dspec.value = "";
-    dday.value = "";
-    dhmo.value = "";
+    activeSpec = "";
+    tiles.forEach((t) => t.setAttribute("aria-pressed", "false"));
     render();
   });
 </script>
 
 <style>
-  .page-head, .clinics, .filters, .dcount, .dgrid, .doc-empty {
+  .page-head, .controls, .dcount, #dsections, .doc-empty, .unpub {
     max-width: var(--layout-content-max);
     margin: 0 auto;
     padding-left: var(--layout-gutter-mobile);
     padding-right: var(--layout-gutter-mobile);
   }
   .page-head { padding-top: var(--space-8); }
-  .eyebrow {
-    text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--font-size-2xs);
-    font-weight: 700; color: var(--color-brand-600); margin: 0 0 var(--space-2);
-  }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--font-size-2xs); font-weight: 700; color: var(--color-brand-600); margin: 0 0 var(--space-2); }
   h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-4); }
   .lead { font-size: var(--font-size-lg); color: var(--color-text-muted); max-width: 60ch; }
   .note-slim {
     font-size: var(--font-size-sm); color: var(--color-text-muted);
     background: var(--color-surface-sunken); border-radius: var(--radius-sm);
-    padding: var(--space-3) var(--space-4); max-width: 70ch;
+    padding: var(--space-3) var(--space-4); max-width: 70ch; margin-top: var(--space-4);
   }
 
-  .clinics {
-    padding-top: var(--space-6); padding-bottom: var(--space-6);
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3);
-  }
+  .controls { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+  .search-row { position: relative; margin-bottom: var(--space-4); max-width: 420px; }
+  .search-ic { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--color-text-faint); pointer-events: none; }
+  #dq { width: 100%; font: inherit; font-size: var(--font-size-base); padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--space-3) + 26px); min-height: 44px; border: 1px solid var(--color-border-default); border-radius: var(--radius-sm); }
+  #dq:focus-visible { border-color: var(--color-brand-500); }
+
+  .clinics { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
   @media (max-width: 820px) { .clinics { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 560px) { .clinics { grid-template-columns: 1fr; } }
-  .clinics button {
+  .spec-tile {
     text-align: left; background: var(--color-surface-raised);
-    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
-    padding: var(--space-4); cursor: pointer; font: inherit;
+    border: 1.5px solid var(--color-border-default); border-radius: var(--radius-md);
+    padding: var(--space-4); cursor: pointer; font: inherit; min-height: 44px;
     display: flex; flex-direction: column; gap: var(--space-1);
+    transition: border-color var(--motion-base) var(--motion-ease), background var(--motion-base) var(--motion-ease);
   }
-  .clinics button:hover { border-color: var(--color-brand-500); }
-  .clinics b { color: var(--color-text-primary); }
-  .clinics span { color: var(--color-text-muted); font-size: var(--font-size-sm); }
-  .spec-count {
-    font-style: normal; font-size: var(--font-size-xs); font-weight: 600;
-    color: var(--color-brand-700); margin-top: var(--space-1);
-  }
+  .spec-tile:hover { border-color: var(--color-brand-500); }
+  .spec-tile[aria-pressed="true"] { border-color: var(--color-brand-700); background: var(--color-brand-50); }
+  .spec-tile b { color: var(--color-text-primary); }
+  .spec-tile span { color: var(--color-text-muted); font-size: var(--font-size-sm); }
+  .spec-count { font-style: normal; font-size: var(--font-size-xs); font-weight: 600; color: var(--color-brand-700); margin-top: var(--space-1); }
   .spec-count.none { color: var(--color-text-faint); }
-
-  .filters {
-    padding-bottom: var(--space-4);
-    display: flex; flex-wrap: wrap; gap: var(--space-4);
-  }
-  .field { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 160px; }
-  .field label { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-body); }
-  .field input, .field select {
-    font: inherit; font-size: var(--font-size-base); padding: var(--space-3);
-    border: 1px solid var(--color-border-default); border-radius: var(--radius-sm);
-    min-height: 44px;
-  }
 
   .dcount { color: var(--color-text-muted); font-size: var(--font-size-sm); padding-bottom: var(--space-4); }
 
-  .dgrid {
-    padding-bottom: var(--space-9);
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4);
-  }
+  .clinic-sec { padding-bottom: var(--space-8); }
+  .clinic-head { margin-bottom: var(--space-4); }
+  .clinic-head h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-1); }
+  .clinic-head p { color: var(--color-text-muted); margin: 0; }
+
+  .dgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
   @media (max-width: 700px) { .dgrid { grid-template-columns: 1fr; } }
-  .doc {
-    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
-    overflow: hidden; box-shadow: var(--elevation-1);
-    transition: box-shadow var(--motion-base) var(--motion-ease);
-  }
+  .doc { border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--elevation-1); transition: box-shadow var(--motion-base) var(--motion-ease); }
   .doc:hover { box-shadow: var(--elevation-2); }
   .doc-link { display: flex; gap: var(--space-4); text-decoration: none; color: inherit; padding: var(--space-4); }
-  .doc-fig {
-    flex: none; width: 88px; height: 88px; border-radius: var(--radius-md);
-    overflow: hidden; background: var(--color-brand-100);
-  }
+  .doc-fig { flex: none; width: 88px; height: 88px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-brand-100); }
   .doc-ph { display: block; width: 100%; height: 100%; background-size: cover; background-position: center 18%; }
   .doc-b { min-width: 0; }
-  .doc-b h2 { font-size: var(--font-size-lg); margin-bottom: var(--space-1); }
+  .doc-b h3 { font-size: var(--font-size-lg); margin: 0 0 var(--space-1); font-family: var(--font-family-display); color: var(--color-text-primary); }
   .doc-spec { display: block; color: var(--color-brand-700); font-weight: 600; font-size: var(--font-size-sm); margin-bottom: var(--space-2); }
   .doc-note { margin: 0 0 var(--space-2); color: var(--color-text-muted); font-size: var(--font-size-sm); }
-  .doc-meta { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-2); }
-  .doc-hmo { font-size: var(--font-size-xs); color: var(--color-text-faint); }
+  .doc-meta { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--font-size-sm); color: var(--color-text-muted); }
 
-  .doc-empty {
-    padding-bottom: var(--space-9); text-align: center; color: var(--color-text-muted);
-  }
+  .doc-empty { padding-bottom: var(--space-8); text-align: center; color: var(--color-text-muted); }
   .doc-empty-a { display: flex; justify-content: center; gap: var(--space-3); margin-top: var(--space-4); }
+
+  .unpub { padding-top: var(--space-6); padding-bottom: var(--space-9); border-top: 1px solid var(--color-border-soft); }
+  .unpub h2 { font-size: var(--font-size-xl); margin-bottom: var(--space-2); }
+  .unpub p { color: var(--color-text-muted); max-width: 65ch; margin: 0; }
 </style>

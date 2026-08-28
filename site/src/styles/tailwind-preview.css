@@ -1,0 +1,12 @@
+/* Tailwind entry point for the gallery-animation component preview only.
+   Not imported by Layout.astro — the rest of the site uses its own
+   hand-built token system (tokens.css/global.css) and should not inherit
+   Tailwind's Preflight reset. */
+@import "tailwindcss";
+
+/* Force `dark:` to be opt-in via a .dark class instead of following the
+   visitor's OS/browser color-scheme preference. Without this, this preview
+   silently renders in dark mode for anyone whose system prefers it (white
+   text on a white background, the stock-demo panel going solid black) even
+   though nothing here was designed against a dark palette. */
+@custom-variant dark (&:where(.dark, .dark *));
