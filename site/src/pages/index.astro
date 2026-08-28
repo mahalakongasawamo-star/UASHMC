@@ -1,0 +1,209 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const TASKS = [
+  {
+    href: "/patient-information",
+    urgent: true,
+    title: "Go to the ER now",
+    body: "Call 02 8248 3460 or come straight in.",
+  },
+  {
+    href: "/doctors",
+    title: "Find a doctor",
+    body: "Browse by specialty, clinic day, or the HMO you carry.",
+  },
+  {
+    href: "/patient-information",
+    title: "Check my HMO",
+    body: "See our partner list and what to bring before you come.",
+  },
+  {
+    href: "/services",
+    title: "Services & tests",
+    body: "Consultations, laboratory, imaging and surgery.",
+  },
+  {
+    href: "/patient-information",
+    title: "Admission requirements",
+    body: "What to bring, PhilHealth forms and HMO letters.",
+  },
+  {
+    href: "/contact",
+    title: "How to get here",
+    body: "Directions from Marcos Highway, Masinag and Cubao.",
+  },
+];
+---
+
+<Layout
+  title="Home"
+  description="United Antipolo Specialists Hospital and Medical Center, 7 Marcos Highway, Barangay Mambugan, Antipolo City. Find a doctor, check your HMO, and see what to bring before you come."
+>
+  <section class="hero">
+    <div class="hero-in">
+      <p class="hero-loc" data-src="verified">
+        Marcos Highway, Antipolo City &middot; open since 2025
+      </p>
+      <h1 data-src="verified">Excellence in Every Life We Touch.</h1>
+      <p class="hero-lead" data-src="verified">
+        Consultations, laboratory, imaging, surgery and maternity care are all
+        on one site.
+      </p>
+      <div class="hero-acts">
+        <a class="btn btn-primary" href="/doctors">Find a doctor</a>
+        <a class="btn btn-ghost" href="tel:+63282483460"
+          >Talk to us &middot; 02 8248 3460</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="board">
+    <h2>What do you need today?</h2>
+    <p class="board-sub">Six things patients ask us most</p>
+    <ul class="board-grid">
+      {
+        TASKS.map((t) => (
+          <li>
+            <a class={t.urgent ? "tile tile-urgent" : "tile"} href={t.href}>
+              <b>{t.title}</b>
+              <p>{t.body}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="router">
+    <p class="eyebrow">Where should I start?</p>
+    <h2>Not sure which service you need?</h2>
+    <p class="router-lead">
+      We can help you find the right place to start. This is a directory, not
+      a diagnosis.
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    background: var(--color-sand-50);
+    padding: var(--space-9) var(--layout-gutter-mobile);
+  }
+  .hero-in {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+  }
+  .hero-loc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+  .hero h1 {
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-height-4xl);
+    max-width: 20ch;
+    margin-bottom: var(--space-4);
+  }
+  .hero-lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 46ch;
+    margin: 0 0 var(--space-6);
+  }
+  .hero-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .board {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+    padding: var(--space-9) var(--layout-gutter-mobile);
+  }
+  .board h2 {
+    font-size: var(--font-size-2xl);
+  }
+  .board-sub {
+    color: var(--color-text-muted);
+    margin: var(--space-2) 0 var(--space-6);
+  }
+  .board-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 900px) {
+    .board-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .board-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tile {
+    display: block;
+    height: 100%;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--elevation-1);
+    transition:
+      border-color var(--motion-base) var(--motion-ease),
+      box-shadow var(--motion-base) var(--motion-ease);
+  }
+  .tile:hover {
+    border-color: var(--color-brand-500);
+    box-shadow: var(--elevation-2);
+  }
+  .tile b {
+    display: block;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+  .tile p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-md);
+  }
+  .tile-urgent {
+    border-color: var(--color-urgent);
+    background: var(--color-urgent-tint);
+  }
+  .tile-urgent b {
+    color: var(--color-urgent-ink);
+  }
+
+  .router {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+    padding: 0 var(--layout-gutter-mobile) var(--space-9);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--font-size-2xs);
+    font-weight: 700;
+    color: var(--color-brand-600);
+    margin: 0 0 var(--space-2);
+  }
+  .router h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-2);
+  }
+  .router-lead {
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+</style>

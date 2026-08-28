@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ct-scanning",
+    "name": "CT scanning",
+    "category": "Diagnostics",
+    "src": "verified",
+    "summary": "Our Radiology department is on the ground floor. A CT aortogram starts at ₱25,000.",
+    "contact": "Radiology 02 8248 3460 local 111 · Viber 0962 245 3537",
+    "priceChecked": true
+  },
+  {
+    "id": "sleep-studies",
+    "name": "Sleep studies",
+    "category": "Diagnostics",
+    "src": "verified",
+    "summary": "An overnight study in our Heart & Lung Unit for snoring, daytime tiredness and suspected sleep apnoea. Diagnostic, CPAP and split-night studies, from ₱25,500.",
+    "contact": "Heart & Lung Unit 02 8248 3464 · 0968 422 3538",
+    "priceChecked": true
+  },
+  {
+    "id": "xray",
+    "name": "X-ray",
+    "category": "Diagnostics",
+    "src": "verified",
+    "summary": "Chest, bone and abdominal radiography, on the ground floor."
+  },
+  {
+    "id": "laboratory",
+    "name": "Laboratory",
+    "category": "Diagnostics",
+    "src": "confirm",
+    "summary": "Blood chemistry, haematology and urinalysis."
+  },
+  {
+    "id": "ultrasound",
+    "name": "Ultrasound",
+    "category": "Diagnostics",
+    "src": "confirm",
+    "summary": "Abdominal, pelvic and pregnancy scans."
+  },
+  {
+    "id": "gallbladder-surgery",
+    "name": "Laparoscopic gallbladder surgery",
+    "category": "Surgery",
+    "src": "verified",
+    "summary": "The gallbladder removed through small incisions instead of one large cut — less pain, smaller scars and a shorter stay. From ₱65,000, net of PhilHealth, including a private room for three days, operating room, anaesthesia, supplies and medicines.",
+    "priceChecked": true,
+    "priceNote": "Non-emergency, uncomplicated cases."
+  },
+  {
+    "id": "general-surgery",
+    "name": "General surgery",
+    "category": "Surgery",
+    "src": "confirm",
+    "summary": "Hernia repair, appendectomy and minor procedures."
+  },
+  {
+    "id": "maternity",
+    "name": "Maternity",
+    "category": "Maternity",
+    "src": "verified",
+    "summary": "Packages with our OB-Gyn team, net of PhilHealth. Newborn charges are separate.",
+    "priceChecked": true,
+    "priceNote": "Each package covers the doctor's professional fee, operating room, facilities, supplies and medicines. Applies to non-emergency, uncomplicated cases; terms and conditions apply.",
+    "priceTable": [
+      { "package": "Normal delivery (NSD)", "smallPrivate": "from ₱43,100", "semiPrivate": "from ₱23,000" },
+      { "package": "Caesarean section", "smallPrivate": "from ₱62,000", "semiPrivate": "from ₱55,200" }
+    ]
+  },
+  {
+    "id": "emergency-room",
+    "name": "Emergency Room",
+    "category": "Emergency and online",
+    "src": "confirm",
+    "summary": "We receive urgent and emergency cases, including on holidays. Under the Anti-Hospital Deposit Law we cannot require a deposit before giving basic emergency care.",
+    "isUrgent": true
+  },
+  {
+    "id": "telemedicine",
+    "name": "Telemedicine",
+    "category": "Emergency and online",
+    "src": "verified",
+    "summary": "An online consultation with one of our doctors, and our own video series Doctor in the House."
+  }
+]

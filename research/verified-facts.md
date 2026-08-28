@@ -165,7 +165,7 @@ visible last-checked date regardless.
 ℹ️ Worth noting for the pitch: that post drew **640 reactions and 6 shares**, against roughly
 33 followers on Instagram. Facebook is by a wide margin the channel their audience is actually on.
 
-## Photography we actually have
+## Photography and video we actually have
 
 Their own collateral is the only real photography of UASHMC in the kit. Four crops are
 embedded in the prototype as `--ph-*` data URIs:
@@ -176,7 +176,7 @@ embedded in the prototype as `--ph-*` data URIs:
 | `--ph-ct`                                                        | Their CT suite                                                                                                           | `ctscan.jpg`                        |
 | `--ph-sleep`                                                     | A sleep study in progress — a real patient and a staff member in a real room                                             | `sleep study.jpg`                   |
 | `--ph-mother`                                                    | An expectant mother, from their maternity campaign                                                                       | `banner logo.jpg`                   |
-| `--ph-front`                                                     | **The building from the street** — the full elevation, blue and yellow, monogram on the flank. Now the Direction B hero. | `hospital front real2.jpg`          |
+| `--ph-front`                                                     | **The building's front elevation from the street** — entrance canopy, an ambulance parked under it, the ground-floor signage. The Direction B hero.             | `herosection2.jpg`                  |
 | `--dr-yalung` / `--dr-regalado` / `--dr-laceda` / `--dr-gulliab` | Four named doctors' headshots                                                                                            | `doctors1–3,7.jpg`                  |
 | `--ph-team`                                                      | ~30 medical staff in their own lobby, National Physicians Day                                                            | `doctors6.jpg`                      |
 | `--ph-ent`                                                       | The five-person ENT – Head & Neck Surgery unit                                                                           | `doctors5.jpg`                      |
@@ -191,14 +191,27 @@ Two further views of the same building arrived with `real2`, both usable:
 
 ⚠️ **`hospital front real2.jpg` reads as an architectural visualisation, not a photograph** —
 painted sky, composited birds, flat figures. It is unmistakably _their_ building (same massing,
-same blue-and-yellow, same monogram as the drone shot and the poster crops), so it is honest as
-"our building", and it is by far the most flattering view of the front. But it should be
-confirmed as UASHMC's own artwork before it publishes, and it is not a substitute for a
-photograph shot on location.
+same blue-and-yellow, same monogram as the drone shot and the poster crops), so it was honest as
+"our building", but it was never a substitute for a photograph shot on location. It has been
+replaced as the Direction B hero by `herosection2.jpg`, a genuine camera photograph of the same
+front elevation — clouds, tree shadows, a parked ambulance and readable signage, not a render —
+so the hero is now tagged `verified` rather than `confirm`. `hospital front real2.jpg` stays in
+`images/` but is no longer referenced by the prototype.
 
 ✅ The white multi-storey campus that used to fill the Direction B hero has been **removed
 entirely**, along with the two `--hero-*` depth plates behind it (~289KB). It was a generated
 building that was not theirs, and the prototype no longer contains it.
+
+**`images/hero-video.mp4` — the building facade, in motion.** Embedded in both homepage hero
+directions: Direction B's panel (`.heroB-plate`), replacing the static `hospital front real2.jpg`
+crop that used to sit there, and Direction A's `.hero-shot`, replacing the static `--ph-building`
+crop. Both `--ph-front` and `--ph-building` stay defined and now serve as each panel's
+poster/reduced-motion fallback instead of its only content. No people are visible in it, so it
+carries none of the consent caveat below. Tagged `data-src="verified"` on the strength of the
+same standing rule as the rest of this table — it is UASHMC's own footage, not stock or
+generated — but same as everything else here, it is a save from their public channels, not a
+licensed shoot; the "permission to use their own photography" open question two sections down
+now covers this file too.
 
 ## Brand
 
@@ -248,5 +261,5 @@ dental-AI product also called "KRISS.AI". Worth knowing before anyone Googles it
   confirmation that each credential is current
 - Dr. Yalung's specialty, which his award post never states
 - The names of the five clinicians in the ENT unit photograph
-- Permission to use their own photography, and a shoot for the facade, ER entrance, lobby,
-  rooms and staff
+- Permission to use their own photography and video, and a shoot for the facade, ER entrance,
+  lobby, rooms and staff

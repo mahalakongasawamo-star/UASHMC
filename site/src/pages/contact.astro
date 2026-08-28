@@ -1,0 +1,142 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Contact & Directions"
+  description="Call, message or find directions to United Antipolo Specialists Hospital and Medical Center at 7 Marcos Highway, Barangay Mambugan, Antipolo City."
+>
+  <section class="page-head">
+    <p class="eyebrow">Contact &amp; Directions</p>
+    <h1>Talk to a person</h1>
+    <p class="lead">
+      Exact numbers and exact hours, so you reach the right desk the first
+      time.
+    </p>
+  </section>
+
+  <section class="channels">
+    <div class="chan">
+      <b>Trunkline</b>
+      <a href="tel:+63282483460" data-src="verified">02 8248 3460</a>
+      <span data-src="confirm"
+        >24 hours for emergencies &middot; office hours for departments</span
+      >
+    </div>
+    <div class="chan">
+      <b>SMS &amp; Viber</b>
+      <a href="tel:+639478754949" data-src="verified">0947 875 4949</a>
+    </div>
+    <div class="chan">
+      <b>Email</b>
+      <a href="mailto:uashmc.customerrelations@gmail.com" data-src="verified"
+        >uashmc.customerrelations@gmail.com</a
+      >
+    </div>
+  </section>
+
+  <section class="directions">
+    <h2>Getting here</h2>
+    <p data-src="verified">7 Marcos Highway, Barangay Mambugan, Antipolo City, Rizal</p>
+    <p class="hint">
+      Open both map links below — in this corridor many drivers use Waze by
+      default.
+    </p>
+    <div class="map-acts">
+      <a
+        class="btn btn-primary"
+        target="_blank"
+        rel="noopener"
+        href="https://www.waze.com/ul?ll=14.6250262%2C121.1399902&navigate=yes&zoom=17"
+        >Open in Waze</a
+      >
+      <a
+        class="btn btn-ghost"
+        target="_blank"
+        rel="noopener"
+        href="https://www.google.com/maps/search/?api=1&query=14.6250262%2C121.1399902"
+        >Open in Google Maps</a
+      >
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-head,
+  .channels,
+  .directions {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter-mobile);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--font-size-2xs);
+    font-weight: 700;
+    color: var(--color-brand-600);
+    margin: 0 0 var(--space-2);
+  }
+  h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-4);
+  }
+  .lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+  .channels {
+    padding-top: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  @media (max-width: 820px) {
+    .channels {
+      grid-template-columns: 1fr;
+    }
+  }
+  .chan {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    box-shadow: var(--elevation-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .chan b {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+  }
+  .chan a {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-brand-700);
+    text-decoration: none;
+  }
+  .chan span {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .directions {
+    padding-top: 0;
+  }
+  .directions h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-3);
+  }
+  .hint {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-md);
+  }
+  .map-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+</style>

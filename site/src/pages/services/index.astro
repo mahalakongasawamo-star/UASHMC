@@ -1,0 +1,121 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const services = await getCollection("services");
+const CATEGORY_ORDER = ["Diagnostics", "Surgery", "Maternity", "Emergency and online"];
+const byCategory = CATEGORY_ORDER.map((name) => ({
+  name,
+  items: services.filter((s) => s.data.category === name),
+}));
+
+const CLINICS = [
+  { name: "Cardiology", blurb: "Heart consultation, ECG, cardiac evaluation." },
+  { name: "Internal Medicine", blurb: "Adult check-up, diabetes, hypertension, thyroid." },
+  { name: "Orthopedics", blurb: "Fracture care, joint pain, sports injury." },
+  { name: "Pediatrics", blurb: "Well-baby visits, childhood illness, immunisation." },
+  { name: "Obstetrics & Gynaecology", blurb: "Pregnancy care, delivery and women's health." },
+  { name: "ENT – Head & Neck Surgery", blurb: "Ear, nose, throat, sinuses and the head and neck." },
+];
+---
+
+<Layout
+  title="Services & Specialties"
+  description="Consultations, laboratory, imaging, surgery and maternity care at United Antipolo Specialists Hospital and Medical Center, all on one site along Marcos Highway."
+>
+  <section class="page-head">
+    <p class="eyebrow">Services &amp; Specialties</p>
+    <h1>What we can do for you here</h1>
+    <p class="lead">
+      Everything below is on one site along Marcos Highway. Each service
+      tells you what it is and how to reach the right desk.
+    </p>
+    <p class="note-slim">
+      <strong>Only the highlighted services are confirmed.</strong> They come
+      from UASHMC's own Facebook and Instagram posts and their NowServing
+      listings. A service is published only once it is on the hospital's DOH
+      licence.
+    </p>
+  </section>
+
+  <section class="clinics">
+    <h2>Our clinics</h2>
+    <ul class="clinics-list">
+      {
+        CLINICS.map((c) => (
+          <li>
+            <b data-src="verified">{c.name}</b>
+            <span>{c.blurb}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    byCategory.map(
+      (group) =>
+        group.items.length > 0 && (
+          <section class="category">
+            <h2>{group.name}</h2>
+            <div class="service-grid">
+              {group.items.map((s) => (
+                <a class="service-card" href={`/services/${s.id}`}>
+                  <h3 data-src={s.data.src}>{s.data.name}</h3>
+                  <p>{s.data.summary}</p>
+                  {s.data.priceChecked && <p class="checked">Price to confirm before it goes live</p>}
+                </a>
+              ))}
+            </div>
+          </section>
+        ),
+    )
+  }
+</Layout>
+
+<style>
+  .page-head, .clinics, .category {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter-mobile);
+  }
+  .page-head { padding-bottom: 0; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--font-size-2xs);
+    font-weight: 700; color: var(--color-brand-600); margin: 0 0 var(--space-2);
+  }
+  h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-4); }
+  .lead { font-size: var(--font-size-lg); color: var(--color-text-muted); max-width: 60ch; }
+  .note-slim {
+    font-size: var(--font-size-sm); color: var(--color-text-muted); max-width: 70ch;
+    background: var(--color-surface-sunken); border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4); margin-top: var(--space-4);
+  }
+
+  .clinics h2, .category h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-4); }
+  .clinics-list {
+    list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-border-default);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  }
+  .clinics-list li {
+    display: flex; flex-direction: column; gap: var(--space-1);
+    padding: var(--space-4) var(--space-3); border-bottom: 1px solid var(--color-border-default);
+  }
+  .clinics-list b { color: var(--color-text-primary); }
+  .clinics-list span { color: var(--color-text-muted); font-size: var(--font-size-sm); }
+  @media (max-width: 700px) { .clinics-list { grid-template-columns: 1fr; } }
+
+  .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  @media (max-width: 900px) { .service-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .service-grid { grid-template-columns: 1fr; } }
+  .service-card {
+    display: block; background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    padding: var(--space-5); text-decoration: none; color: inherit; box-shadow: var(--elevation-1);
+    transition: border-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+  }
+  .service-card:hover { border-color: var(--color-brand-500); box-shadow: var(--elevation-2); }
+  .service-card h3 { font-size: var(--font-size-lg); margin-bottom: var(--space-2); }
+  .service-card p { margin: 0; color: var(--color-text-muted); font-size: var(--font-size-sm); }
+  .service-card .checked { margin-top: var(--space-2); font-style: italic; font-size: var(--font-size-xs); }
+</style>

@@ -1,0 +1,335 @@
+/* Base styles. Component code should reference tokens.css custom properties only —
+   see the "no raw values" rule in docs/uashmc-design-guidelines.md §7.1 (pitch-kit repo). */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%; /* keeps the rem scale honouring the reader's own browser setting */
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface-page);
+  color: var(--color-text-body);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-display);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Design guidelines §4.3: a skip link to #main must be the first focusable element. */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -56px;
+  z-index: 100;
+  background: var(--color-surface-raised);
+  color: var(--color-brand-700);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: var(--elevation-2);
+  text-decoration: none;
+  transition: top var(--motion-base) var(--motion-ease);
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* §4.3: emergency number in a utility strip above the header, present on every page,
+   not a nav item, never collapsed into a menu. */
+.emergency-strip {
+  background: var(--color-urgent);
+}
+.emergency-strip a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  max-width: var(--layout-content-max);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 24px;
+}
+.emergency-strip svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.site-header {
+  background: var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+.site-header-in {
+  max-width: var(--layout-content-max);
+  margin: 0 auto;
+  padding: var(--space-4) var(--layout-gutter-mobile);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+@media (min-width: 900px) {
+  .site-header-in {
+    padding-left: var(--layout-gutter-desktop);
+    padding-right: var(--layout-gutter-desktop);
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  flex: none;
+}
+.brand-name {
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  letter-spacing: -0.01em;
+}
+.brand-sub {
+  font-size: 0.625rem; /* 10px — lockup sub-line, not running prose; see guidelines §2.5 note */
+  color: var(--color-text-muted);
+}
+
+.site-header nav {
+  flex: 1;
+}
+.site-header nav ul {
+  display: flex;
+  gap: var(--space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  color: var(--color-text-body);
+  border-bottom: 2px solid transparent;
+  transition: color var(--motion-base) var(--motion-ease);
+}
+.site-header nav a:hover {
+  color: var(--color-brand-700);
+}
+.site-header nav a[aria-current="page"] {
+  color: var(--color-brand-700);
+  font-weight: 600;
+  border-bottom-color: var(--color-brand-500);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  background: none;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.menu-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Below bp.md (900px, design guidelines §3): the nav collapses to lockup + menu
+   button, per §4.3. The menu button carries aria-expanded/aria-controls; opening
+   it moves focus to the first item; Escape closes and returns focus to the
+   button — all wired in Layout.astro's script, not just visual. */
+@media (max-width: 900px) {
+  .site-header-in {
+    flex-wrap: wrap;
+  }
+  .menu-toggle {
+    display: flex;
+    order: 3;
+  }
+  .site-header-in .btn-primary {
+    display: none;
+  }
+  .site-header nav {
+    order: 4;
+    flex-basis: 100%;
+  }
+  .site-header nav ul {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-3) 0 var(--space-4);
+    border-top: 1px solid var(--color-border-soft);
+    margin-top: var(--space-3);
+  }
+  .site-header nav.open ul {
+    display: flex;
+  }
+  .site-header nav a {
+    width: 100%;
+    padding: var(--space-3) var(--space-2);
+  }
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  flex: none;
+  transition: background var(--motion-base) var(--motion-ease);
+}
+.btn-primary {
+  background: var(--color-brand-700);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--color-brand-900);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-body);
+  border: 1px solid var(--color-border-default);
+}
+.btn-ghost:hover {
+  border-color: var(--color-brand-500);
+}
+.btn-urgent {
+  background: var(--color-urgent);
+  color: #fff;
+}
+.btn-urgent:hover {
+  background: var(--color-urgent-ink);
+}
+
+main {
+  min-height: 60vh;
+}
+
+.site-footer {
+  background: var(--color-brand-900);
+  color: var(--color-brand-100);
+}
+.site-footer-in {
+  max-width: var(--layout-content-max);
+  margin: 0 auto;
+  padding: var(--space-9) var(--layout-gutter-mobile);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-7);
+}
+@media (max-width: 820px) {
+  .site-footer-in {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.site-footer h2 {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  margin-bottom: var(--space-3);
+}
+.footer-name {
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+.footer-sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-brand-400);
+  margin: 0 0 var(--space-3);
+}
+.footer-tag {
+  font-style: italic;
+  color: var(--color-brand-400);
+  margin: 0 0 var(--space-3);
+}
+.site-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.site-footer a {
+  text-decoration: none;
+  color: var(--color-brand-100);
+}
+.site-footer a:hover {
+  color: #fff;
+}
+
+.doc-ph.p-gulliab { background-image: var(--dr-gulliab); }
+.doc-ph.p-regalado { background-image: var(--dr-regalado); }
+.doc-ph.p-laceda { background-image: var(--dr-laceda); }
+.doc-ph.p-yalung { background-image: var(--dr-yalung); }
+
+/* Provenance data attribute — carried over from the pitch-kit prototype's content
+   model (guidelines §2.7, §2.4) as build-time metadata for a future content-audit
+   script, not as a patient-facing visual. §4.9 is explicit that the colour-coded
+   overlay is "a demonstration and QA affordance, not a patient-facing feature" — so
+   [data-src] intentionally renders with NO visual treatment here. Do not restyle this
+   to show provenance colour to real visitors; that toggle belongs in a build-time
+   or admin-only tool, not the public site. */

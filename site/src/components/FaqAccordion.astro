@@ -1,0 +1,94 @@
+---
+// Shared accordion renderer for a set of FAQ entries — used by /faq (all groups)
+// and by /patient-information (Admission + Cost groups shown inline). Design
+// guidelines §4.8: "No FAQ answer may be authored in HTML" — every answer here
+// comes from src/content/faq.json, never typed directly into a page.
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  items: CollectionEntry<"faq">[];
+  idPrefix: string;
+}
+
+const { items, idPrefix } = Astro.props;
+---
+
+<ul class="faq-l">
+  {
+    items.map((f) => {
+      const pid = `${idPrefix}-${f.id}-p`;
+      const bid = `${idPrefix}-${f.id}-b`;
+      return (
+        <li class="faq-i" id={`${idPrefix}-${f.id}`}>
+          <h3>
+            <button type="button" id={bid} aria-expanded="false" aria-controls={pid}>
+              <span>{f.data.question}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+          </h3>
+          <div class="faq-p" id={pid} role="region" aria-labelledby={bid} hidden>
+            <div data-src={f.data.src} set:html={f.data.answer} />
+            {f.data.checked && (
+              <p class="faq-checked">
+                Price as published by UASHMC — to be reconfirmed before this page goes live.
+              </p>
+            )}
+            {f.data.acts && (
+              <div class="faq-acts">
+                {f.data.acts.map(([label, href, cls]) => (
+                  <a href={href} class={cls || undefined}>
+                    {label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<script>
+  // One real <button> per question inside a heading; several panels may be open
+  // at once; siblings never auto-close. Runs once per page and covers every
+  // .faq-i on it, however many FaqAccordion instances are on the page.
+  document.querySelectorAll(".faq-i > h3 > button").forEach((btn) => {
+    if ((btn as HTMLElement).dataset.wired) return;
+    (btn as HTMLElement).dataset.wired = "1";
+    btn.addEventListener("click", () => {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      const panel = document.getElementById(btn.getAttribute("aria-controls") || "");
+      if (panel) (panel as HTMLElement).hidden = open;
+    });
+  });
+</script>
+
+<style is:global>
+  .faq-l { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-border-default); }
+  .faq-i { border-bottom: 1px solid var(--color-border-default); }
+  .faq-i h3 { margin: 0; font-size: inherit; font-weight: inherit; }
+  .faq-i button {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    background: none; border: none; text-align: left; font: inherit; font-weight: 600;
+    color: var(--color-text-primary); padding: var(--space-4) var(--space-2); cursor: pointer;
+    min-height: 44px;
+  }
+  .faq-i button svg { flex: none; width: 18px; height: 18px; color: var(--color-brand-600); transition: transform var(--motion-base) var(--motion-ease); }
+  .faq-i button[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .faq-p { padding: 0 var(--space-2) var(--space-5); max-width: 70ch; color: var(--color-text-body); }
+  .faq-p[hidden] { display: none; }
+  .faq-p p { margin: 0 0 var(--space-3); line-height: 1.62; }
+  .faq-p ul { margin: 0 0 var(--space-3); padding-left: var(--space-5); line-height: 1.62; }
+  .faq-checked { font-size: var(--font-size-sm); color: var(--color-text-muted); font-style: italic; }
+  .faq-acts { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  .faq-acts a {
+    font-size: var(--font-size-sm); font-weight: 600; padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-sm);
+    text-decoration: none; color: var(--color-brand-700);
+  }
+  .faq-acts a.urg { border-color: var(--color-urgent); color: var(--color-urgent-ink); background: var(--color-urgent-tint); }
+</style>

@@ -1,0 +1,292 @@
+[
+  {
+    "id": "what-is-uashmc",
+    "group": "About",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(who are you|what is uashmc|about the hospital|anong ospital)",
+    "question": "What is United Antipolo Specialists Hospital and Medical Center?",
+    "answer": "<p>We are a private specialists' hospital at 7 Marcos Highway, Barangay Mambugan, Antipolo City, Rizal. We opened in 2025.</p>",
+    "acts": [
+      ["Services", "/services", ""],
+      ["Find a doctor", "/doctors", ""]
+    ]
+  },
+  {
+    "id": "doh-licensed",
+    "group": "About",
+    "src": "confirm",
+    "kb": false,
+    "question": "Are you DOH-licensed?",
+    "answer": "<p>Yes. <span class=\"tosupply\">Our Licence to Operate number and service capability level to be published here in full.</span></p>"
+  },
+  {
+    "id": "philhealth-accredited",
+    "group": "About",
+    "src": "confirm",
+    "kb": false,
+    "question": "Are you accredited with PhilHealth?",
+    "answer": "<p><span class=\"tosupply\">Accreditation status and validity dates to be published here.</span> Bring your CF1, CF2 and proof of contributions.</p>",
+    "acts": [["PhilHealth details", "/patient-information", ""]]
+  },
+  {
+    "id": "beds-and-rooms",
+    "group": "About",
+    "src": "sample",
+    "kb": false,
+    "question": "How many beds do you have, and what room types?",
+    "answer": "<p><span class=\"tosupply\">Bed capacity, room types and current rates to be supplied.</span></p>"
+  },
+  {
+    "id": "book-consultation",
+    "group": "Doctors",
+    "src": "verified",
+    "kb": true,
+    "pat": "(book|appointment|magpa-?appointment|reserve|schedule a consult)",
+    "question": "How do I book a consultation?",
+    "answer": "<p>Three ways:</p><ul><li>Pick a doctor from our directory and book through <strong>NowServing</strong></li><li>Call the trunkline <strong>02 8248 3460</strong></li><li>Message <strong>Viber 0947 875 4949</strong></li></ul>",
+    "acts": [
+      ["Find a doctor", "/doctors", ""],
+      ["Call to book", "tel:+63282483460", ""]
+    ]
+  },
+  {
+    "id": "which-specialties",
+    "group": "Doctors",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(specialt|what doctors|anong doktor|which specialist|ent|ear.?nose.?throat|otolaryngo|sinus)",
+    "question": "Which specialties do you have?",
+    "answer": "<p>Internal Medicine, Cardiology, Orthopedics, Pediatrics, Obstetrics-Gynaecology, and ENT – Head &amp; Neck Surgery. <span class=\"tosupply\">Full specialty list and roster to be confirmed.</span></p>",
+    "acts": [["Browse specialties", "/services", ""]]
+  },
+  {
+    "id": "referral-needed",
+    "group": "Doctors",
+    "src": "confirm",
+    "kb": false,
+    "question": "Do I need a referral to see a specialist?",
+    "answer": "<p>For most clinics you can book directly. Some HMO plans require a referral or a Letter of Authorization first — check with your HMO. <span class=\"tosupply\">Hospital referral policy to confirm.</span></p>",
+    "acts": [["Check my HMO", "/patient-information", ""]]
+  },
+  {
+    "id": "consult-online",
+    "group": "Doctors",
+    "src": "verified",
+    "kb": false,
+    "question": "Can I consult online?",
+    "answer": "<p>Yes, we offer telemedicine consultations. We also publish a video series called <strong>Doctor in the House</strong>.</p>"
+  },
+  {
+    "id": "onsite-tests",
+    "group": "Services",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(what tests|laborator|x-?ray|imaging|diagnostic|anong test)",
+    "question": "What tests can you do on site?",
+    "answer": "<p>Laboratory, X-ray and imaging, CT scanning, and sleep studies through our Heart &amp; Lung Unit — so you can usually consult, test and get results in one visit.</p>",
+    "acts": [["All services", "/services", ""]]
+  },
+  {
+    "id": "ct-scanner",
+    "group": "Services",
+    "src": "verified",
+    "kb": true,
+    "checked": true,
+    "pat": "(ct ?scan|aortogram|aortograph|cat scan)",
+    "question": "Do you have a CT scanner?",
+    "answer": "<p>Yes. Our Radiology department is on the Ground Floor. CT aortography (aortogram) <strong>starts at ₱25,000</strong>.</p><p>Radiology: <strong>02 8248 3460 local 111</strong> · mobile and Viber <strong>0962 245 3537</strong></p>",
+    "acts": [["Call Radiology", "tel:+63282483460", ""]]
+  },
+  {
+    "id": "sleep-studies",
+    "group": "Services",
+    "src": "verified",
+    "kb": true,
+    "checked": true,
+    "pat": "(sleep stud(y|ies)|sleep test|cpap|apnea|apnoea|hilik|snor)",
+    "question": "Do you do sleep studies?",
+    "answer": "<p>Yes, through our Heart &amp; Lung Unit — diagnostic, therapeutic (including CPAP titration), and split-night studies. <strong>Starts at ₱25,500</strong>.</p><p>Heart &amp; Lung Unit: <strong>02 8248 3464</strong> · <strong>0968 422 3538</strong></p>",
+    "acts": [["Call Heart & Lung", "tel:+63282483464", ""]]
+  },
+  {
+    "id": "gallbladder-surgery",
+    "group": "Services",
+    "src": "verified",
+    "kb": true,
+    "checked": true,
+    "pat": "(gallbladder|gallstone|apdo|cholecystect|laparoscop)",
+    "question": "Do you do gallbladder surgery?",
+    "answer": "<p>Yes — laparoscopic cholecystectomy, which removes the gallbladder through small incisions instead of one large cut. Smaller scars and a shorter stay than open surgery.</p><p><strong>Starts at ₱65,000, net of PhilHealth</strong>, including a private room for three days, operating room services, anaesthesia, supplies and medicines. Applies to non-emergency, uncomplicated cases.</p>",
+    "acts": [["Talk to us", "tel:+63282483460", ""]]
+  },
+  {
+    "id": "give-birth",
+    "group": "Services",
+    "src": "verified",
+    "kb": true,
+    "checked": true,
+    "pat": "(give birth|deliver|maternity|[mnp]anganak|manganganak|\\bnsd\\b|cesarean|caesarean|c-?section|ob-?gyn|buntis|pregnan)",
+    "question": "Can I give birth there?",
+    "answer": "<p>Yes. Our OB-Gyn team offers maternity packages, net of PhilHealth:</p><ul><li><strong>Normal delivery (NSD)</strong> — from ₱23,000 semi-private, ₱43,100 small private</li><li><strong>Caesarean section</strong> — from ₱55,200 semi-private, ₱62,000 small private</li></ul><p>Packages cover the professional fee, operating room, facilities, supplies and medicines. Newborn charges are separate. Non-emergency, uncomplicated cases; terms and conditions apply.</p>",
+    "acts": [["Book a consult", "tel:+63282483460", ""]]
+  },
+  {
+    "id": "hmo-not-on-list",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "pat": "(not on (the |your )?list|not listed|wala.*listahan|hindi.*hmo ko)",
+    "question": "What if my HMO isn't on your list?",
+    "answer": "<p>Call our billing desk on <strong>02 8248 3460</strong> and ask. New partners are added over time, and the list here shows the date it was published.</p><p>You can also ask your HMO directly whether UASHMC is in their network.</p>",
+    "acts": [["Call billing", "tel:+63282483460", ""]]
+  },
+  {
+    "id": "which-hmos",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(\\bhmo\\b|which hmo|hmo partner|accredited|tinatanggap|maxicare|medicard|intellicare|philcare|valucare|pacific cross|cocolife|eastwest|kaiser|medasia|wellcare|avega|asiancare|carewell|insurance|insurans)",
+    "question": "Which HMOs do you accept?",
+    "answer": "<p>We are partnered with 20 HMOs, including MediCard, Intellicare, ValuCare, Pacific Cross, Kaiser International, Cocolife, EastWest Healthcare, MedAsia and WellCare. The full twenty are listed on our HMO page — if you cannot find yours there, call our billing desk and ask.</p><p>Being partnered doesn't mean every plan covers every service — that can differ by <strong>plan tier, your doctor and the specific procedure</strong>. Our billing desk confirms your case, and only your HMO can confirm what they will pay.</p>",
+    "acts": [
+      ["Check my HMO", "/patient-information", ""],
+      ["Call billing", "tel:+63282483460", ""]
+    ]
+  },
+  {
+    "id": "what-is-loa",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "pat": "(\\bloa\\b|letter of authoriz|authorization|authorisation)",
+    "question": "What is an LOA, and how long does it take?",
+    "answer": "<p>A Letter of Authorization is your HMO's written approval for a planned procedure. Processing time depends on your HMO — ask them directly, or call our billing desk and we'll help you follow up. Emergency care does not require one before you are seen.</p>",
+    "acts": [
+      ["How LOAs work", "/patient-information", ""],
+      ["Call billing", "tel:+63282483460", ""]
+    ]
+  },
+  {
+    "id": "philhealth-and-hmo",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "pat": "(philhealth.*hmo|hmo.*philhealth|use both|\\bcf-?1\\b|\\bcf-?2\\b)",
+    "question": "Can I use PhilHealth and my HMO together?",
+    "answer": "<p>Usually yes — they cover different parts of your bill and need different documents. Bring your CF1, CF2, proof of contributions and a valid ID.</p>",
+    "acts": [["PhilHealth details", "/patient-information", ""]]
+  },
+  {
+    "id": "senior-pwd-discount",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "pat": "(senior|\\bpwd\\b|discount|\\bvat\\b|\\bosca\\b)",
+    "question": "Do you give the senior citizen and PWD discount?",
+    "answer": "<p>Yes — by law you are entitled to a <strong>20% discount and VAT exemption</strong> on medical and dental services, laboratory and diagnostic fees, and your doctor's professional fee. Present your OSCA or PWD ID at Billing.</p>"
+  },
+  {
+    "id": "how-much-cost",
+    "group": "Cost",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(how much|magkano|presyo|cost|room rate|bayad|estimate|\\bfee\\b|\\bprice\\b)",
+    "question": "How much will my treatment cost?",
+    "answer": "<p>We publish starting prices for several packages — gallbladder surgery, CT aortogram, sleep study and maternity. Everything else depends on your room type, your doctor, the procedure and your coverage, and I would rather not give you a number that turns out to be wrong.</p><p>Our billing team will give you an accurate estimate. Call <strong>02 8248 3460</strong> or Viber <strong>0947 875 4949</strong>.</p>",
+    "acts": [["Call billing", "tel:+63282483460", ""]]
+  },
+  {
+    "id": "admission-requirements",
+    "group": "Admission",
+    "src": "verified",
+    "kb": true,
+    "pat": "(admission|admitting|ma-?admit|confine|what.*bring)",
+    "question": "What do I need to bring for admission?",
+    "answer": "<ul><li>Your doctor's <strong>Admitting Order</strong></li><li>One valid government photo ID</li><li>PhilHealth: CF1, CF2 and proof of contributions</li><li>HMO: your card and your LOA</li><li>Senior citizen or PWD ID, if eligible</li><li>Previous results and your current medicines list</li></ul><p>Requirements vary by case and by HMO — our Admitting Office confirms your exact list.</p>",
+    "acts": [["Admission page", "/patient-information", ""]]
+  },
+  {
+    "id": "visiting-hours",
+    "group": "Admission",
+    "src": "confirm",
+    "kb": false,
+    "question": "What are your visiting hours?",
+    "answer": "<p><span class=\"tosupply\">Visiting hours and the number of watchers allowed per patient to be confirmed.</span></p>"
+  },
+  {
+    "id": "medical-certificate",
+    "group": "Admission",
+    "src": "confirm",
+    "kb": false,
+    "question": "How do I get a medical certificate or a copy of my records?",
+    "answer": "<p>Request them from Medical Records with a valid ID. <span class=\"tosupply\">Processing time, fees and whether a representative may collect to be confirmed.</span></p>"
+  },
+  {
+    "id": "er-24-hours",
+    "group": "Emergency",
+    "src": "confirm",
+    "kb": false,
+    "question": "Is your Emergency Room open 24 hours?",
+    "answer": "<p>Our Emergency Room receives urgent and emergency cases, including on holidays. <span class=\"tosupply\">Exact hours and the ER's direct line to be confirmed.</span></p><p>If something is happening now, call <strong>02 8248 3460</strong> or come straight in.</p>",
+    "acts": [["Call now", "tel:+63282483460", "urg"]]
+  },
+  {
+    "id": "emergency-deposit",
+    "group": "Emergency",
+    "src": "verified",
+    "kb": true,
+    "pat": "(deposit|down ?payment|paunang bayad)",
+    "question": "Do I need a deposit before emergency treatment?",
+    "answer": "<p>No. Under <strong>Republic Act 10932</strong>, a hospital cannot demand a deposit or advance payment before giving basic emergency care.</p>"
+  },
+  {
+    "id": "ambulance",
+    "group": "Emergency",
+    "src": "sample",
+    "kb": false,
+    "question": "Do you have an ambulance?",
+    "answer": "<p><span class=\"tosupply\">Ambulance availability and how to request one to be confirmed.</span></p>"
+  },
+  {
+    "id": "how-to-get-there",
+    "group": "Getting here",
+    "src": "verified",
+    "kb": true,
+    "kbpri": 3.5,
+    "pat": "(where are you|address|direction|saan|paano pumunta|waze|jeep|parking|how (do i|to) get)",
+    "question": "How do I get to the hospital?",
+    "answer": "<p>We are at <strong>7 Marcos Highway, Barangay Mambugan, Antipolo City, Rizal</strong>, along Marcos Highway heading up toward Antipolo.</p><p><span class=\"tosupply\">Jeepney and UV Express landmarks, and parking capacity, to be confirmed.</span></p>",
+    "acts": [["Directions", "/contact", ""]]
+  },
+  {
+    "id": "assistant-is-not-doctor",
+    "group": "Other",
+    "src": "verified",
+    "kb": true,
+    "pat": "(is (the|this|your) (bot|chatbot|assistant|ai) a doctor|are you a (doctor|human|real person)|\\bai\\b|\\brobot\\b|totoong doktor)",
+    "question": "Is your online assistant a doctor?",
+    "answer": "<p>No. It shares UASHMC information only. It cannot diagnose, assess how urgent something is, or tell you what medicine to take — only a doctor who can examine you can do that.</p><p>In an emergency, call <strong>911</strong> or go to the nearest Emergency Room.</p>"
+  },
+  {
+    "id": "data-privacy",
+    "group": "Other",
+    "src": "confirm",
+    "kb": false,
+    "question": "What do you do with my information?",
+    "answer": "<p>We handle personal information under the Data Privacy Act of 2012. Chats with our assistant are logged so we can improve the answers. <span class=\"tosupply\">Privacy Notice and Data Privacy Officer to be published.</span></p>"
+  },
+  {
+    "id": "feedback-complaint",
+    "group": "Other",
+    "src": "confirm",
+    "kb": false,
+    "question": "How do I give feedback or make a complaint?",
+    "answer": "<p>Email our customer relations team, or message <strong>Viber 0947 875 4949</strong>. <span class=\"tosupply\">Formal complaints process and response time to be confirmed.</span></p>"
+  }
+]

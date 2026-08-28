@@ -9,7 +9,7 @@ colors:
   brand-400: "#5AC0E4"
   brand-100: "#D2F0FC"
   brand-50: "#E7F6FD"
-  accent-gold: "#D2A80C"
+  accent: "#D2A80C"
   rose-700: "#A8446A"
   rose-600: "#C05B7D"
   rose-500: "#D87898"
@@ -17,24 +17,32 @@ colors:
   rose-50: "#FDF2F6"
   sand-100: "#F6EBDA"
   sand-50: "#FBF5EC"
-  surface-page: "#FBFAF8"
-  surface-raised: "#FFFFFF"
-  surface-sunken: "#F2F7FA"
-  text-primary: "#062B46"
-  text-body: "#173F5C"
-  text-muted: "#4E6981"
-  text-faint: "#8DA3B6"
-  border-default: "#D9E2EA"
-  border-soft: "#E9EFF4"
+  paper: "#FBFAF8"
+  surface: "#FFFFFF"
+  surface-2: "#F2F7FA"
+  ink: "#062B46"
+  text: "#173F5C"
+  muted: "#4E6981"
+  faint: "#8DA3B6"
+  line: "#D9E2EA"
+  line-soft: "#E9EFF4"
   urgent: "#C0271A"
   urgent-ink: "#7A1710"
-  urgent-tint: "#FDF0EE"
+  urgent-50: "#FDF0EE"
   care-700: "#026B52"
   care-500: "#049E79"
-  care-tint: "#E4F4EF"
-  provenance-verified: "#167355"
-  provenance-confirm: "#B45309"
-  provenance-sample: "#6D5BA8"
+  care-900: "#0F5A42"
+  care-50: "#E4F4EF"
+  care-border: "#BFE0D0"
+  care-ink: "#0E4835"
+  navy-muted: "#A9CBD9"
+  pv-verified: "#167355"
+  pv-confirm: "#B45309"
+  pv-confirm-tint: "#FBF3E6"
+  pv-confirm-border: "#EFDCBC"
+  pv-sample: "#6D5BA8"
+  pv-sample-tint: "#F1EDFA"
+  pv-sample-border: "#DED5F2"
 typography:
   display:
     fontFamily: "Source Serif 4, Georgia, Times New Roman, serif"
@@ -92,7 +100,7 @@ components:
   button-primary-hover:
     backgroundColor: "{colors.brand-900}"
   button-ghost:
-    backgroundColor: "{colors.surface-raised}"
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.brand-700}"
     rounded: "{rounded.md}"
     padding: "12px 20px"
@@ -104,12 +112,12 @@ components:
     padding: "12px 20px"
     height: "44px"
   card-static:
-    backgroundColor: "{colors.surface-raised}"
+    backgroundColor: "{colors.surface}"
     rounded: "{rounded.md}"
     padding: "20px"
   input-default:
-    backgroundColor: "{colors.surface-page}"
-    textColor: "{colors.text-body}"
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.text}"
     rounded: "{rounded.sm}"
     padding: "11px 12px"
     height: "44px"
@@ -147,14 +155,14 @@ Navy and cyan carry the brand at roughly a 40/60 split — cyan belongs in resti
 ### Secondary
 
 - **Poster Rose** (`#D87898` / `rose-500`): fills and washes only, 3.0:1 on white. `rose-700` (`#A8446A`) is the text-safe step at 5.2:1, used for eyebrows and the warm phrase of a two-tone headline. Rose never carries status meaning — that belongs to urgent, care, and the provenance hues.
-- **Collateral Gold** (`#D2A80C` / `accent-gold`): the thin rule under headings, lifted directly from UASHMC's own printed posters. Decorative only, never a fill.
+- **Collateral Gold** (`#D2A80C` / `accent`): the thin rule under headings, lifted directly from UASHMC's own printed posters. Decorative only, never a fill.
 
 ### Neutral
 
-- **Warm Paper** (`#FBFAF8` / `surface-page`): default page ground — warm, not clinical white.
+- **Warm Paper** (`#FBFAF8` / `paper`): default page ground — warm, not clinical white.
 - **Sand Bands** (`#FBF5EC` / `sand-50`, `#F6EBDA` / `sand-100`): the warm counterpart to `brand-100`, so alternating sections breathe warm as well as cool.
-- **Text Primary** (`#062B46`), **Text Body** (`#173F5C`), **Text Muted** (`#4E6981` — the contrast floor on `brand-100`, nothing lighter clears AA there), **Text Faint** (`#8DA3B6` — non-essential metadata only, never load-bearing).
-- **Border Default** (`#D9E2EA`) and **Border Soft** (`#E9EFF4`) for cards, inputs, and internal dividers.
+- **Text Primary** (`#062B46` / `ink`), **Text Body** (`#173F5C` / `text`), **Text Muted** (`#4E6981` / `muted` — the contrast floor on `brand-100`, nothing lighter clears AA there), **Text Faint** (`#8DA3B6` / `faint` — non-essential metadata only, never load-bearing).
+- **Border Default** (`#D9E2EA` / `line`) and **Border Soft** (`#E9EFF4` / `line-soft`) for cards, inputs, and internal dividers.
 
 ### Named Rules
 
@@ -179,7 +187,7 @@ Navy and cyan carry the brand at roughly a 40/60 split — cyan belongs in resti
 - **Body** (400, 1rem / 16px floor, 1.6): running prose. 16px is a floor, not a ceiling — the audience includes a large senior and PWD cohort, correspondingly likely to have presbyopia. Line length caps at 65–75ch.
 - **Label** (600, 0.6875rem, tracked +0.08em, uppercase): eyebrows and legal microcopy only. Nothing on the page goes below 12px.
 
-Two-tone headlines are a UASHMC device inherited from their own collateral: first phrase in `text-primary`, second phrase in `brand-600` on light grounds or `brand-500` on dark. Use at most once per view.
+Two-tone headlines are a UASHMC device inherited from their own collateral: first phrase in `ink`, second phrase in `brand-600` on light grounds or `brand-500` on dark. Use at most once per view.
 
 ### Named Rules
 
@@ -205,7 +213,7 @@ A hybrid: cards and panels sit flat at rest, and elevation is a state response r
 
 - **Shape:** `radius-md` (10px), minimum 44px tall in any dense context — well past the WCAG 24px minimum, because the audience is named as likely to have tremor.
 - **Primary:** `brand-700` ground, white label, darkens to `brand-900` on hover.
-- **Ghost:** transparent/white ground, `border-default` outline, `text-body` label — secondary actions.
+- **Ghost:** transparent/white ground, `line` outline, `text` label — secondary actions.
 - **Urgent:** `urgent` ground, white label — reserved for calling the ER or 911, never decorative.
 - **Care:** `care-700` ground, white label — positive confirmation only (an accreditation, a completed step).
 - **Hover / Focus:** ground darkens one ramp step on hover, gated behind `@media (hover: hover)`; `:focus-visible` gets the universal ring, using a white outline on the primary variant so it stays visible on navy.
@@ -213,15 +221,15 @@ A hybrid: cards and panels sit flat at rest, and elevation is a state response r
 ### Cards
 
 - **Corner style:** `radius-md` (10px).
-- **Background:** `surface-raised` (#FFFFFF) on a `surface-page` ground.
+- **Background:** `surface` (#FFFFFF) on a `paper` ground.
 - **Shadow strategy:** Elevation 1 at rest; a _linked_ card (the whole card is one link) rises to Elevation 2 on hover with a `brand-500` border. A _static_ card has no hover, focus or active state and must not simulate one.
-- **Border:** `border-default`, 1px.
+- **Border:** `line`, 1px.
 - **Rule:** a linked card contains exactly one link; nested interactive elements inside a linked card are prohibited. Cards equalise height via the grid, never a fixed pixel height.
 
 ### Inputs / Fields
 
-- **Style:** `border-default` stroke, `surface-page` ground, `radius-sm`, 16px text (prevents iOS zoom-on-focus), 44px tall.
-- **Focus:** border shifts to `brand-500`, ground lifts to `surface-raised`, plus the universal focus ring.
+- **Style:** `line` stroke, `paper` ground, `radius-sm`, 16px text (prevents iOS zoom-on-focus), 44px tall.
+- **Focus:** border shifts to `brand-500`, ground lifts to `surface`, plus the universal focus ring.
 - **Error:** border `urgent`, message in `urgent-ink` below the field with a leading icon, wired via `aria-describedby` and `aria-invalid`.
 
 ### Navigation
@@ -247,7 +255,7 @@ A toggle that recolours every tagged element on the page: green for verified (fr
 ### Don't:
 
 - **Don't** use the international-hospital template: stock photography of smiling clinicians, blue gradients, "Excellence in Healthcare" over a lens flare.
-- **Don't** use green decoratively — it is reserved for status (`care-700`, provenance-verified) and collides with the provenance system's own meaning if reused.
+- **Don't** use green decoratively — it is reserved for status (`care-700`, `pv-verified`) and collides with the provenance system's own meaning if reused.
 - **Don't** put white text or glyphs on `brand-500` — 2.66:1, fails contrast. Use `brand-700` on cyan, or step to `brand-600` for text on light grounds.
 - **Don't** present stock or generated photography as UASHMC's premises. If it is not their building, the page must say so.
 - **Don't** let the assistant invent a plausible answer to fill a gap. Refuse and hand off to a human — a fabricated answer is the single worst failure this system can produce.

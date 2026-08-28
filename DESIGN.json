@@ -29,12 +29,12 @@
         "canonical": "#D87898",
         "tonalRamp": ["#A8446A", "#C05B7D", "#D87898", "#FBE3EB", "#FDF2F6"]
       },
-      "accent-gold": {
+      "accent": {
         "role": "secondary",
         "displayName": "Collateral Gold",
         "canonical": "#D2A80C"
       },
-      "surface-page": {
+      "paper": {
         "role": "neutral",
         "displayName": "Warm Paper",
         "canonical": "#FBFAF8"
@@ -54,17 +54,17 @@
         "displayName": "Confirmed / Calm Green",
         "canonical": "#026B52"
       },
-      "provenance-verified": {
+      "pv-verified": {
         "role": "status",
         "displayName": "Verified (UASHMC's own channels)",
         "canonical": "#167355"
       },
-      "provenance-confirm": {
+      "pv-confirm": {
         "role": "status",
         "displayName": "Plausible, needs confirmation",
         "canonical": "#B45309"
       },
-      "provenance-sample": {
+      "pv-sample": {
         "role": "status",
         "displayName": "Agency placeholder",
         "canonical": "#6D5BA8"

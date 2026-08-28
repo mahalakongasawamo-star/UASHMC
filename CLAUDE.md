@@ -3,9 +3,16 @@
 Sales/pitch kit for winning the **United Antipolo Specialists Hospital and Medical Center**
 website + KRISS AI engagement. Prepared by Iozera for an onsite with hospital leadership.
 
-This is **not an application**. There is no build, no package manager, no tests, no git repo.
-Every deliverable is a hand-written single file that must open by double-clicking it, offline,
-on a laptop in a meeting room.
+This is **not an application**. There is no build step. Every deliverable is a hand-written
+single file that must open by double-clicking it, offline, on a laptop in a meeting room.
+
+There is a minimal dev-only regression test (`npm test`, see
+[scripts/smoke-test.js](scripts/smoke-test.js)) that drives the prototype in a real headless
+browser and checks routing, the FAQ, the HMO checker and KRISS's safety routing still work. It
+exists only to catch the class of bug that shipped silently for the life of the project — an
+undefined-variable typo (`reduce.addEventListener` instead of `PREFERS_STILL`) that threw on
+every page load and killed all script execution after it, including FAQ rendering. It has no
+bearing on the deliverables themselves, which stay build-free.
 
 ## Layout
 
@@ -158,6 +165,19 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
   as the hero plates — a background colour paints _underneath_ the photograph and never shows.
   `.shot`, `.hero-shot`, `.feature-shot`, `.landmark` get the green verified wash; `.figure` gets
   the violet placeholder one.
+- **Both homepage heroes carry `images/hero-video.mp4`, embedded as a base64 data URI** (muted,
+  looped, `playsinline`) — Direction A's `.hero-shot` and Direction B's `.heroB-plate`. Each keeps
+  its original still (`--ph-building`, `--ph-front`) as a CSS `background`, which now doubles as
+  the poster before the video has a frame and the fallback whenever `prefers-reduced-motion`
+  pauses it — motion stops outright there, it does not merely slow down. A `<video>` is a
+  **replaced element**: `::after` does not paint on it, and a decoded frame paints over any
+  `background-color` the same way an opaque photo does. `.heroB-plate` solves this with a sibling
+  `.heroB-wash` layer riding the same parallax transform, carrying `data-src="verified"` and the
+  provenance `::after`; `.hero-shot` doesn't need one, since there the video is a nested child of
+  a plain (non-replaced) div and the existing `.hero-shot::after` wash already paints correctly on
+  top of it. Only the visible hero's video plays — the JS pauses the other rather than let two
+  decode at once. Only one instance of the clip exists in `images/`; both embeds encode it fresh
+  from that same file, so keep them consistent if it's ever replaced.
 - **The logo is the real one.** `--ua-mark` in `:root` holds the UASHMC monogram as a
   background-image data URI, extracted from `images/logo.jpg` with the white knocked out. Use it
   via `background:var(--ua-mark) …`; on dark grounds put it on a white chip (see `.ftr .fmark`)
@@ -258,7 +278,10 @@ screening (-1), the emergency lexicon (0) or the refusal to diagnose (1).
 
 ## Verifying a change
 
-There are no tests. Verify by opening the file and driving it:
+Run `npm test` first — it catches undefined-reference/uncaught-exception regressions in
+seconds, in a real browser, before you spend time on the manual pass below. It does not replace
+the manual pass; it only guards against the page silently breaking on load. Verify the rest by
+opening the file and driving it:
 
 1. All six pages route from the nav and from in-page links; no console errors.
 2. Toggle **Show content sources** — new content lights up in the right colour and the count

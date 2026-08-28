@@ -1,0 +1,96 @@
+---
+import Layout from "../layouts/Layout.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import { getCollection } from "astro:content";
+
+const faq = await getCollection("faq");
+
+const GROUP_ORDER = [
+  "About",
+  "Doctors",
+  "Services",
+  "Cost",
+  "Admission",
+  "Emergency",
+  "Getting here",
+  "Other",
+];
+
+const groups = GROUP_ORDER.map((name) => ({
+  name,
+  items: faq.filter((f) => f.data.group === name),
+})).filter((g) => g.items.length > 0);
+
+// design guidelines §4.8 / §10.5: FAQPage JSON-LD only from entries that are
+// `verified` AND free of a .tosupply placeholder span — an answer can be
+// verified overall and still carry a "to be confirmed" clause, which must
+// never reach structured data.
+const jsonLdItems = faq
+  .filter((f) => f.data.src === "verified" && !f.data.answer.includes("tosupply"))
+  .map((f) => ({
+    "@type": "Question",
+    name: f.data.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.data.answer.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+    },
+  }));
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: jsonLdItems,
+};
+---
+
+<Layout
+  title="FAQ"
+  description="Frequently asked questions about United Antipolo Specialists Hospital and Medical Center — doctors, services, HMOs, admission and emergency care."
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="page-head">
+    <p class="eyebrow">FAQ</p>
+    <h1>What people ask us most</h1>
+    <p class="lead">
+      The same answers our online assistant gives. If we cannot confirm
+      something yet, we say so rather than guess.
+    </p>
+  </section>
+
+  <section class="faq-groups">
+    {
+      groups.map((group) => (
+        <div class="faq-g">
+          <h2>{group.name}</h2>
+          <FaqAccordion items={group.items} idPrefix="faq" />
+        </div>
+      ))
+    }
+  </section>
+
+  <p class="specnote">
+    Cannot find your question? Call
+    <a href="tel:+63282483460">02 8248 3460</a>, message Viber
+    <strong>0947 875 4949</strong>.
+  </p>
+</Layout>
+
+<style>
+  .page-head, .faq-groups, .specnote {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter-mobile);
+  }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--font-size-2xs);
+    font-weight: 700; color: var(--color-brand-600); margin: 0 0 var(--space-2);
+  }
+  h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-4); }
+  .lead { font-size: var(--font-size-lg); color: var(--color-text-muted); }
+
+  .faq-groups { padding-top: 0; }
+  .faq-g { margin-bottom: var(--space-8); }
+  .faq-g h2 { font-size: var(--font-size-xl); margin-bottom: var(--space-2); }
+
+  .specnote { color: var(--color-text-muted); text-align: center; }
+</style>

@@ -1,0 +1,123 @@
+/* Design tokens — ported from docs/uashmc-design-guidelines.md §2 (source of truth)
+   and cross-checked against DESIGN.json in the pitch-kit repo. Component code must
+   reference these custom properties only — no raw hex/px/ms values (guidelines §7.1). */
+
+:root {
+  /* ---- 2.1 Colour — brand ---- */
+  --color-brand-900: #01305a;
+  --color-brand-700: #01487c; /* logo navy */
+  --color-brand-600: #0a6fa0;
+  --color-brand-500: #0aadd0; /* logo cyan — fill only, never small text */
+  --color-brand-400: #5ac0e4;
+  --color-brand-100: #d2f0fc;
+  --color-brand-50: #e7f6fd;
+  --color-accent: #d2a80c;
+
+  /* ---- 2.1a Colour — warm ramp ---- */
+  --color-rose-700: #a8446a; /* text-safe rose, 5.2:1 on white */
+  --color-rose-600: #c05b7d;
+  --color-rose-500: #d87898; /* fill only, 3.0:1 on white */
+  --color-rose-100: #fbe3eb;
+  --color-rose-50: #fdf2f6;
+  --color-sand-100: #f6ebda;
+  --color-sand-50: #fbf5ec;
+
+  /* ---- 2.2 Colour — neutrals and surfaces ---- */
+  --color-surface-page: #fbfaf8;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f2f7fa;
+  --color-text-primary: #062b46;
+  --color-text-body: #173f5c;
+  --color-text-muted: #4e6981; /* floor for text on brand-100 */
+  --color-text-faint: #8da3b6; /* non-essential metadata only */
+  --color-border-default: #d9e2ea;
+  --color-border-soft: #e9eff4;
+
+  /* ---- 2.3 Colour — semantic status ---- */
+  --color-urgent: #c0271a; /* emergency affordances only */
+  --color-urgent-ink: #7a1710;
+  --color-urgent-tint: #fdf0ee;
+  --color-care-700: #027f61;
+  --color-care-500: #049e79;
+  --color-care-tint: #e4f4ef;
+
+  /* ---- 2.4 Colour — provenance layer (unique to this project) ---- */
+  --color-provenance-verified: #167355;
+  --color-provenance-confirm: #b45309;
+  --color-provenance-sample: #6d5ba8;
+
+  /* ---- 2.5 Typography ---- */
+  --font-family-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-family-ui:
+    "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+
+  --font-size-2xs: 0.6875rem; /* 11px */
+  --line-height-2xs: 1rem; /* 16px */
+  --font-size-xs: 0.75rem; /* 12px */
+  --line-height-xs: 1.125rem; /* 18px */
+  --font-size-sm: 0.8125rem; /* 13px */
+  --line-height-sm: 1.25rem; /* 20px */
+  --font-size-md: 0.875rem; /* 14px */
+  --line-height-md: 1.3125rem; /* 21px */
+  --font-size-base: 1rem; /* 16px — body copy floor */
+  --line-height-base: 1.625rem; /* 26px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --line-height-lg: 1.75rem; /* 28px */
+  --font-size-xl: 1.3125rem; /* 21px */
+  --line-height-xl: 1.75rem; /* 28px */
+  --font-size-2xl: clamp(1.375rem, 2.9cqi, 1.875rem); /* 22-30px */
+  --line-height-2xl: 1.2;
+  --font-size-3xl: clamp(1.875rem, 4.6cqi, 2.8125rem); /* 30-45px */
+  --line-height-3xl: 1.08;
+  --font-size-4xl: clamp(1.875rem, 5cqi, 3.125rem); /* 30-50px */
+  --line-height-4xl: 1.05;
+
+  /* ---- 2.6 Spacing — strict 4px grid, no value off this scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 80px;
+
+  /* ---- 2.6 Radius ---- */
+  --radius-sm: 6px; /* inputs, small chips */
+  --radius-md: 10px; /* cards, buttons */
+  --radius-lg: 16px; /* panels */
+  --radius-xl: 24px; /* sheets, assistant panel */
+  --radius-pill: 999px; /* pills, assistant launcher */
+
+  /* ---- 2.6 Elevation ---- */
+  --elevation-1: 0 1px 2px rgba(8, 42, 56, 0.06), 0 1px 3px rgba(8, 42, 56, 0.05);
+  --elevation-2: 0 4px 12px rgba(8, 42, 56, 0.08), 0 1px 3px rgba(8, 42, 56, 0.06);
+  --elevation-3: 0 18px 44px rgba(8, 42, 56, 0.18), 0 4px 12px rgba(8, 42, 56, 0.1);
+
+  /* ---- 2.6 Motion — every token resolves to 0ms under reduced motion, see below ---- */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-slow: 280ms;
+  --motion-ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  /* ---- 3. Layout ---- */
+  --layout-content-max: 1080px;
+  --layout-gutter-desktop: 40px;
+  --layout-gutter-mobile: 20px;
+}
+
+/* Guidelines §2.6: "Every motion token must resolve to 0ms under prefers-reduced-motion:
+   reduce. Parallax, auto-scroll and typing indicators must be disabled outright, not
+   merely shortened." Consuming components must still branch on reduced motion for
+   transform-based effects (a 0ms transition on a transform is not the same as no
+   transform), but this covers every plain color/border/opacity transition for free. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+}

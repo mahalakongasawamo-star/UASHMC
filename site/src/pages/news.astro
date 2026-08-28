@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="News & Resources"
+  description="Hospital news, doctor features and health information from United Antipolo Specialists Hospital and Medical Center."
+>
+  <section class="stub">
+    <p class="eyebrow">News &amp; Resources</p>
+    <h1>Hospital news, organised</h1>
+    <p class="note">
+      This page migrates in a later phase, once the content-collection work
+      in design guidelines §10.4 is in place — each article becomes its own
+      crawlable page at <code>/news/[slug]</code> (§10.3) with
+      <code>NewsArticle</code> structured data (§10.5).
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .stub {
+    max-width: var(--layout-content-max);
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter-mobile);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--font-size-2xs);
+    font-weight: 700;
+    color: var(--color-brand-600);
+    margin: 0 0 var(--space-2);
+  }
+  h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-4);
+  }
+  .note {
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+  code {
+    font-size: 0.9em;
+  }
+</style>

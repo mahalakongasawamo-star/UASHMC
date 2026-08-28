@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gulliab",
+    "name": "Dr. Elnah A. Gulliab",
+    "specialty": "Internal Medicine",
+    "note": "Acupuncture",
+    "clinicDays": ["Mon", "Wed", "Fri"],
+    "clinicTime": "11:00 AM – 2:00 PM",
+    "room": "Rm 507, 5th Floor",
+    "hmos": [],
+    "photoSlug": "gulliab",
+    "verifiedFields": ["name", "specialty", "note", "clinicDays", "clinicTime", "room"]
+  },
+  {
+    "id": "regalado",
+    "name": "Dr. Joseph Justin H. Regalado",
+    "specialty": "Cardiology",
+    "note": "Adult cardiology · cardiovascular MR",
+    "clinicDays": [],
+    "clinicTime": "",
+    "room": "",
+    "hmos": [],
+    "photoSlug": "regalado",
+    "verifiedFields": ["name", "specialty", "note"]
+  },
+  {
+    "id": "laceda",
+    "name": "Dr. Jerome O. Laceda",
+    "specialty": "Cardiology",
+    "note": "",
+    "clinicDays": [],
+    "clinicTime": "",
+    "room": "",
+    "hmos": [],
+    "photoSlug": "laceda",
+    "verifiedFields": ["name", "specialty"]
+  },
+  {
+    "id": "yalung",
+    "name": "Dr. Alvin L. Yalung",
+    "specialty": "",
+    "note": "",
+    "clinicDays": [],
+    "clinicTime": "",
+    "room": "",
+    "hmos": [],
+    "photoSlug": "yalung",
+    "verifiedFields": ["name"]
+  }
+]

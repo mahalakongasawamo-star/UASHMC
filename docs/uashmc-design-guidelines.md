@@ -680,3 +680,147 @@ These block `verified` status and are tracked in `research/verified-facts.md`:
 - Brand kit — logo files, colour codes, and any existing type licences
 - Facility and staff photography, shot on location
 - Domain ownership and a hospital-domain email address
+
+---
+
+## 10. Production architecture and platform recommendation
+
+The prototype is a single 9,800-line HTML file with inline CSS and JS, hash-based routing
+(`#/doctors`), and zero server. That is a **deliberate, correct choice for the pitch artefact** — it
+must open by double-clicking, offline, on a laptop in a meeting room, and every constraint in this
+document up to here already assumes it. It is the **wrong architecture for the live production
+site**, for one structural reason rather than a taste preference: a crawler or an AI answer engine
+sees one URL, one `<title>`, one meta description and one JSON-LD block, no matter which of the
+nine "pages" a visitor is actually on, because nothing is real routing — the whole document is one
+HTML file and the "pages" are `display:none` toggles inside it. A hospital's whole reason to have a
+website is to be found; this architecture cannot be found for anything more specific than "UASHMC."
+
+This section is a recommendation to build the production site as a real framework application, not
+an instruction already acted on. It is written for whoever scopes that engagement, separately from
+this prototype's own SOW.
+
+### 10.1 Framework recommendation
+
+**Astro**, static-first with islands, over Next.js.
+
+| Criterion                         | Why it favours Astro for this site                                                                                                                                                              |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Content-to-interactivity ratio     | The site is overwhelmingly informational — doctor bios, service pages, FAQ, news. Three components are genuinely interactive: the doctor filter, the HMO checker, and KRISS. Astro ships zero JS by default and only hydrates the three islands that need it; the rest of the page is plain HTML. |
+| Audience (§1)                      | "One-handed phone use on a slow connection" is a named constraint here, not a nice-to-have. Zero-JS-by-default pages are the single biggest lever for that audience, bigger than any image or font optimisation. |
+| Content model fit                  | Astro content collections are exactly the FAQ/DOCS-as-structured-data model this prototype already enforces (§4.8) — type-checked, file- or CMS-backed, and the natural home for §10.4's shared-source model. |
+| Routing                            | File-based routing gives real crawlable URLs for free — `src/pages/doctors/[slug].astro` is a real page, not a JS toggle. |
+| Team cost                          | Ships components in React, Vue, Svelte or plain HTML per-island — does not force a framework choice for the interactive pieces, and does not require rewriting KRISS's vanilla-JS logic in a component framework to get the SEO win. |
+
+**Next.js (App Router)** is the credible alternative if the roadmap includes an authenticated
+patient portal later (explicitly a non-goal today, §1) or if the team already standardises on
+React for other Iozera products — it does everything Astro does here at the cost of shipping more
+client JS by default and a heavier framework for a mostly-static site. Either is a legitimate
+choice; **plain client-rendered SPA (React/Vue Router without SSR/SSG) is not** — it reproduces this
+prototype's core SEO defect on a bigger budget.
+
+### 10.2 Rendering strategy
+
+- **Static generation (SSG) for every content page** — home, about, each service, each doctor
+  profile, each FAQ group, each news article. This content changes on the order of days, not
+  requests; there is no reason to render it per-visit.
+- **Rebuild on content change**, not on a fixed schedule. A new doctor or a corrected phone number
+  should trigger a rebuild via webhook, not wait for a nightly cron.
+- **Client-side islands, server-first content.** The doctor filter, the HMO checker and KRISS's chat
+  UI hydrate as islands — but the doctor roster, the HMO partner list and the FAQ answers they
+  operate on **must already exist as real, crawlable HTML** on the page before any JS runs. This is
+  the direct fix for the master brief's "avoid placing important information only inside
+  JavaScript-generated visual components": the prototype's FAQ and doctor grid are JS-rendered from
+  arrays (correct there — no build step exists to do otherwise, §4.8's migration note already flags
+  this as _"the honest fix belongs in production, where the same array should be rendered to static
+  markup at build time"_). Production is that fix.
+- **No SSR for content that doesn't need it.** Full server-side rendering per request buys nothing
+  here and costs latency; reserve it only if a future authenticated feature needs it.
+
+### 10.3 URL structure
+
+Real routes, replacing every hash route on a like-for-like basis, plus new entity-level pages the
+hash architecture had no way to express:
+
+| Prototype route (hash) | Production route         | New entity pages this enables               |
+| ----------------------- | ------------------------- | -------------------------------------------- |
+| `#/home`                | `/`                        | —                                             |
+| `#/doctors`             | `/doctors`                 | `/doctors/[slug]` — one page per physician    |
+| `#/services`            | `/services`                | `/services/[slug]` — one page per service     |
+| `#/hmo`                 | `/hmo`                     | —                                             |
+| `#/patients`            | `/patient-information`     | `/patient-information/[topic]` if it grows    |
+| `#/contact`             | `/contact`                 | —                                             |
+| `#/faq`                 | `/faq`                     | `/faq#q-<slug>` anchors carry over unchanged  |
+| `#/about`               | `/about`                   | —                                             |
+| `#/news`                | `/news`                    | `/news/[slug]` — one page per article         |
+
+Each entity page is what makes "Dr. Regalado UASHMC" or "UASHMC sleep study price" a query the site
+can actually rank for, instead of everything resolving to the same document title.
+
+### 10.4 One content source, multiple interfaces
+
+This prototype already enforces the target invariant for FAQ content (§4.8: one array, three
+surfaces, never authored twice) — production generalises the same rule to doctors, services and
+HMO partners:
+
+```
+Approved content (Astro content collection, or a headless CMS if editorial
+volume justifies one — Sanity and Contentful both have first-class Astro integrations)
+              │
+    ┌─────────┴─────────┐
+    ▼                     ▼
+Static pages          KRISS AI knowledge base
+(built at deploy)     (reads the same collection at
+                       build time or via a small API route)
+```
+
+Do not stand up a separate CMS entry type for "assistant answers" — that reintroduces the drift
+§4.8 exists to prevent. KRISS's knowledge base is a derived view of the same content, not a sibling
+of it.
+
+### 10.5 Structured data (JSON-LD)
+
+Extend the prototype's existing pattern — §4.8's rule that only `verified`, placeholder-free FAQ
+entries reach JSON-LD applies to every schema below, without exception:
+
+| Page                | Schema                                          | Notes                                                                 |
+| ------------------- | ------------------------------------------------ | ---------------------------------------------------------------------- |
+| `/`                 | `Hospital` (extends `MedicalOrganization`)        | Only fields UASHMC has confirmed — no bed count, no licence level, until §9 closes those items |
+| `/doctors/[slug]`   | `Physician`                                       | Only for doctors with a UASHMC-sourced name and specialty — never for a `.figure` placeholder |
+| `/services/[slug]`  | `MedicalProcedure` or `MedicalTherapy`            | No price in the schema unless the page itself shows a `checked` price (§4.8) |
+| `/faq`              | `FAQPage`                                         | Unchanged from the prototype's existing generation rule                |
+| `/contact`          | `LocalBusiness` + geo coordinates                 | Same coordinate-not-name-search discipline as the map links (§4.11)   |
+| every page          | `BreadcrumbList`                                  | Mechanical, derived from the route tree                                |
+
+### 10.6 SEO and discoverability checklist
+
+- [ ] `sitemap.xml` generated from the route tree at build time (`@astrojs/sitemap` or equivalent)
+- [ ] `robots.txt` allowing all of the above
+- [ ] Canonical URL on every page, self-referencing
+- [ ] Per-page `<title>` and meta description generated from the same content model, not hand-duplicated
+- [ ] Open Graph image per entity page (doctor, service, article) — falls back to a site default, never a broken image
+- [ ] Internal links use descriptive anchor text ("See our cardiologists"), matching §6's existing copy rule, not "click here" or "learn more"
+- [ ] Every meaningful image has real alt text; decorative images stay `aria-hidden` with empty `alt` per §4.11
+
+### 10.7 Migration path
+
+A big-bang rewrite risks losing the provenance discipline and the KRISS safety model this whole
+project is built around. Sequence it instead:
+
+1. **Stand up the framework skeleton** and port the design tokens directly — `DESIGN.json` at the
+   repo root already exists as the machine-readable version of §2's tokens for exactly this handoff;
+   generate the framework's theme/tokens file from it rather than re-transcribing values by hand.
+2. **Port static pages first** (about, contact, patient information) with no dynamic content, to
+   validate the routing and layout system against §3's breakpoints and §5's accessibility bar before
+   any content-model work starts.
+3. **Migrate FAQ and DOCS into content collections**, and point KRISS at the collection instead of
+   the inline arrays — this is the one step that must preserve §4.8's and §4.10's rules exactly:
+   distress screening still runs first, FAQ entries still enter the KB at `pri` 3 or below the
+   safety-critical entries, never above.
+4. **Add structured data and the SEO checklist** (§10.5, §10.6) once content is stable, not before —
+   marking up content that is still moving produces stale or wrong structured data, which is worse
+   than none.
+5. **Re-run the full §5 accessibility suite and §8 QA checklist against the new build** before
+   cutover. "Zero violations" on the prototype does not transfer automatically to a rebuilt DOM.
+
+Each step should ship independently reviewable, not as one migration branch merged at the end.
+

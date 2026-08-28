@@ -1,0 +1,119 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const doctors = await getCollection("doctors");
+  return doctors.map((doctor) => ({
+    params: { id: doctor.id },
+    props: { doctor },
+  }));
+}
+
+const { doctor } = Astro.props;
+const d = doctor.data;
+
+function verified(key: string) {
+  return d.verifiedFields.includes(key as never);
+}
+
+// design guidelines §10.5: only mark up a Physician schema for a doctor with a
+// UASHMC-sourced name and specialty — never for an unverified or blank profile.
+const canMarkUp = verified("name") && verified("specialty");
+const jsonLd = canMarkUp
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Physician",
+      name: d.name,
+      medicalSpecialty: d.specialty,
+      worksFor: {
+        "@type": "Hospital",
+        name: "United Antipolo Specialists Hospital and Medical Center",
+      },
+    }
+  : null;
+---
+
+<Layout
+  title={d.name}
+  description={`${d.name}${d.specialty ? `, ${d.specialty}` : ""} at United Antipolo Specialists Hospital and Medical Center.`}
+>
+  {jsonLd && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  )}
+
+  <section class="doc-page">
+    <a class="back" href="/doctors">&larr; Back to Find a Doctor</a>
+
+    <div class="doc-head">
+      <div class="doc-fig">
+        <span class={`doc-ph p-${d.photoSlug}`} data-src="verified" role="img" aria-label={d.name} />
+      </div>
+      <div>
+        <h1 data-src="verified">{d.name}</h1>
+        <p class="spec" data-src={verified("specialty") ? "verified" : "sample"}>
+          {d.specialty || "Specialty to confirm"}
+        </p>
+        {d.note && (
+          <p class="note" data-src={verified("note") ? "verified" : "sample"}>{d.note}</p>
+        )}
+      </div>
+    </div>
+
+    <dl class="doc-facts">
+      <div>
+        <dt>Clinic days</dt>
+        <dd data-src={verified("clinicDays") ? "verified" : "sample"}>
+          {verified("clinicDays") ? d.clinicDays.join(" · ") : "To confirm"}
+        </dd>
+      </div>
+      <div>
+        <dt>Clinic hours</dt>
+        <dd data-src={verified("clinicTime") ? "verified" : "sample"}>
+          {verified("clinicTime") ? d.clinicTime : "To confirm"}
+        </dd>
+      </div>
+      <div>
+        <dt>Room</dt>
+        <dd data-src={verified("room") ? "verified" : "sample"}>
+          {verified("room") ? d.room : "To confirm"}
+        </dd>
+      </div>
+      <div>
+        <dt>HMO coverage</dt>
+        <dd data-src="sample">
+          {d.hmos.length ? d.hmos.join(", ") : "To confirm"}
+        </dd>
+      </div>
+    </dl>
+
+    <div class="doc-cta">
+      <a class="btn btn-primary" href="tel:+63282483460">Call to book · 02 8248 3460</a>
+      <a class="btn btn-ghost" href="tel:+639478754949">Viber 0947 875 4949</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .doc-page { max-width: var(--layout-content-max); margin: 0 auto; padding: var(--space-8) var(--layout-gutter-mobile); }
+  .back { display: inline-block; margin-bottom: var(--space-6); color: var(--color-brand-700); text-decoration: none; font-size: var(--font-size-sm); font-weight: 600; }
+  .back:hover { text-decoration: underline; }
+
+  .doc-head { display: flex; gap: var(--space-6); align-items: flex-start; margin-bottom: var(--space-7); }
+  .doc-fig { flex: none; width: 140px; height: 140px; border-radius: var(--radius-lg); overflow: hidden; background: var(--color-brand-100); }
+  .doc-ph { display: block; width: 100%; height: 100%; background-size: cover; background-position: center 18%; }
+  h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-2); }
+  .spec { font-size: var(--font-size-lg); font-weight: 600; color: var(--color-brand-700); margin: 0 0 var(--space-2); }
+  .note { color: var(--color-text-muted); margin: 0; }
+
+  .doc-facts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);
+    margin: 0 0 var(--space-7); padding: var(--space-5);
+    background: var(--color-surface-sunken); border-radius: var(--radius-md);
+  }
+  @media (max-width: 700px) { .doc-facts { grid-template-columns: 1fr 1fr; } }
+  .doc-facts dt { font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); margin-bottom: var(--space-1); }
+  .doc-facts dd { margin: 0; font-weight: 600; color: var(--color-text-primary); }
+
+  .doc-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+</style>
