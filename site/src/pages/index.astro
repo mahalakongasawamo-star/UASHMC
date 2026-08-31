@@ -1,6 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+// design guidelines §10.5: Hospital schema on "/" — only fields UASHMC has
+// actually confirmed (research/verified-facts.md). No bed count, no licence
+// level, no accreditation claims until §9's open items close those.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Hospital",
+  name: "United Antipolo Specialists Hospital and Medical Center",
+  telephone: "+63-2-8248-3460",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "7 Marcos Highway, Barangay Mambugan",
+    addressLocality: "Antipolo City",
+    addressRegion: "Rizal",
+    addressCountry: "PH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 14.6250262,
+    longitude: 121.1399902,
+  },
+};
+
 const TASKS = [
   {
     href: "/patient-information",
@@ -40,6 +62,8 @@ const TASKS = [
   title="Home"
   description="United Antipolo Specialists Hospital and Medical Center, 7 Marcos Highway, Barangay Mambugan, Antipolo City. Find a doctor, check your HMO, and see what to bring before you come."
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
   <section class="hero">
     <div class="hero-in">
       <p class="hero-loc" data-src="verified">

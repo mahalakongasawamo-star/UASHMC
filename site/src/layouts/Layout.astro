@@ -6,9 +6,48 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  /** Absolute or root-relative URL. Defaults to the real building photo — see
+   * docs/uashmc-design-guidelines.md §10.6: "falls back to a site default,
+   * never a broken image." Per-entity images (a doctor's own photo, say) need
+   * a real hosted file first — the current doctor photos are inlined as
+   * base64, not servable as an image URL, so this stays the shared default
+   * until that changes. */
+  image?: string;
+  /** Home is prepended automatically — pass the rest of the trail. Entity
+   * pages (a doctor, a service) should pass their section index too, e.g.
+   * [{ name: "Find a Doctor", url: "/doctors" }, { name: d.name, url: `/doctors/${d.id}` }].
+   * Left empty, the page itself is the only crumb after Home. */
+  breadcrumbs?: { name: string; url: string }[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = "/og-default.jpg", breadcrumbs = [] } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+const pageTitle = `${title} — UASHMC`;
+
+// design guidelines §10.5: BreadcrumbList on every page, mechanical from the
+// route tree. Home is the one crumb every page shares. A page that doesn't
+// pass its own trail is one level deep, so the trail is just Home > itself;
+// a page three levels deep (a doctor, a service) passes its own full trail,
+// ending with itself, and none is added here on top of it.
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const crumbs =
+  breadcrumbs.length > 0
+    ? [{ name: "Home", url: "/" }, ...breadcrumbs]
+    : currentPath === "/"
+      ? [{ name: "Home", url: "/" }]
+      : [{ name: "Home", url: "/" }, { name: title, url: currentPath }];
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: crumbs.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.name,
+    item: new URL(c.url, Astro.site).toString(),
+  })),
+};
 
 const NAV = [
   { href: "/doctors", label: "Doctors" },
@@ -30,9 +69,22 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — UASHMC</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="United Antipolo Specialists Hospital and Medical Center" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#01487C" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

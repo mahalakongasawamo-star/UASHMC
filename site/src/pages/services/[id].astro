@@ -33,7 +33,14 @@ const jsonLd =
     : null;
 ---
 
-<Layout title={s.name} description={s.summary}>
+<Layout
+  title={s.name}
+  description={s.summary}
+  breadcrumbs={[
+    { name: "Services & Specialties", url: "/services" },
+    { name: s.name, url: `/services/${service.id}` },
+  ]}
+>
   {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
   <section class="service-page">
@@ -83,6 +90,11 @@ const jsonLd =
         <a class="btn btn-primary" href="tel:+63282483460">Call to ask · 02 8248 3460</a>
       )}
     </div>
+
+    <nav class="svc-related" aria-label="Related information">
+      <a href="/doctors">See our doctors</a>
+      <a href="/patient-information">Admission requirements &amp; HMOs</a>
+    </nav>
   </section>
 </Layout>
 
@@ -109,4 +121,12 @@ const jsonLd =
   .checked { font-style: italic; }
 
   .cta { margin-top: var(--space-6); }
+
+  .svc-related {
+    display: flex; flex-direction: column; gap: var(--space-2);
+    margin-top: var(--space-6); padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-default);
+  }
+  .svc-related a { color: var(--color-brand-700); font-weight: 600; text-decoration: none; }
+  .svc-related a:hover { text-decoration: underline; }
 </style>

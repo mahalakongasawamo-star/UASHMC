@@ -17,11 +17,17 @@ Published (private) links:
 - Prototype — https://claude.ai/code/artifact/82fd0edc-3a3b-4b47-969f-bddc124c1e85
 - Presentation pack — https://claude.ai/code/artifact/6f1071f4-477b-44bd-b0ba-12c96e248b83
 
-The prototype also deploys to Vercel (`vercel.json` rewrites `/` to the HTML file). On any
-`*.vercel.app` hostname it auto-detects and hides the studio chrome — dev toolbar, tweak panel,
-provenance legend, mock browser frame — so the link you hand UASHMC shows only the real, full-page
-site, sized to whatever device they open it on. Locally (`file://` or `localhost`) the studio chrome
-still shows, for demoing in the room or editing.
+The prototype also deploys to Vercel (`vercel.json` rewrites `/` to the HTML file) — **this is the
+default, live, client-facing site.** On any `*.vercel.app` hostname it auto-detects and hides the
+studio chrome — dev toolbar, tweak panel, provenance legend, mock browser frame — so the link you
+hand UASHMC shows only the real, full-page site, sized to whatever device they open it on. Locally
+(`file://` or `localhost`) the studio chrome still shows, for demoing in the room or editing.
+
+There is also a `site/` directory: an in-progress Astro rebuild toward production, following
+`docs/uashmc-design-guidelines.md` §10. It is not deployed anywhere and is not the default —
+most of the prototype's sections haven't been ported to it yet. Don't confuse its git activity
+for the prototype having been superseded; the prototype stays the one thing to show the client
+until `site/` actually covers the same ground.
 
 ## Using the prototype in the room
 

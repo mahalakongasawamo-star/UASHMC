@@ -1,11 +1,35 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+// design guidelines §10.5: LocalBusiness + geo, same coordinate-not-name-search
+// discipline as the map links below — these are the exact coordinates those
+// links already use, not a separately-sourced (and possibly inconsistent) pair.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "United Antipolo Specialists Hospital and Medical Center",
+  telephone: "+63-2-8248-3460",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "7 Marcos Highway, Barangay Mambugan",
+    addressLocality: "Antipolo City",
+    addressRegion: "Rizal",
+    addressCountry: "PH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 14.6250262,
+    longitude: 121.1399902,
+  },
+};
 ---
 
 <Layout
   title="Contact & Directions"
   description="Call, message or find directions to United Antipolo Specialists Hospital and Medical Center at 7 Marcos Highway, Barangay Mambugan, Antipolo City."
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
   <section class="page-head">
     <p class="eyebrow">Contact &amp; Directions</p>
     <h1>Talk to a person</h1>

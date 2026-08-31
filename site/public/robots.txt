@@ -1,0 +1,9 @@
+# United Antipolo Specialists Hospital and Medical Center
+# Public content is open to crawling. The one page excluded below is a
+# developer-only component preview, not real hospital content (it also
+# carries its own noindex meta tag — see src/pages/doctors/gallery-preview.astro).
+
+User-agent: *
+Disallow: /doctors/gallery-preview
+
+Sitemap: https://uashmc.com.ph/sitemap-index.xml

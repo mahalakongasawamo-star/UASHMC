@@ -24,6 +24,14 @@ bearing on the deliverables themselves, which stay build-free.
 | [docs/INTERNAL-before-the-onsite.md](docs/INTERNAL-before-the-onsite.md) | ⛔ Iozera-only. Our own gaps, commercial numbers, what not to claim. **Never client-facing.**                                                                                                                                |
 | [research/](research/)                                                   | Source material behind the two client documents. Public sources only; nothing confirmed by UASHMC.                                                                                                                           |
 | [images/](images/)                                                       | UASHMC's own published collateral. The source of truth for the logo and brand palette; also the best evidence of their real service list, prices and HMO partners.                                                           |
+| [site/](site/)                                                           | An in-progress Astro + React rebuild toward the production architecture `docs/uashmc-design-guidelines.md` §10 recommends. **Not the default site, not deployed anywhere, not client-facing.** Real routing and SEO groundwork exist there, but most of the prototype's sections haven't been ported yet — see §10.7's migration path for the intended sequence. Treat it as a separate, active work-in-progress, not a replacement for the prototype. |
+
+**The prototype is the default site.** `vercel.json` at the repo root deploys
+[prototype/uashmc-prototype.html](prototype/uashmc-prototype.html) to `/` — that is the one live,
+client-facing surface this repo currently ships. `site/` is a parallel rebuild that stays
+non-default until it actually covers what the prototype does; don't point any domain or default
+deployment at it before then, and don't treat its more recent commits as a signal that it has
+superseded the prototype.
 
 [README.md](README.md) is the operator's guide for running the meeting. Keep it in sync when the
 deliverables change.

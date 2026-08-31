@@ -37,6 +37,10 @@ const jsonLd = canMarkUp
 <Layout
   title={d.name}
   description={`${d.name}${d.specialty ? `, ${d.specialty}` : ""} at United Antipolo Specialists Hospital and Medical Center.`}
+  breadcrumbs={[
+    { name: "Find a Doctor", url: "/doctors" },
+    { name: d.name, url: `/doctors/${doctor.id}` },
+  ]}
 >
   {jsonLd && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -91,6 +95,11 @@ const jsonLd = canMarkUp
       <a class="btn btn-primary" href="tel:+63282483460">Call to book · 02 8248 3460</a>
       <a class="btn btn-ghost" href="tel:+639478754949">Viber 0947 875 4949</a>
     </div>
+
+    <nav class="doc-related" aria-label="Related information">
+      <a href="/services">See our services &amp; specialties</a>
+      <a href="/patient-information">Check your HMO before you come</a>
+    </nav>
   </section>
 </Layout>
 
@@ -116,4 +125,12 @@ const jsonLd = canMarkUp
   .doc-facts dd { margin: 0; font-weight: 600; color: var(--color-text-primary); }
 
   .doc-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  .doc-related {
+    display: flex; flex-direction: column; gap: var(--space-2);
+    margin-top: var(--space-6); padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-default);
+  }
+  .doc-related a { color: var(--color-brand-700); font-weight: 600; text-decoration: none; }
+  .doc-related a:hover { text-decoration: underline; }
 </style>
